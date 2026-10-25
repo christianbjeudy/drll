@@ -8,7 +8,7 @@ import {
   listEntries,
   saveEntry,
   saveSettings,
-} from "../functions/_lib/store.js";
+} from "../src/handlers/_lib/store.js";
 
 class MockBucket {
   constructor() {

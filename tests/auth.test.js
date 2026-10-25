@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { createSessionCookie, isAdmin, passwordMatches } from "../functions/_lib/auth.js";
+import { createSessionCookie, isAdmin, passwordMatches } from "../src/handlers/_lib/auth.js";
 
 const env = {
   ADMIN_PASSWORD: "a-long-test-password",

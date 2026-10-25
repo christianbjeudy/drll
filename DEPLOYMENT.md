@@ -2,33 +2,33 @@
 
 ## 1. Create the Cloudflare resource
 
-Create an R2 bucket named `drll-media` and bind it to the Pages project as `MEDIA_BUCKET`. The bucket stores both small JSON content records and uploaded media. R2 provides strong consistency for these reads and writes, which suits this single-editor CMS without requiring a separate database.
+Create an R2 bucket named `drll-media` and bind it to the Worker as `MEDIA_BUCKET`. The bucket stores both small JSON content records and uploaded media. R2 provides strong consistency for these reads and writes, which suits this single-editor CMS without requiring a separate database.
 
 - R2: `MEDIA_BUCKET`
 
 ## 2. Configure secrets
 
-Add these encrypted production secrets to the Pages project:
+Add these encrypted production secrets to the Worker:
 
 - `ADMIN_PASSWORD`: a unique administrator password
 - `SESSION_SECRET`: a separate random value of at least 32 characters
 
 Never store either value in Git, `wrangler.jsonc`, screenshots, logs, or support messages.
 
-## 3. Connect GitHub to Pages
+## 3. GitHub deployment
 
-Import `christianbjeudy/drll` as a Cloudflare Pages project with:
+The `drll` Worker is connected to `christianbjeudy/drll` with:
 
 - Production branch: `main`
 - Build command: leave blank
-- Build output directory: `.`
 - Root directory: repository root
+- Deploy command: `npx wrangler deploy`
 
-Confirm that production and preview environments both have their intended bindings and secrets. A binding or secret configured in one environment is not automatically proof that the other environment has it.
+Confirm that production and preview environments both have their intended bindings and secrets. A binding or secret configured in one environment is not automatically proof that the other environment has it. Workers Static Assets serves `index.html`, `admin.html`, and `assets/`; the Worker handles `/api/*` and `/media/*`.
 
 ## 4. Configure the domain
 
-Add the intended hostname under the Pages project's **Custom domains** settings. Verify that the hostname appears as active and that Cloudflare has issued an edge certificate. Decide whether the apex domain or `www` hostname is canonical, and redirect the other hostname to it.
+Add the intended hostname under the Worker's **Domains** settings. Verify that the hostname appears as active and that Cloudflare has issued an edge certificate. Decide whether the apex domain or `www` hostname is canonical, and redirect the other hostname to it.
 
 ## 5. Verify production
 

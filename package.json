@@ -5,9 +5,9 @@
   "type": "module",
   "description": "The professional website and living archive of Dr. Laurenie Louissaint.",
   "scripts": {
-    "dev": "wrangler pages dev .",
+    "dev": "wrangler dev",
     "check": "node --test tests/*.test.js && node scripts/check-source.js",
-    "deploy": "wrangler pages deploy . --project-name=drll"
+    "deploy": "wrangler deploy"
   },
   "devDependencies": {
     "wrangler": "4.152.0"

@@ -40,10 +40,11 @@ const required = [
   "assets/admin.js",
   "assets/styles.css",
   "assets/admin.css",
-  "functions/api/site.js",
-  "functions/api/admin/login.js",
-  "functions/api/admin/entries/index.js",
-  "functions/api/admin/settings.js",
+  "src/index.js",
+  "src/handlers/api/site.js",
+  "src/handlers/api/admin/login.js",
+  "src/handlers/api/admin/entries/index.js",
+  "src/handlers/api/admin/settings.js",
 ];
 for (const path of required) {
   if (!existsSync(join(root, path))) failures.push(`Required source file is missing: ${path}`);

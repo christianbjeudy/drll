@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { normalizeEntry, normalizeSettings } from "../functions/_lib/content.js";
+import { normalizeEntry, normalizeSettings } from "../src/handlers/_lib/content.js";
 
 test("normalizes a valid content entry", () => {
   const entry = normalizeEntry({

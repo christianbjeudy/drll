@@ -139,7 +139,7 @@ try {
   check(logout.status === 200, "Admin should log out.");
   cookie = "";
 
-  console.log(`Local Pages end-to-end checks passed (${assertions} assertions).`);
+  console.log(`Local Worker end-to-end checks passed (${assertions} assertions).`);
   console.log(`Uploaded local-only fixture: ${uploadedUrl}`);
 } finally {
   if (createdEntryId && cookie) {
