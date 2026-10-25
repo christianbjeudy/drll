@@ -1,0 +1,18 @@
+{
+  "name": "dr-laurenie-louissaint-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The professional website and living archive of Dr. Laurenie Louissaint.",
+  "scripts": {
+    "dev": "wrangler pages dev .",
+    "check": "node --test tests/*.test.js && node scripts/check-source.js",
+    "deploy": "wrangler pages deploy . --project-name=drll"
+  },
+  "devDependencies": {
+    "wrangler": "4.152.0"
+  },
+  "overrides": {
+    "undici": "7.30.1"
+  }
+}
