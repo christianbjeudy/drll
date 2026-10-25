@@ -65,6 +65,9 @@ button:disabled { cursor:wait; opacity:.6; }
 .message.success { color:var(--success); }
 
 #settingsPane { max-width:920px; margin-top:35px; }
+.form-section { margin:28px 0 0; padding:22px 0 3px; border-top:1px solid var(--line); color:var(--navy); font-family:"Playfair Display",Georgia,serif; font-size:26px; font-weight:500; letter-spacing:-.5px; }
+.form-section:first-child { margin-top:0; padding-top:0; border-top:0; }
+label small { color:var(--muted); font-size:9px; font-weight:400; }
 .editor-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; }
 .wide { grid-column:1/-1; }
 .editor-actions { display:flex; justify-content:flex-end; gap:12px; }

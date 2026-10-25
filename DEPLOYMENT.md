@@ -32,6 +32,12 @@ Add the intended hostname under the Worker's **Domains** settings. Verify that t
 
 ## 5. Verify production
 
+Publish the verified starter profile after the first deployment or whenever its checked-in data is revised:
+
+```text
+npm run content:publish -- https://drlouissaint.com --credentials-file <protected-credentials-file>
+```
+
 - Load the home page at desktop and mobile widths.
 - Confirm every navigation link reaches the correct section.
 - Confirm search opens, filters entries, and opens detail dialogs.
@@ -41,6 +47,6 @@ Add the intended hostname under the Worker's **Domains** settings. Verify that t
 - Confirm unauthenticated admin API requests return `401`.
 - Confirm incorrect passwords do not create a session.
 - Confirm the footer says **Made by christianbjeudy.com**.
-- Confirm both the `pages.dev` address and custom domain use HTTPS without certificate warnings.
+- Confirm the Worker domain and custom domain use HTTPS without certificate warnings.
 
 Remove any temporary verification content after testing.

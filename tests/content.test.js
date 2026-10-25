@@ -24,9 +24,19 @@ test("rejects unsupported entry types and unsafe URLs", () => {
 });
 
 test("validates settings email and preserves safe relative portrait paths", () => {
-  const settings = normalizeSettings({ email: "hello@example.com", portrait_url: "/media/example.jpg" });
+  const settings = normalizeSettings({
+    email: "hello@example.com",
+    portrait_url: "/media/example.jpg",
+    professional_title: "Assistant Professor",
+    appointment_url: "https://example.com/appointments",
+    affiliations: "Example University\nExample Hospital",
+  });
   assert.equal(settings.email, "hello@example.com");
   assert.equal(settings.portrait_url, "/media/example.jpg");
+  assert.equal(settings.professional_title, "Assistant Professor");
+  assert.equal(settings.appointment_url, "https://example.com/appointments");
+  assert.match(settings.affiliations, /Example Hospital/u);
   assert.throws(() => normalizeSettings({ email: "not-an-email" }), /email is invalid/u);
+  assert.throws(() => normalizeSettings({ zocdoc: "javascript:alert(1)" }), /HTTP and HTTPS/u);
 });
 

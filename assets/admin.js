@@ -16,7 +16,7 @@
     milestone: "Journey",
     news: "News",
     media: "Media",
-    settings: "Site settings",
+    settings: "Professional profile",
   };
 
   function byId(id) {

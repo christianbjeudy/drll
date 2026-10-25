@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "check": "node --test tests/*.test.js && node scripts/check-source.js",
+    "content:publish": "node scripts/publish-verified-content.mjs",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {

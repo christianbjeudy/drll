@@ -1,13 +1,22 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 
 const baseUrl = process.argv[2] || "http://localhost:8788";
-const password = process.argv[3];
-if (!password) throw new Error("Pass the local test password as the second argument.");
+let password = process.argv[3];
+if (password === "--credentials-file") {
+  const contents = readFileSync(process.argv[4], "utf8");
+  password = (
+    contents.match(/^Password: (.+)$/mu)?.[1]
+    || contents.match(/^ADMIN_PASSWORD=(.+)$/mu)?.[1]?.replace(/^['"]|['"]$/gu, "")
+  );
+}
+if (!password) throw new Error("Pass the test password or --credentials-file <path> after the URL.");
 
 let cookie = "";
 let createdEntryId = "";
 let uploadedUrl = "";
 let assertions = 0;
+let originalSettings = null;
 
 async function request(path, options = {}) {
   const headers = new Headers(options.headers || {});
@@ -56,6 +65,10 @@ try {
 
   const authenticated = await request("/api/admin/session");
   check(authenticated.status === 200, "Authenticated session should be accepted.");
+
+  const originalSettingsResponse = await request("/api/admin/settings");
+  check(originalSettingsResponse.status === 200, "Admin settings should load.");
+  originalSettings = (await originalSettingsResponse.json()).settings;
 
   const entryResponse = await request("/api/admin/entries", {
     method: "POST",
@@ -131,16 +144,16 @@ try {
 
   const resetSettings = await request("/api/admin/settings", {
     method: "PUT",
-    body: JSON.stringify({ about: "", portrait_url: "", email: "", linkedin: "", scholar: "", orcid: "", other_link: "" }),
+    body: JSON.stringify(originalSettings),
   });
-  check(resetSettings.status === 200, "Test settings should reset.");
+  check(resetSettings.status === 200, "Original settings should be restored.");
 
   const logout = await request("/api/admin/logout", { method: "POST", body: "{}" });
   check(logout.status === 200, "Admin should log out.");
   cookie = "";
 
-  console.log(`Local Worker end-to-end checks passed (${assertions} assertions).`);
-  console.log(`Uploaded local-only fixture: ${uploadedUrl}`);
+  console.log(`${new URL(baseUrl).hostname} end-to-end checks passed (${assertions} assertions).`);
+  console.log(`Temporary uploaded fixture: ${uploadedUrl}`);
 } finally {
   if (createdEntryId && cookie) {
     await request(`/api/admin/entries/${createdEntryId}`, { method: "DELETE" }).catch(() => {});

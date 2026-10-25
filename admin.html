@@ -1,1 +1,107 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin | Dr. Laurenie Louissaint</title><link rel="stylesheet" href="/assets/admin.css"></head><body><div id="login" class="login-box"><div class="mark">LL<span>.</span></div><h1>Welcome back.</h1><p>Dr. Louissaint's private content studio</p><form id="loginForm"><label>Administrator password<input type="password" id="password" required autocomplete="current-password"></label><button>Sign in ↗</button></form><p class="message" id="loginMsg"></p><a href="/">← Return to website</a></div><div id="app" hidden><aside class="sidebar"><div class="mark">LL<span>.</span> <small>CONTENT STUDIO</small></div><nav><button class="nav active" data-view="all">All entries</button><button class="nav" data-view="publication">Publications</button><button class="nav" data-view="event">Events</button><button class="nav" data-view="milestone">Journey</button><button class="nav" data-view="news">News</button><button class="nav" data-view="media">Media</button><button class="nav" data-view="settings">Site settings</button></nav><div class="side-bottom"><a href="/" target="_blank">View live site ↗</a><button id="logout">Log out</button></div></aside><main class="main"><div class="top"><div><div class="kicker">DR. LOUISSAINT / CONTENT MANAGEMENT</div><h1 id="viewTitle">All entries</h1></div><button id="newBtn" class="primary">+ Create entry</button></div><p class="message" id="message"></p><section id="entriesPane"><div class="tools"><input id="entrySearch" placeholder="Search your content..."/><span id="entryCount"></span></div><div id="entryRows" class="entry-rows"></div></section><section id="settingsPane" hidden><form id="settingsForm" class="editor-grid"><label class="wide">Biography / about introduction<textarea name="about" rows="5" placeholder="Write the approved introductory biography..."></textarea></label><label class="wide">Portrait image URL<input name="portrait_url" placeholder="https://... or upload a portrait below"></label><label class="wide">Upload portrait<input type="file" id="portraitUpload" accept="image/*"></label><label>Contact email<input name="email" type="email"></label><label>LinkedIn URL<input name="linkedin" type="url"></label><label>Google Scholar URL<input name="scholar" type="url"></label><label>ORCID URL<input name="orcid" type="url"></label><label>Other professional URL<input name="other_link" type="url"></label><div class="wide"><button class="primary">Save site settings</button></div></form></section></main></div><dialog id="editor"><div class="editor-head"><h2 id="editorTitle">New entry</h2><button id="closeEditor" type="button">✕</button></div><form id="entryForm" class="editor-grid"><input type="hidden" name="id"><label>Content type<select name="type"><option value="publication">Publication</option><option value="event">Event</option><option value="milestone">Journey milestone</option><option value="news">News / update</option><option value="media">Media</option></select></label><label>Visibility<select name="status"><option value="draft">Draft</option><option value="published">Published</option></select></label><label class="wide">Title<input name="title" required maxlength="250"></label><label>Category / label<input name="category" placeholder="Research, Speaking, Recognition..."></label><label>Date<input type="date" name="date"></label><label class="wide">Short description<textarea name="summary" rows="3"></textarea></label><label class="wide">Full detail / content<textarea name="body" rows="7"></textarea></label><label class="wide">Cover image URL<input name="image_url" placeholder="https://... or upload below"></label><label class="wide">Upload image or PDF<input type="file" id="entryUpload" accept="image/*,.pdf"></label><label class="wide">External resource URL<input name="external_url" placeholder="https://..."></label><div class="editor-actions wide"><button type="button" id="deleteBtn" class="danger" hidden>Delete</button><button type="submit" class="primary">Save entry</button></div><p class="message wide" id="editorMessage"></p></form></dialog><script src="/assets/admin.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Dr. Laurenie Louissaint</title>
+  <link rel="stylesheet" href="/assets/admin.css">
+</head>
+<body>
+  <div id="login" class="login-box">
+    <div class="mark">LL<span>.</span></div>
+    <h1>Welcome back.</h1>
+    <p>Dr. Louissaint's private content studio</p>
+    <form id="loginForm">
+      <label>Administrator password<input type="password" id="password" required autocomplete="current-password"></label>
+      <button>Sign in ↗</button>
+    </form>
+    <p class="message" id="loginMsg"></p>
+    <a href="/">← Return to website</a>
+  </div>
+
+  <div id="app" hidden>
+    <aside class="sidebar">
+      <div class="mark">LL<span>.</span> <small>CONTENT STUDIO</small></div>
+      <nav>
+        <button class="nav active" data-view="all">All entries</button>
+        <button class="nav" data-view="publication">Publications</button>
+        <button class="nav" data-view="event">Events</button>
+        <button class="nav" data-view="milestone">Journey</button>
+        <button class="nav" data-view="news">News</button>
+        <button class="nav" data-view="media">Media</button>
+        <button class="nav" data-view="settings">Professional profile</button>
+      </nav>
+      <div class="side-bottom"><a href="/" target="_blank">View live site ↗</a><button id="logout">Log out</button></div>
+    </aside>
+
+    <main class="main">
+      <div class="top">
+        <div><div class="kicker">DR. LOUISSAINT / CONTENT MANAGEMENT</div><h1 id="viewTitle">All entries</h1></div>
+        <button id="newBtn" class="primary">+ Create entry</button>
+      </div>
+      <p class="message" id="message"></p>
+      <section id="entriesPane">
+        <div class="tools"><input id="entrySearch" placeholder="Search your content..."><span id="entryCount"></span></div>
+        <div id="entryRows" class="entry-rows"></div>
+      </section>
+
+      <section id="settingsPane" hidden>
+        <form id="settingsForm" class="editor-grid">
+          <h2 class="form-section wide">Identity &amp; introduction</h2>
+          <label>Credentials<input name="credentials" placeholder="MD, MS, FAAPMR"></label>
+          <label>Professional title<input name="professional_title" placeholder="Assistant Professor of Sports Medicine"></label>
+          <label class="wide">Hero introduction<textarea name="hero_intro" rows="3" placeholder="A concise summary of specialty and role..."></textarea></label>
+          <label class="wide">Biography / about introduction<textarea name="about" rows="6" placeholder="Write the approved professional biography..."></textarea></label>
+          <label class="wide">Portrait image URL<input name="portrait_url" placeholder="/assets/images/... or https://..."></label>
+          <label class="wide">Upload replacement portrait<input type="file" id="portraitUpload" accept="image/*"></label>
+
+          <h2 class="form-section wide">Credentials &amp; patient information</h2>
+          <label class="wide">Academic appointment<input name="academic_appointment" placeholder="Assistant Professor...; Assistant Program Director..."></label>
+          <label class="wide">Clinical focus <small>One item per line</small><textarea name="clinical_focus" rows="5"></textarea></label>
+          <label class="wide">Affiliations <small>One institution per line</small><textarea name="affiliations" rows="5"></textarea></label>
+          <label class="wide">Education and training <small>One credential per line</small><textarea name="training" rows="5"></textarea></label>
+          <label>Languages<input name="languages" placeholder="English · French · Spanish"></label>
+          <label>Location<input name="location" placeholder="Brooklyn, New York"></label>
+          <label>Appointment phone<input name="appointment_phone" type="tel"></label>
+          <label>Professional contact email<input name="email" type="email"></label>
+
+          <h2 class="form-section wide">Verified appointment &amp; profile links</h2>
+          <label>Official appointment/profile URL<input name="appointment_url" type="url"></label>
+          <label>One Brooklyn Health URL<input name="one_brooklyn" type="url"></label>
+          <label>Zocdoc URL<input name="zocdoc" type="url" placeholder="Publish only after profile is confirmed"></label>
+          <label>Healthgrades URL<input name="healthgrades" type="url"></label>
+          <label>Doximity URL<input name="doximity" type="url"></label>
+          <label>WebMD URL<input name="webmd" type="url"></label>
+          <label>NPI Registry URL<input name="npi" type="url"></label>
+          <label>LinkedIn URL<input name="linkedin" type="url"></label>
+          <label>Instagram URL<input name="instagram" type="url"></label>
+          <label>Google Scholar URL<input name="scholar" type="url"></label>
+          <label>ORCID URL<input name="orcid" type="url"></label>
+          <label>Other professional URL<input name="other_link" type="url"></label>
+          <div class="wide"><button class="primary">Save professional profile</button></div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="editor">
+    <div class="editor-head"><h2 id="editorTitle">New entry</h2><button id="closeEditor" type="button" aria-label="Close">✕</button></div>
+    <form id="entryForm" class="editor-grid">
+      <input type="hidden" name="id">
+      <label>Content type<select name="type"><option value="publication">Publication</option><option value="event">Event</option><option value="milestone">Journey milestone</option><option value="news">News / update</option><option value="media">Media</option></select></label>
+      <label>Visibility<select name="status"><option value="draft">Draft</option><option value="published">Published</option></select></label>
+      <label class="wide">Title<input name="title" required maxlength="250"></label>
+      <label>Category / label<input name="category" placeholder="Research, Speaking, Recognition..."></label>
+      <label>Date<input type="date" name="date"></label>
+      <label class="wide">Short description<textarea name="summary" rows="3"></textarea></label>
+      <label class="wide">Full detail / content<textarea name="body" rows="7"></textarea></label>
+      <label class="wide">Cover image URL<input name="image_url" placeholder="https://... or upload below"></label>
+      <label class="wide">Upload image or PDF<input type="file" id="entryUpload" accept="image/*,.pdf"></label>
+      <label class="wide">External resource URL<input name="external_url" placeholder="https://..."></label>
+      <div class="editor-actions wide"><button type="button" id="deleteBtn" class="danger" hidden>Delete</button><button type="submit" class="primary">Save entry</button></div>
+      <p class="message wide" id="editorMessage"></p>
+    </form>
+  </dialog>
+  <script src="/assets/admin.js"></script>
+</body>
+</html>

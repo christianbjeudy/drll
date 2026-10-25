@@ -1,6 +1,6 @@
 # Dr. Laurenie Louissaint — Professional Website
 
-The professional website and living academic archive of Dr. Laurenie Louissaint. The site includes a biography, journey, publications library, events, news, media archive, search, and a private content dashboard.
+The professional website and academic archive of Dr. Laurenie Louissaint, MD, MS, FAAPMR. The site includes a physician biography, verified credentials and affiliations, patient appointment resources, publications, career milestones, service, news, media, search, and a private content dashboard.
 
 ## Architecture
 
@@ -9,7 +9,7 @@ The professional website and living academic archive of Dr. Laurenie Louissaint.
 - Cloudflare R2 for content records, site settings, images, and PDF uploads
 - Secret-backed, signed, HTTP-only administrator sessions
 
-No biographical facts, publications, or events are hard-coded. Approved content is entered through `/admin.html` and published from the dashboard.
+Verified public-source profile data and starter entries are tracked in `content/verified-profile.json`. Live content remains editable through `/admin.html` and is stored in R2.
 
 ## Local setup
 
@@ -19,6 +19,14 @@ No biographical facts, publications, or events are hard-coded. Approved content 
 4. Open the local URL shown by Wrangler. The dashboard is at `/admin.html`.
 
 Run `npm run check` before committing changes.
+
+To load or refresh the verified starter profile in a local or production environment:
+
+```text
+npm run content:publish -- <site-origin> --credentials-file <path>
+```
+
+The publisher updates entries by type and title, so it can be run again without creating duplicates. Leave unverified directory fields, including Zocdoc, blank until an exact profile is confirmed.
 
 ## Cloudflare setup
 
@@ -33,7 +41,7 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for the full production checklist.
 
 ## Content workflow
 
-Dashboard entries begin as drafts. Only entries marked **Published** appear on the public website. Site settings control the approved biography introduction, portrait, contact email, and professional profile links.
+Dashboard entries begin as drafts. Only entries marked **Published** appear on the public website. The Professional Profile view controls biography, credentials, clinical focus, affiliations, training, languages, appointment information, portrait, contact information, and verified directory links.
 
 ## Credit
 

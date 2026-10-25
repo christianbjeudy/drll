@@ -49,6 +49,44 @@
     return make("div", className, message);
   }
 
+  function lines(value) {
+    return String(value || "").split(/\r?\n/u).map((line) => line.trim()).filter(Boolean);
+  }
+
+  function renderTextList(container, value) {
+    const items = lines(value);
+    if (!items.length) return;
+    container.replaceChildren(...items.map((item) => make("li", "", item)));
+  }
+
+  function phoneHref(value) {
+    const digits = String(value || "").replace(/[^\d+]/gu, "");
+    return digits ? `tel:${digits}` : "";
+  }
+
+  function renderFocus(value) {
+    const items = lines(value);
+    if (!items.length) return;
+    const descriptions = {
+      "Sports Medicine": "Non-operative care supporting movement, recovery, and performance.",
+      "Physical Medicine & Rehabilitation": "Function-focused care informed by rehabilitation medicine.",
+      "Pain Management": "Evidence-informed evaluation and care for musculoskeletal pain.",
+      "Interventional Spine": "Specialized training in spine care and image-guided procedures.",
+      "Musculoskeletal Ultrasound": "Ultrasound-supported assessment and procedural care.",
+      "Cycling & Running Medicine": "Movement-focused care for endurance athletes and active patients.",
+    };
+    elements.focusList.replaceChildren();
+    items.forEach((item, index) => {
+      const article = make("article");
+      article.append(
+        make("span", "", String(index + 1).padStart(2, "0")),
+        make("h3", "", item),
+        make("p", "", descriptions[item] || "A current area of clinical and academic focus."),
+      );
+      elements.focusList.append(article);
+    });
+  }
+
   function imageFor(entry, className = "") {
     const source = safeUrl(entry.image_url);
     if (!source) return null;
@@ -218,6 +256,21 @@
   function renderSettings() {
     const settings = state.settings;
     if (settings.about) elements.aboutLead.textContent = settings.about;
+    if (settings.hero_intro) elements.heroIntro.textContent = settings.hero_intro;
+    if (settings.credentials) elements.credentialLine.textContent = settings.credentials;
+    if (settings.professional_title) {
+      elements.roleSummary.textContent = settings.professional_title;
+      elements.academicAppointment.textContent = settings.professional_title;
+    }
+    if (settings.academic_appointment) elements.academicAppointment.textContent = settings.academic_appointment;
+    if (settings.location) {
+      elements.locationSummary.textContent = settings.location;
+      elements.appointmentLocation.textContent = settings.location;
+    }
+    if (settings.languages) elements.languageList.textContent = settings.languages;
+    renderFocus(settings.clinical_focus);
+    renderTextList(elements.affiliationList, settings.affiliations);
+    renderTextList(elements.trainingList, settings.training);
 
     const portraitUrl = safeUrl(settings.portrait_url);
     if (portraitUrl) {
@@ -225,23 +278,58 @@
       portrait.src = portraitUrl;
       portrait.alt = "Portrait of Dr. Laurenie Louissaint";
       portrait.decoding = "async";
-      portrait.addEventListener("error", () => portrait.remove(), { once: true });
-      elements.portrait.prepend(portrait);
+      portrait.width = 1285;
+      portrait.height = 1800;
+      portrait.addEventListener("error", () => {
+        portrait.src = "/assets/images/dr-laurenie-louissaint-headshot.jpg";
+      }, { once: true });
+      elements.portrait.replaceChildren(portrait);
+    }
+
+    const appointmentPhone = phoneHref(settings.appointment_phone);
+    if (appointmentPhone) {
+      elements.appointmentPhone.href = appointmentPhone;
+      elements.appointmentPhone.textContent = settings.appointment_phone;
+      elements.heroAppointment.href = "#appointments";
     }
 
     if (settings.email) {
       elements.contactEmail.href = `mailto:${encodeURIComponent(settings.email)}`;
       elements.contactEmail.setAttribute("aria-label", `Email Dr. Louissaint at ${settings.email}`);
+      elements.contactEmail.classList.remove("is-disabled");
     } else {
       elements.contactEmail.removeAttribute("href");
       elements.contactEmail.classList.add("is-disabled");
     }
 
+    const bookingLinks = [
+      ["Official appointment profile", settings.appointment_url, true],
+      ["One Brooklyn Health", settings.one_brooklyn],
+      ["Zocdoc", settings.zocdoc],
+      ["Healthgrades", settings.healthgrades],
+      ["Doximity", settings.doximity],
+      ["WebMD", settings.webmd],
+      ["NPI Registry", settings.npi],
+    ];
+    elements.bookingLinks.replaceChildren();
+    for (const [label, value, primary = false] of bookingLinks) {
+      const url = safeUrl(value);
+      if (!url) continue;
+      const link = make("a", primary ? "primary-booking" : "");
+      link.append(make("span", "", label), make("span", "", "↗"));
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      elements.bookingLinks.append(link);
+    }
+
     const links = [
       ["LinkedIn", settings.linkedin],
+      ["Instagram", settings.instagram],
+      ["Doximity", settings.doximity],
       ["Google Scholar", settings.scholar],
       ["ORCID", settings.orcid],
-      ["Professional link", settings.other_link],
+      ["Professional profile", settings.other_link],
     ];
     elements.socialLinks.replaceChildren();
     for (const [label, value] of links) {
@@ -256,9 +344,9 @@
   }
 
   function renderCounts() {
-    elements.pubCount.textContent = String(state.entries.filter((entry) => entry.type === "publication").length).padStart(2, "0");
-    elements.eventCount.textContent = String(state.entries.filter((entry) => entry.type === "event").length).padStart(2, "0");
-    elements.entryCount.textContent = String(state.entries.length).padStart(2, "0");
+    if (elements.pubCount) elements.pubCount.textContent = String(state.entries.filter((entry) => entry.type === "publication").length).padStart(2, "0");
+    if (elements.eventCount) elements.eventCount.textContent = String(state.entries.filter((entry) => entry.type === "event").length).padStart(2, "0");
+    if (elements.entryCount) elements.entryCount.textContent = String(state.entries.length).padStart(2, "0");
   }
 
   function renderAll() {
@@ -347,20 +435,32 @@
 
   function initialize() {
     Object.assign(elements, {
+      academicAppointment: byId("academicAppointment"),
+      affiliationList: byId("affiliationList"),
       aboutLead: byId("aboutLead"),
+      appointmentLocation: byId("appointmentLocation"),
+      appointmentPhone: byId("appointmentPhone"),
+      bookingLinks: byId("bookingLinks"),
       contactEmail: byId("contactEmail"),
+      credentialLine: byId("credentialLine"),
       detailBody: byId("detailBody"),
       detailClose: byId("detailClose"),
       detailDialog: byId("detailDialog"),
       entryCount: byId("entryCount"),
       eventCount: byId("eventCount"),
       eventList: byId("eventList"),
+      focusList: byId("focusList"),
+      heroAppointment: byId("heroAppointment"),
+      heroIntro: byId("heroIntro"),
       journeyList: byId("journeyList"),
+      languageList: byId("languageList"),
+      locationSummary: byId("locationSummary"),
       mediaList: byId("mediaList"),
       menuToggle: byId("menuToggle"),
       nav: byId("nav"),
       newsList: byId("newsList"),
       portrait: byId("portrait"),
+      roleSummary: byId("roleSummary"),
       pubCount: byId("pubCount"),
       pubFilters: byId("pubFilters"),
       publicationList: byId("publicationList"),
@@ -370,6 +470,7 @@
       searchResults: byId("searchResults"),
       searchToggle: byId("searchToggle"),
       socialLinks: byId("socialLinks"),
+      trainingList: byId("trainingList"),
     });
     byId("year").textContent = String(new Date().getFullYear());
     setUpInteractions();

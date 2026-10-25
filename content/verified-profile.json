@@ -1,0 +1,163 @@
+{
+  "settings": {
+    "about": "Dr. Laurenie Louissaint is a board-certified physician in Physical Medicine and Rehabilitation whose practice centers on sports medicine, pain management, interventional spine care, and helping active people return to movement. She serves as Assistant Professor of Sports Medicine at SUNY Downstate Health Sciences University, where she also contributes to resident education. Her path from Division I athlete and athletic trainer to physician continues to shape a practical, movement-focused approach to care.",
+    "hero_intro": "Board-certified in Physical Medicine & Rehabilitation, with a clinical and academic focus on sports medicine, pain management, and interventional spine care.",
+    "credentials": "MD, MS, FAAPMR",
+    "professional_title": "Assistant Professor of Sports Medicine",
+    "academic_appointment": "Assistant Professor of Sports Medicine; Assistant Program Director, Physical Medicine & Rehabilitation Residency",
+    "clinical_focus": "Sports Medicine\nPhysical Medicine & Rehabilitation\nPain Management\nInterventional Spine\nMusculoskeletal Ultrasound\nCycling & Running Medicine",
+    "affiliations": "SUNY Downstate Health Sciences University — Orthopaedic Surgery & Rehabilitation Medicine\nUniversity Hospital at Downstate\nOne Brooklyn Health — Bone & Joint Center at Brookdale Hospital\nUniversity Physicians of Brooklyn, Inc.\nAmerican Academy of Physical Medicine and Rehabilitation\nAmerican Medical Society for Sports Medicine\nAssociation of Academic Physiatrists\nSociety of Haitian Neuroscientists",
+    "training": "Ross University School of Medicine — Doctor of Medicine, 2019\nIcahn School of Medicine at Mount Sinai — Physical Medicine & Rehabilitation Residency\nIcahn School of Medicine at Mount Sinai — Sports Medicine & Interventional Spine Fellowship",
+    "languages": "English · French · Spanish · Haitian Creole",
+    "location": "Brooklyn, New York",
+    "appointment_phone": "(718) 270-2045",
+    "portrait_url": "/assets/images/dr-laurenie-louissaint-headshot.jpg",
+    "email": "",
+    "appointment_url": "https://www.downstate.edu/faculty/orthopaedic-surgery/louissaint.html",
+    "one_brooklyn": "https://onebrooklynhealth.org/doctor/dr-laurenie-louissaint",
+    "zocdoc": "",
+    "healthgrades": "https://www.healthgrades.com/group-directory/ny-new-york/brooklyn/university-orthopaedic-associates-x8t2m3",
+    "doximity": "https://www.doximity.com/pub/laurenie-louissaint-md",
+    "webmd": "",
+    "npi": "https://npiregistry.cms.hhs.gov/provider-view/1891255279",
+    "linkedin": "https://www.linkedin.com/in/laurenie-louissaint-md-ms-2b199352",
+    "instagram": "https://www.instagram.com/dr.louissaint_/",
+    "scholar": "",
+    "orcid": "",
+    "other_link": ""
+  },
+  "entries": [
+    {
+      "type": "publication",
+      "status": "published",
+      "title": "Beyond the “Like”: A Framework for Social Media Professionalism as a Physician",
+      "category": "Professionalism & Ethics",
+      "date": "2026-05-01",
+      "summary": "A co-authored framework for physicians navigating professional identity, patient boundaries, advocacy, and evidence-based communication online.",
+      "body": "Published in Family Doctor, A Journal of the New York State Academy of Family Physicians, Spring 2026, Volume 14, Number 4. Co-authored with Christine S. Persaud, MD, MBA; Ahmed Ashai, MD; and Stephen Hongach, DO, MS.",
+      "image_url": "",
+      "external_url": "https://www.nysafp.org/wp-content/uploads/2026/05/Family-Doctor_Spring26.pdf"
+    },
+    {
+      "type": "publication",
+      "status": "published",
+      "title": "Integrative Medicine as It Relates to Musculoskeletal Pain",
+      "category": "Clinical Review",
+      "date": "2025-08-01",
+      "summary": "A clinical review of evidence-informed integrative approaches to musculoskeletal pain, including acupuncture, movement-based therapies, and mind-body interventions.",
+      "body": "Published as View One in “Two Views: Integrative Medicine and the Musculoskeletal System” in Family Doctor, A Journal of the New York State Academy of Family Physicians, Summer 2025, Volume 14, Number 1. Co-authored with Christine Persaud, MD, MBA, FAAFP, FAMSSM; Sejal Khan, DO, MS; and Patrick Cleary, DO.",
+      "image_url": "",
+      "external_url": "https://www.nysafp.org/wp-content/uploads/2025/08/Family-Doctor_Summer25.pdf"
+    },
+    {
+      "type": "event",
+      "status": "published",
+      "title": "Rehabilitation Medicine Service in Namibia",
+      "category": "Global Health",
+      "date": "2023-03-01",
+      "summary": "Clinical service and hands-on education with a Mount Sinai rehabilitation team and local health professionals in Windhoek, Namibia.",
+      "body": "Dr. Louissaint joined Mount Sinai colleagues on a service trip supporting pain and rehabilitation care. The team treated patients and worked with local clinicians on training designed to strengthen sustainable access to injection-based pain interventions.",
+      "image_url": "",
+      "external_url": "https://reports.mountsinai.org/article/rehab2024-07-zakhary-namibia"
+    },
+    {
+      "type": "milestone",
+      "status": "published",
+      "title": "Joined SUNY Downstate in Academic Sports Medicine",
+      "category": "Academic Appointment",
+      "date": "2025-03-08",
+      "summary": "Joined the Department of Orthopaedic Surgery and Rehabilitation Medicine with a focus on sports medicine and pain management.",
+      "body": "Dr. Louissaint serves as Assistant Professor of Sports Medicine at SUNY Downstate Health Sciences University and contributes to Physical Medicine and Rehabilitation resident education.",
+      "image_url": "/assets/images/dr-laurenie-louissaint-headshot.jpg",
+      "external_url": "https://www.downstate.edu/faculty/orthopaedic-surgery/louissaint.html"
+    },
+    {
+      "type": "milestone",
+      "status": "published",
+      "title": "Sports Medicine & Interventional Spine Fellowship",
+      "category": "Postgraduate Training",
+      "date": "2023-07-01",
+      "summary": "Advanced fellowship training at the Icahn School of Medicine at Mount Sinai.",
+      "body": "Following residency in Physical Medicine and Rehabilitation, Dr. Louissaint pursued fellowship training in sports medicine and interventional spine at the Icahn School of Medicine at Mount Sinai.",
+      "image_url": "",
+      "external_url": "https://www.downstate.edu/faculty/orthopaedic-surgery/louissaint.html"
+    },
+    {
+      "type": "milestone",
+      "status": "published",
+      "title": "Physical Medicine & Rehabilitation Residency",
+      "category": "Residency",
+      "date": "2020-07-01",
+      "summary": "Began residency training in Physical Medicine and Rehabilitation at the Icahn School of Medicine at Mount Sinai.",
+      "body": "Her residency training developed a broad foundation in rehabilitation medicine, function, and musculoskeletal care.",
+      "image_url": "",
+      "external_url": "https://www.doximity.com/pub/laurenie-louissaint-md"
+    },
+    {
+      "type": "milestone",
+      "status": "published",
+      "title": "Doctor of Medicine",
+      "category": "Medical Education",
+      "date": "2019-05-01",
+      "summary": "Earned her medical degree from Ross University School of Medicine.",
+      "body": "A former Division I athlete and athletic trainer, Dr. Louissaint brought an established foundation in movement and rehabilitation to her medical training.",
+      "image_url": "/assets/images/dr-laurenie-louissaint-ross.jpg",
+      "external_url": "https://medical.rossu.edu/about/news/it-only-takes-one-2019-alumnus-achieves-her-dream-becomes-a-trailblazer-for-others"
+    },
+    {
+      "type": "milestone",
+      "status": "published",
+      "title": "A Commitment to Medicine and Service",
+      "category": "Origins",
+      "date": "2010-01-12",
+      "summary": "The 2010 earthquake in Haiti became a defining catalyst in Dr. Louissaint’s decision to pursue medicine.",
+      "body": "After the earthquake devastated Haiti, where her parents were raised, she sought ways to support the response. The experience reinforced her determination to pursue a medical degree and expand the care she could provide.",
+      "image_url": "",
+      "external_url": "https://medical.rossu.edu/about/news/it-only-takes-one-2019-alumnus-achieves-her-dream-becomes-a-trailblazer-for-others"
+    },
+    {
+      "type": "news",
+      "status": "published",
+      "title": "Appointed to SUNY Downstate’s Orthopaedic Department",
+      "category": "Appointment",
+      "date": "2025-03-08",
+      "summary": "Dr. Louissaint announced her role in Brooklyn specializing in sports medicine and pain management.",
+      "body": "The academic appointment brings together clinical care, medical education, and Dr. Louissaint’s experience in sports medicine, physiatry, and pain management.",
+      "image_url": "/assets/images/dr-laurenie-louissaint-headshot.jpg",
+      "external_url": "https://www.linkedin.com/posts/laurenie-louissaint-md-ms-2b199352_this-international-womens-day-im-thrilled-activity-7304163201120698369-Fi_D"
+    },
+    {
+      "type": "news",
+      "status": "published",
+      "title": "Ross University Alumni Profile: “It Only Takes One”",
+      "category": "Profile",
+      "date": "2019-06-01",
+      "summary": "A profile tracing the journey from Division I athlete and athletic trainer to physician.",
+      "body": "Ross University School of Medicine profiled Dr. Louissaint’s path, family influences, connection to Haiti, medical education, and commitment to breaking barriers.",
+      "image_url": "/assets/images/dr-laurenie-louissaint-ross.jpg",
+      "external_url": "https://medical.rossu.edu/about/news/it-only-takes-one-2019-alumnus-achieves-her-dream-becomes-a-trailblazer-for-others"
+    },
+    {
+      "type": "media",
+      "status": "published",
+      "title": "Official Clinical Portrait",
+      "category": "Portrait",
+      "date": "2025-03-10",
+      "summary": "Official portrait published by One Brooklyn Health.",
+      "body": "Image source: One Brooklyn Health physician directory.",
+      "image_url": "/assets/images/dr-laurenie-louissaint-headshot.jpg",
+      "external_url": "https://onebrooklynhealth.org/doctor/dr-laurenie-louissaint"
+    },
+    {
+      "type": "media",
+      "status": "published",
+      "title": "Ross University School of Medicine Alumni Portrait",
+      "category": "Portrait",
+      "date": "2019-06-01",
+      "summary": "Portrait accompanying Ross University’s alumni feature on Dr. Louissaint.",
+      "body": "Image source: Ross University School of Medicine.",
+      "image_url": "/assets/images/dr-laurenie-louissaint-ross.jpg",
+      "external_url": "https://medical.rossu.edu/about/news/it-only-takes-one-2019-alumnus-achieves-her-dream-becomes-a-trailblazer-for-others"
+    }
+  ]
+}
