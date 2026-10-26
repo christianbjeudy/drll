@@ -359,6 +359,19 @@
     renderMedia();
   }
 
+  function restoreInitialAnchor(hash) {
+    if (!hash || hash === "#") return;
+    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (!target) return;
+
+    const settle = () => {
+      if (window.location.hash === hash) target.scrollIntoView({ block: "start" });
+    };
+
+    const fontsReady = document.fonts?.ready || Promise.resolve();
+    fontsReady.then(() => requestAnimationFrame(() => requestAnimationFrame(settle)));
+  }
+
   function searchEntries(query) {
     const normalized = query.trim().toLocaleLowerCase();
     elements.searchResults.replaceChildren();
@@ -420,6 +433,7 @@
   }
 
   async function loadContent() {
+    const initialHash = window.location.hash;
     try {
       const response = await fetch("/api/site", { headers: { accept: "application/json" } });
       if (!response.ok) throw new Error(`Content request failed with ${response.status}`);
@@ -431,6 +445,7 @@
       document.body.classList.add("content-unavailable");
     }
     renderAll();
+    restoreInitialAnchor(initialHash);
   }
 
   function initialize() {
