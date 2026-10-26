@@ -57,6 +57,8 @@ test("returns default settings and persists updates", async () => {
   assert.equal(settings.about, "Approved biography");
   assert.equal(settings.email, "hello@example.com");
   assert.equal(settings.linkedin, "");
+  assert.equal(settings.tiktok, "");
+  assert.equal(settings.team_role, "");
   assert.equal(settings.appointment_url, "");
   assert.equal(settings.affiliations, "");
 });

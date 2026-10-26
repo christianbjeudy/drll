@@ -263,6 +263,7 @@
       elements.academicAppointment.textContent = settings.professional_title;
     }
     if (settings.academic_appointment) elements.academicAppointment.textContent = settings.academic_appointment;
+    if (settings.team_role) elements.teamRoleSummary.textContent = settings.team_role;
     if (settings.location) {
       elements.locationSummary.textContent = settings.location;
       elements.appointmentLocation.textContent = settings.location;
@@ -326,6 +327,7 @@
     const links = [
       ["LinkedIn", settings.linkedin],
       ["Instagram", settings.instagram],
+      ["TikTok", settings.tiktok],
       ["Doximity", settings.doximity],
       ["Google Scholar", settings.scholar],
       ["ORCID", settings.orcid],
@@ -340,6 +342,17 @@
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       elements.socialLinks.append(link);
+    }
+
+    const headerLinks = [
+      [elements.headerLinkedin, settings.linkedin],
+      [elements.headerInstagram, settings.instagram],
+      [elements.headerTiktok, settings.tiktok],
+    ];
+    for (const [link, value] of headerLinks) {
+      const url = safeUrl(value);
+      link.hidden = !url;
+      if (url) link.href = url;
     }
   }
 
@@ -467,6 +480,9 @@
       focusList: byId("focusList"),
       heroAppointment: byId("heroAppointment"),
       heroIntro: byId("heroIntro"),
+      headerInstagram: byId("headerInstagram"),
+      headerLinkedin: byId("headerLinkedin"),
+      headerTiktok: byId("headerTiktok"),
       journeyList: byId("journeyList"),
       languageList: byId("languageList"),
       locationSummary: byId("locationSummary"),
@@ -485,6 +501,7 @@
       searchResults: byId("searchResults"),
       searchToggle: byId("searchToggle"),
       socialLinks: byId("socialLinks"),
+      teamRoleSummary: byId("teamRoleSummary"),
       trainingList: byId("trainingList"),
     });
     byId("year").textContent = String(new Date().getFullYear());

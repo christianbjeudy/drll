@@ -41,7 +41,7 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for the full production checklist.
 
 ## Content workflow
 
-Dashboard entries begin as drafts. Only entries marked **Published** appear on the public website. The Professional Profile view controls biography, credentials, clinical focus, affiliations, training, languages, appointment information, portrait, contact information, and verified directory links.
+Dashboard entries begin as drafts. Only entries marked **Published** appear on the public website. The Professional Profile view controls biography, credentials, the national-team role, clinical focus, affiliations, training, languages, appointment information, portrait, contact information, and verified directory and social links.
 
 ## Credit
 

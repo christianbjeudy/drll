@@ -28,13 +28,17 @@ test("validates settings email and preserves safe relative portrait paths", () =
     email: "hello@example.com",
     portrait_url: "/media/example.jpg",
     professional_title: "Assistant Professor",
+    team_role: "Head Team Physician",
     appointment_url: "https://example.com/appointments",
+    tiktok: "https://www.tiktok.com/@example",
     affiliations: "Example University\nExample Hospital",
   });
   assert.equal(settings.email, "hello@example.com");
   assert.equal(settings.portrait_url, "/media/example.jpg");
   assert.equal(settings.professional_title, "Assistant Professor");
+  assert.equal(settings.team_role, "Head Team Physician");
   assert.equal(settings.appointment_url, "https://example.com/appointments");
+  assert.equal(settings.tiktok, "https://www.tiktok.com/@example");
   assert.match(settings.affiliations, /Example Hospital/u);
   assert.throws(() => normalizeSettings({ email: "not-an-email" }), /email is invalid/u);
   assert.throws(() => normalizeSettings({ zocdoc: "javascript:alert(1)" }), /HTTP and HTTPS/u);
