@@ -75,15 +75,29 @@
       "Musculoskeletal Ultrasound": "Ultrasound-supported assessment and procedural care.",
       "Cycling & Running Medicine": "Movement-focused care for endurance athletes and active patients.",
     };
+    const expandedDescriptions = {
+      "Sports Medicine": "Clinical interests include sports and overuse injuries, return-to-activity planning, and care organized around each patient’s movement goals.",
+      "Physical Medicine & Rehabilitation": "A function-first approach to conditions affecting muscles, joints, nerves, and mobility, with an emphasis on independence and quality of life.",
+      "Pain Management": "Thoughtful assessment of musculoskeletal pain using rehabilitation, procedural, and lifestyle strategies when appropriate.",
+      "Interventional Spine": "Fellowship-informed evaluation of spine-related pain and selected image-guided treatment options.",
+      "Musculoskeletal Ultrasound": "Real-time ultrasound may support soft-tissue and joint evaluation and help guide selected procedures with precision.",
+      "Cycling & Running Medicine": "Care for endurance athletes and active patients may include training-related concerns, biomechanics, recovery, and safe return to sport.",
+    };
     elements.focusList.replaceChildren();
     items.forEach((item, index) => {
-      const article = make("article");
-      article.append(
-        make("span", "", String(index + 1).padStart(2, "0")),
-        make("h3", "", item),
-        make("p", "", descriptions[item] || "A current area of clinical and academic focus."),
+      const card = make("details", "expertise-card");
+      const summary = make("summary", "expertise-summary");
+      summary.append(
+        make("span", "expertise-index", String(index + 1).padStart(2, "0")),
+        make("span", "expertise-title", item),
+        make("span", "expertise-summary-text", descriptions[item] || "A current area of clinical and academic focus."),
+        make("span", "expertise-toggle", "+"),
       );
-      elements.focusList.append(article);
+      summary.lastElementChild.setAttribute("aria-hidden", "true");
+      const more = make("div", "expertise-more");
+      more.append(make("p", "", expandedDescriptions[item] || "Learn more about this area of Dr. Louissaint’s clinical and academic work."));
+      card.append(summary, more);
+      elements.focusList.append(card);
     });
   }
 
@@ -92,7 +106,7 @@
     if (!source) return null;
     const image = make("img", className);
     image.src = source;
-    image.alt = entry.title ? `${entry.title} cover` : "Archive image";
+    image.alt = entry.title ? `${entry.title} cover` : "Professional image";
     image.loading = "lazy";
     image.decoding = "async";
     image.addEventListener("error", () => image.remove(), { once: true });
@@ -131,7 +145,7 @@
     const entries = state.entries.filter((entry) => entry.type === "milestone");
     elements.journeyList.replaceChildren();
     if (!entries.length) {
-      elements.journeyList.append(emptyMessage("Milestones will appear here as the archive grows.", "empty-inline"));
+      elements.journeyList.append(emptyMessage("Professional milestones will appear here as this profile grows.", "empty-inline"));
       return;
     }
 
@@ -238,7 +252,7 @@
     const entries = state.entries.filter((entry) => entry.type === "media");
     elements.mediaList.replaceChildren();
     if (!entries.length) {
-      elements.mediaList.append(emptyMessage("Images and media from the archive will appear here."));
+      elements.mediaList.append(emptyMessage("Professional images and media will appear here."));
       return;
     }
 
@@ -402,7 +416,7 @@
     ].some((value) => String(value || "").toLocaleLowerCase().includes(normalized))).slice(0, 20);
 
     if (!matches.length) {
-      elements.searchResults.append(make("p", "search-hint", "No archive entries matched your search."));
+      elements.searchResults.append(make("p", "search-hint", "No entries matched your search."));
       return;
     }
 
@@ -454,7 +468,7 @@
       state.settings = payload.settings || {};
       state.entries = Array.isArray(payload.entries) ? payload.entries : [];
     } catch (error) {
-      console.error("Unable to load archive content.", error);
+      console.error("Unable to load site content.", error);
       document.body.classList.add("content-unavailable");
     }
     renderAll();

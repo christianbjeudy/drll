@@ -1,6 +1,6 @@
 # Dr. Laurenie Louissaint — Professional Website
 
-The professional website and academic archive of Dr. Laurenie Louissaint, MD, MS, FAAPMR. The site includes a physician biography, verified credentials and affiliations, patient appointment resources, publications, career milestones, service, news, media, search, and a private content dashboard.
+The professional website and academic portfolio of Dr. Laurenie Louissaint, MD, MS, FAAPMR. The site includes a physician biography, verified credentials and affiliations, patient appointment resources, publications, career milestones, service, news, media, search, and a private content dashboard.
 
 ## Architecture
 
