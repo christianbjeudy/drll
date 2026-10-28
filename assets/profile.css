@@ -1,4 +1,12 @@
 /* Refined physician profile system */
+@font-face {
+  font-family: 'Prata';
+  src: url('/assets/fonts/prata-regular.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
 :root {
   --paper: #f6f4f0;
   --paper-deep: #eeece7;
@@ -11,6 +19,24 @@ body {
   background: #fbfaf7;
   text-rendering: optimizeLegibility;
 }
+
+h1,
+h2,
+h3,
+.serif,
+.portrait-mark,
+.stats-inner strong,
+.lead,
+.quote-inner p,
+.media-item,
+.email-big,
+.search-dialog input {
+  font-family: 'Prata', Georgia, serif;
+  font-weight: 400;
+}
+
+h1 em,
+h2 em { font-style: normal; }
 
 .shell { max-width: 1370px; }
 .section { padding-top: 104px; padding-bottom: 104px; }
@@ -90,14 +116,15 @@ body {
 .hero h1 {
   max-width: 670px;
   margin: 0 0 28px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Prata', Georgia, serif;
   font-size: clamp(58px, 6.2vw, 92px);
-  font-weight: 500;
-  letter-spacing: -0.07em;
-  line-height: 0.96;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
 }
 .hero h1 em {
   font-family: inherit;
+  font-style: normal;
   font-weight: 400;
 }
 .hero-intro { max-width: 510px; line-height: 1.75; }
@@ -115,9 +142,9 @@ body {
   right: 0;
   justify-content: flex-start;
   color: var(--navy);
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Prata', Georgia, serif;
   font-size: clamp(14px, 1.25vw, 18px);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.025em;
 }
 .hero-art-bottom strong { color: var(--purple); font-weight: 600; }
@@ -154,9 +181,9 @@ body {
 .credential-inner strong {
   max-width: 250px;
   color: var(--navy);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Prata', Georgia, serif;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.35;
 }
 .location-country {
@@ -227,9 +254,9 @@ body {
 }
 .expertise-title {
   color: var(--navy);
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Prata', Georgia, serif;
   font-size: 25px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.25;
 }
 .expertise-summary-text,
@@ -385,7 +412,7 @@ body {
 .appointment-phone {
   display: block;
   margin: 10px 0 5px;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Prata', Georgia, serif;
   font-size: clamp(33px, 3.5vw, 48px);
 }
 .appointment-card > p { margin-bottom: 18px; }
@@ -526,7 +553,7 @@ body {
   .header-socials { gap: 4px; }
   .header-socials a { width: 28px; height: 28px; }
   .header-socials svg { width: 12px; height: 12px; }
-  .hero h1 { font-size: 53px; letter-spacing: -0.065em; }
+  .hero h1 { font-size: 53px; letter-spacing: -0.04em; }
   .hero-art { height: 530px; }
   .hero-art-bottom { font-size: 13px; }
   .credential-inner { grid-template-columns: 1fr; padding-top: 8px; padding-bottom: 8px; }
