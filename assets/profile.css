@@ -150,8 +150,9 @@ h2 {
   display: grid;
   justify-content: flex-start;
   gap: 6px;
-  padding-top: 13px;
-  background: #fbfaf7;
+  padding: 15px 18px;
+  background: rgba(251, 250, 247, 0.5);
+  backdrop-filter: blur(7px);
   color: var(--navy);
   font-family: 'Prata', Georgia, serif;
   font-size: clamp(14px, 1.25vw, 18px);
@@ -224,6 +225,12 @@ h2 {
 .about-main h2 { margin-bottom: 24px; }
 .lead { max-width: 1120px; font-size: 23px; line-height: 1.58; }
 .about-grid { width: 100%; margin: 38px 0; gap: 70px; }
+
+@media (min-width: 1100px) {
+  #about h2,
+  #expertise .section-heading h2,
+  #profile .section-heading h2 { white-space: nowrap; }
+}
 .expertise-section { background: var(--paper); }
 .expertise-grid {
   display: grid;
@@ -399,13 +406,13 @@ h2 {
 .profile-resource-links a {
   padding: 10px 13px;
   border: 1px solid #ded9e4;
-  border-radius: 999px;
-  background: #fff;
+  border-radius: 0;
+  background: transparent;
   color: var(--navy);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  box-shadow: 0 8px 22px rgba(29, 41, 71, 0.08);
+  box-shadow: none;
   transition: background 160ms ease, color 160ms ease;
 }
 .profile-resource-links a:hover { background: var(--navy); color: #fff; }
@@ -559,29 +566,42 @@ h2 {
 }
 .highlights-heading p { max-width: 720px; margin-top: 16px; }
 .highlight-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid #d7d4d0;
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: 0 18px 48px rgba(29, 41, 71, 0.07);
 }
 .highlight-tab {
   position: relative;
-  min-height: 0;
-  padding: 11px 16px;
-  border: 1px solid #d7d4d0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.68);
+  min-height: 72px;
+  padding: 14px 16px;
+  border: 0;
+  border-right: 1px solid #d7d4d0;
+  border-radius: 0;
+  background: transparent;
   color: #68707e;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   line-height: 1.4;
-  text-align: center;
+  text-align: left;
   transition: background 180ms ease, color 180ms ease;
+}
+.highlight-tab:last-child { border-right: 0; }
+.highlight-tab span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--purple);
+  font-size: 8px;
+  letter-spacing: 1.2px;
 }
 .highlight-tab[aria-selected='true'] {
   background: linear-gradient(135deg, var(--navy-deep), #394975);
-  border-color: transparent;
   color: #fff;
 }
+.highlight-tab[aria-selected='true'] span { color: #c7b7dc; }
 .highlight-tab:focus-visible { outline: 3px solid #b8a9ca; outline-offset: -3px; }
 .highlight-panels {
   min-height: 650px;
@@ -607,21 +627,23 @@ h2 {
 }
 .highlight-panel-heading h3 {
   margin: 0 0 8px;
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: clamp(23px, 2.35vw, 32px);
   letter-spacing: -0.025em;
 }
-.highlight-panel-heading p { max-width: 620px; margin: 0; color: #767d89; line-height: 1.7; }
+.highlight-panel-heading p { max-width: 620px; margin: 0; color: #767d89; font-size: 12px; line-height: 1.65; }
 @keyframes panel-in {
   from { opacity: 0; transform: translateY(7px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .timeline-entry { padding: 24px 13px; transition: background 160ms ease; }
-.timeline-entry h3 { font-size: 24px; }
+.timeline-entry h3 { font-size: 20px; }
+.timeline-entry p { font-size: 12px; }
 .timeline-entry[role='button'] { cursor: pointer; }
 .timeline-entry[role='button']:hover { background: rgba(255, 255, 255, 0.7); }
 .publication-item { padding: 24px 4px; transition: background 160ms ease, padding 160ms ease; }
 .publication-item:hover { padding-right: 12px; padding-left: 12px; background: #fff; }
-.publication-item h3 { font-size: 23px; }
+.publication-item h3 { font-size: 19px; }
+.publication-item p { font-size: 12px; line-height: 1.6; }
 .publication-item { grid-template-columns: 80px 1fr 150px; }
 .event-grid,
 .news-grid { gap: 18px; }
@@ -635,7 +657,9 @@ h2 {
 .news-card { min-height: 215px; }
 .card-art { height: 145px; }
 .card-content { padding: 20px; }
-.card-content h3 { font-size: 21px; }
+.card-content h3 { font-size: 18px; }
+.card-content p { font-size: 11px; }
+.card-bottom { font-size: 11px; }
 .media-grid { gap: 12px; }
 .media-item { border: 1px solid #e1ddd7; box-shadow: 0 14px 34px rgba(29, 41, 71, 0.1); }
 .footer { padding-top: 48px; }
@@ -686,8 +710,7 @@ h2 {
   .appointment-section { padding: 54px 0; }
   .appointment-card { max-width: 620px; }
   .appointment-connect { grid-template-columns: 1fr; gap: 20px; }
-  .highlight-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; }
-  .highlight-tab { flex: 0 0 auto; }
+  .highlight-tabs { grid-template-columns: repeat(5, minmax(138px, 1fr)); overflow-x: auto; }
   .highlight-panels { min-height: 720px; }
 }
 
@@ -730,8 +753,8 @@ h2 {
   .booking-links { grid-template-columns: 1fr; }
   .booking-links .primary-booking { grid-column: auto; }
   .appointment-connect { margin-top: 34px; padding-top: 25px; }
-  .highlight-tabs { margin-right: -6%; margin-left: -6%; padding-right: 6%; padding-left: 6%; }
-  .highlight-tab { min-height: 0; }
+  .highlight-tabs { margin-right: -6%; margin-left: -6%; border-right: 0; border-left: 0; box-shadow: none; }
+  .highlight-tab { min-height: 68px; }
   .highlight-panels { min-height: 0; padding-top: 30px; }
   .highlight-panel-heading { grid-template-columns: 1fr; gap: 8px; }
   .highlight-panel-heading > span { padding-top: 0; }
