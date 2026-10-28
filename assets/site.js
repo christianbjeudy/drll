@@ -23,6 +23,34 @@
     return element;
   }
 
+  function socialIcon(label) {
+    const namespace = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(namespace, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+
+    const shape = (tag, attributes) => {
+      const node = document.createElementNS(namespace, tag);
+      for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, value);
+      return node;
+    };
+
+    if (label === "LinkedIn") {
+      svg.append(shape("path", { d: "M6.7 8.4H3.3V21h3.4V8.4ZM5 3A2 2 0 1 0 5 7a2 2 0 0 0 0-4Zm8.1 5.4H9.9V21h3.4v-6.2c0-1.6.3-3.2 2.4-3.2 2.1 0 2.1 1.9 2.1 3.3V21h3.4v-6.9c0-3.4-.7-6-4.7-6a4.1 4.1 0 0 0-3.6 2h-.1V8.4Z" }));
+    } else if (label === "Instagram") {
+      svg.append(
+        shape("rect", { x: "3", y: "3", width: "18", height: "18", rx: "5" }),
+        shape("circle", { cx: "12", cy: "12", r: "4.2" }),
+        shape("circle", { cx: "17.6", cy: "6.6", r: "1", class: "fill-dot" }),
+      );
+    } else if (label === "TikTok") {
+      svg.append(shape("path", { d: "M16.6 5.8c1.2.9 2.8 1.4 4.4 1.5v3.3a10.2 10.2 0 0 1-4.4-1v6.5a6.1 6.1 0 1 1-5.3-6v3.4a2.8 2.8 0 1 0 2 2.6V3h3.3v2.8Z" }));
+    } else {
+      return null;
+    }
+    return svg;
+  }
+
   function safeUrl(value, { allowMailto = false } = {}) {
     if (!value) return "";
     try {
@@ -82,26 +110,32 @@
       "Sports Medicine": {
         overview: "Clinical interests include sports and overuse injuries, return-to-activity planning, and care organized around each patient’s movement goals.",
         points: ["Evaluation of sports, overuse, and activity-related concerns", "Individualized rehabilitation and return-to-activity planning", "Collaboration with therapists, trainers, and care teams"],
+        detail: "This approach connects careful diagnosis with practical recovery planning so active patients can move forward with confidence and clear next steps.",
       },
       "Physical Medicine & Rehabilitation": {
         overview: "A function-first approach to conditions affecting muscles, joints, nerves, and mobility, with an emphasis on independence and quality of life.",
         points: ["Assessment of muscles, joints, nerves, and mobility", "Rehabilitation strategies designed around daily and athletic goals", "Emphasis on independence, participation, and quality of life"],
+        detail: "Care is framed around the whole person, connecting medical findings to the movements, responsibilities, and activities that shape everyday life.",
       },
       "Pain Management": {
         overview: "Thoughtful assessment of musculoskeletal pain using rehabilitation, procedural, and lifestyle strategies when appropriate.",
         points: ["Evaluation of musculoskeletal and activity-related pain", "Rehabilitation, recovery, and lifestyle strategies", "Selected procedure options when clinically appropriate"],
+        detail: "The goal is to understand how pain affects function, then build a balanced plan that supports sustainable progress rather than a one-size-fits-all response.",
       },
       "Interventional Spine": {
         overview: "Fellowship-informed evaluation of spine-related pain and selected image-guided treatment options.",
         points: ["Assessment of spine-related pain and function", "Non-operative care planning informed by fellowship training", "Selected image-guided treatment options when appropriate"],
+        detail: "A detailed history and physical examination help connect symptoms with mobility and function before treatment options are considered.",
       },
       "Musculoskeletal Ultrasound": {
         overview: "Real-time ultrasound may support soft-tissue and joint evaluation and help guide selected procedures with precision.",
         points: ["Real-time soft-tissue and joint visualization", "Dynamic evaluation when movement matters", "Guidance for selected procedures when clinically appropriate"],
+        detail: "Because ultrasound can show structures in motion, it can add useful context to an examination and support precise, patient-centered decision-making.",
       },
       "Cycling & Running Medicine": {
         overview: "Care for endurance athletes and active patients may include training-related concerns, biomechanics, recovery, and safe return to sport.",
         points: ["Training-related and overuse concerns", "Biomechanics, recovery, and training-load considerations", "Safe return to endurance activity and sport"],
+        detail: "Her perspective as a cyclist complements clinical training with an appreciation for endurance, consistency, equipment, and the realities of returning to sport.",
       },
     };
     elements.focusList.replaceChildren();
@@ -119,6 +153,7 @@
       const expanded = expandedDescriptions[item] || {
         overview: "Learn more about this area of Dr. Louissaint’s clinical and academic work.",
         points: [],
+        detail: "Each clinical plan is informed by the individual’s goals, function, and overall health.",
       };
       more.append(make("p", "", expanded.overview));
       if (expanded.points.length) {
@@ -126,6 +161,7 @@
         list.append(...expanded.points.map((point) => make("li", "", point)));
         more.append(list);
       }
+      more.append(make("p", "expertise-detail", expanded.detail));
       card.append(summary, more);
       elements.focusList.append(card);
     });
@@ -393,7 +429,13 @@
     for (const [label, value] of links) {
       const url = safeUrl(value);
       if (!url) continue;
-      const link = make("a", "", label);
+      const icon = socialIcon(label);
+      const link = make("a", icon ? `social-${label.toLowerCase()}` : "", icon ? undefined : label);
+      if (icon) {
+        link.append(icon);
+        link.setAttribute("aria-label", label);
+        link.title = label;
+      }
       link.href = url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
