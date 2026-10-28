@@ -5,7 +5,10 @@
     entries: [],
     settings: {},
     publicationFilter: "all",
+    activeHighlight: "journey",
   };
+
+  const highlightIds = ["journey", "publications", "events", "journal", "media"];
 
   const elements = {};
 
@@ -76,12 +79,30 @@
       "Cycling & Running Medicine": "Movement-focused care for endurance athletes and active patients.",
     };
     const expandedDescriptions = {
-      "Sports Medicine": "Clinical interests include sports and overuse injuries, return-to-activity planning, and care organized around each patient’s movement goals.",
-      "Physical Medicine & Rehabilitation": "A function-first approach to conditions affecting muscles, joints, nerves, and mobility, with an emphasis on independence and quality of life.",
-      "Pain Management": "Thoughtful assessment of musculoskeletal pain using rehabilitation, procedural, and lifestyle strategies when appropriate.",
-      "Interventional Spine": "Fellowship-informed evaluation of spine-related pain and selected image-guided treatment options.",
-      "Musculoskeletal Ultrasound": "Real-time ultrasound may support soft-tissue and joint evaluation and help guide selected procedures with precision.",
-      "Cycling & Running Medicine": "Care for endurance athletes and active patients may include training-related concerns, biomechanics, recovery, and safe return to sport.",
+      "Sports Medicine": {
+        overview: "Clinical interests include sports and overuse injuries, return-to-activity planning, and care organized around each patient’s movement goals.",
+        points: ["Evaluation of sports, overuse, and activity-related concerns", "Individualized rehabilitation and return-to-activity planning", "Collaboration with therapists, trainers, and care teams"],
+      },
+      "Physical Medicine & Rehabilitation": {
+        overview: "A function-first approach to conditions affecting muscles, joints, nerves, and mobility, with an emphasis on independence and quality of life.",
+        points: ["Assessment of muscles, joints, nerves, and mobility", "Rehabilitation strategies designed around daily and athletic goals", "Emphasis on independence, participation, and quality of life"],
+      },
+      "Pain Management": {
+        overview: "Thoughtful assessment of musculoskeletal pain using rehabilitation, procedural, and lifestyle strategies when appropriate.",
+        points: ["Evaluation of musculoskeletal and activity-related pain", "Rehabilitation, recovery, and lifestyle strategies", "Selected procedure options when clinically appropriate"],
+      },
+      "Interventional Spine": {
+        overview: "Fellowship-informed evaluation of spine-related pain and selected image-guided treatment options.",
+        points: ["Assessment of spine-related pain and function", "Non-operative care planning informed by fellowship training", "Selected image-guided treatment options when appropriate"],
+      },
+      "Musculoskeletal Ultrasound": {
+        overview: "Real-time ultrasound may support soft-tissue and joint evaluation and help guide selected procedures with precision.",
+        points: ["Real-time soft-tissue and joint visualization", "Dynamic evaluation when movement matters", "Guidance for selected procedures when clinically appropriate"],
+      },
+      "Cycling & Running Medicine": {
+        overview: "Care for endurance athletes and active patients may include training-related concerns, biomechanics, recovery, and safe return to sport.",
+        points: ["Training-related and overuse concerns", "Biomechanics, recovery, and training-load considerations", "Safe return to endurance activity and sport"],
+      },
     };
     elements.focusList.replaceChildren();
     items.forEach((item, index) => {
@@ -95,7 +116,16 @@
       );
       summary.lastElementChild.setAttribute("aria-hidden", "true");
       const more = make("div", "expertise-more");
-      more.append(make("p", "", expandedDescriptions[item] || "Learn more about this area of Dr. Louissaint’s clinical and academic work."));
+      const expanded = expandedDescriptions[item] || {
+        overview: "Learn more about this area of Dr. Louissaint’s clinical and academic work.",
+        points: [],
+      };
+      more.append(make("p", "", expanded.overview));
+      if (expanded.points.length) {
+        const list = make("ul");
+        list.append(...expanded.points.map((point) => make("li", "", point)));
+        more.append(list);
+      }
       card.append(summary, more);
       elements.focusList.append(card);
     });
@@ -131,7 +161,7 @@
 
     const externalUrl = safeUrl(entry.external_url);
     if (externalUrl) {
-      const link = make("a", "detail-resource", "Open external resource ↗");
+      const link = make("a", "detail-resource", "Open external resource");
       link.href = externalUrl;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
@@ -215,7 +245,7 @@
       const copy = make("span", "publication-copy");
       copy.append(make("h3", "", entry.title));
       if (entry.summary) copy.append(make("p", "", entry.summary));
-      button.append(copy, make("span", "category", entry.category || "Publication"), make("span", "arrow", "↗"));
+      button.append(copy, make("span", "category", entry.category || "Publication"));
       button.addEventListener("click", () => openDetail(entry));
       elements.publicationList.append(button);
     }
@@ -232,7 +262,6 @@
     content.append(make("h3", "", entry.title));
     if (entry.summary) content.append(make("p", "", entry.summary));
     const bottom = make("span", "card-bottom", "Read more");
-    bottom.append(make("span", "", "↗"));
     card.append(art, content, bottom);
     card.addEventListener("click", () => openDetail(entry));
     return card;
@@ -312,37 +341,50 @@
       elements.contactEmail.href = `mailto:${encodeURIComponent(settings.email)}`;
       elements.contactEmail.setAttribute("aria-label", `Email Dr. Louissaint at ${settings.email}`);
       elements.contactEmail.classList.remove("is-disabled");
+      elements.contactEmail.hidden = false;
     } else {
       elements.contactEmail.removeAttribute("href");
       elements.contactEmail.classList.add("is-disabled");
+      elements.contactEmail.hidden = true;
     }
 
     const bookingLinks = [
       ["Official appointment profile", settings.appointment_url, true],
-      ["One Brooklyn Health", settings.one_brooklyn],
       ["Zocdoc", settings.zocdoc],
-      ["Healthgrades", settings.healthgrades],
-      ["Doximity", settings.doximity],
       ["WebMD", settings.webmd],
-      ["NPI Registry", settings.npi],
     ];
     elements.bookingLinks.replaceChildren();
     for (const [label, value, primary = false] of bookingLinks) {
       const url = safeUrl(value);
       if (!url) continue;
-      const link = make("a", primary ? "primary-booking" : "");
-      link.append(make("span", "", label), make("span", "", "↗"));
+      const link = make("a", primary ? "primary-booking" : "", label);
       link.href = url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       elements.bookingLinks.append(link);
     }
 
+    const credentialLinks = [
+      ["One Brooklyn Health", settings.one_brooklyn],
+      ["Healthgrades", settings.healthgrades],
+      ["Doximity", settings.doximity],
+      ["NPI Registry", settings.npi],
+    ];
+    elements.credentialLinks.replaceChildren();
+    for (const [label, value] of credentialLinks) {
+      const url = safeUrl(value);
+      if (!url) continue;
+      const link = make("a", "", label);
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      elements.credentialLinks.append(link);
+    }
+
     const links = [
       ["LinkedIn", settings.linkedin],
       ["Instagram", settings.instagram],
       ["TikTok", settings.tiktok],
-      ["Doximity", settings.doximity],
       ["Google Scholar", settings.scholar],
       ["ORCID", settings.orcid],
       ["Professional profile", settings.other_link],
@@ -351,7 +393,7 @@
     for (const [label, value] of links) {
       const url = safeUrl(value);
       if (!url) continue;
-      const link = make("a", "", `${label} ↗`);
+      const link = make("a", "", label);
       link.href = url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
@@ -432,6 +474,110 @@
     }
   }
 
+  function setUpHighlights() {
+    const tabs = [...elements.highlightTabs.querySelectorAll("[role='tab']")];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let rotationTimer = 0;
+    let highlightsVisible = false;
+    let manuallySelected = false;
+
+    const stopRotation = () => {
+      window.clearInterval(rotationTimer);
+      rotationTimer = 0;
+    };
+
+    const startRotation = () => {
+      stopRotation();
+      if (reducedMotion.matches || document.hidden || !highlightsVisible || manuallySelected) return;
+      rotationTimer = window.setInterval(() => {
+        const index = highlightIds.indexOf(state.activeHighlight);
+        activateHighlight(highlightIds[(index + 1) % highlightIds.length], { restart: false });
+      }, 8000);
+    };
+
+    function activateHighlight(id, { focus = false, updateHash = false, scroll = false, restart = true } = {}) {
+      if (!highlightIds.includes(id)) return;
+      state.activeHighlight = id;
+      for (const tab of tabs) {
+        const selected = tab.dataset.highlight === id;
+        tab.setAttribute("aria-selected", String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        if (selected && focus) tab.focus();
+      }
+      for (const panelId of highlightIds) {
+        const panel = byId(panelId);
+        panel.hidden = panelId !== id;
+      }
+      if (updateHash) window.history.pushState(null, "", `#${id}`);
+      if (scroll) {
+        elements.highlights.scrollIntoView({
+          behavior: reducedMotion.matches ? "auto" : "smooth",
+          block: "start",
+        });
+      }
+      if (restart) startRotation();
+    }
+
+    for (const tab of tabs) {
+      tab.addEventListener("click", () => {
+        manuallySelected = true;
+        activateHighlight(tab.dataset.highlight, { updateHash: true });
+      });
+      tab.addEventListener("keydown", (event) => {
+        const current = highlightIds.indexOf(state.activeHighlight);
+        let next = current;
+        if (event.key === "ArrowRight") next = (current + 1) % highlightIds.length;
+        if (event.key === "ArrowLeft") next = (current - 1 + highlightIds.length) % highlightIds.length;
+        if (event.key === "Home") next = 0;
+        if (event.key === "End") next = highlightIds.length - 1;
+        if (next !== current) {
+          event.preventDefault();
+          manuallySelected = true;
+          activateHighlight(highlightIds[next], { focus: true, updateHash: true });
+        }
+      });
+    }
+
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a[href^='#']");
+      if (!link) return;
+      const id = decodeURIComponent(link.getAttribute("href").slice(1));
+      if (!highlightIds.includes(id)) return;
+      event.preventDefault();
+      manuallySelected = true;
+      activateHighlight(id, { updateHash: true, scroll: true });
+    });
+
+    window.addEventListener("popstate", () => {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      if (highlightIds.includes(id)) activateHighlight(id, { scroll: true });
+    });
+    elements.highlights.addEventListener("mouseenter", stopRotation);
+    elements.highlights.addEventListener("mouseleave", startRotation);
+    elements.highlights.addEventListener("pointerdown", () => {
+      manuallySelected = true;
+      stopRotation();
+    });
+    elements.highlights.addEventListener("focusin", stopRotation);
+    elements.highlights.addEventListener("focusout", () => {
+      window.setTimeout(() => {
+        if (!elements.highlights.contains(document.activeElement)) startRotation();
+      }, 0);
+    });
+    document.addEventListener("visibilitychange", () => (document.hidden ? stopRotation() : startRotation()));
+    reducedMotion.addEventListener?.("change", startRotation);
+
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      highlightsVisible = entry.isIntersecting;
+      if (highlightsVisible) startRotation();
+      else stopRotation();
+    }, { threshold: 0.2 });
+    visibilityObserver.observe(elements.highlights);
+
+    const initialId = decodeURIComponent(window.location.hash.slice(1));
+    activateHighlight(highlightIds.includes(initialId) ? initialId : "journey");
+  }
+
   function setUpInteractions() {
     elements.menuToggle.addEventListener("click", () => {
       const open = elements.nav.classList.toggle("open");
@@ -457,6 +603,7 @@
         if (event.target === dialog) dialog.close();
       });
     }
+    setUpHighlights();
   }
 
   async function loadContent() {
@@ -485,6 +632,7 @@
       bookingLinks: byId("bookingLinks"),
       contactEmail: byId("contactEmail"),
       credentialLine: byId("credentialLine"),
+      credentialLinks: byId("credentialLinks"),
       detailBody: byId("detailBody"),
       detailClose: byId("detailClose"),
       detailDialog: byId("detailDialog"),
@@ -497,6 +645,8 @@
       headerInstagram: byId("headerInstagram"),
       headerLinkedin: byId("headerLinkedin"),
       headerTiktok: byId("headerTiktok"),
+      highlights: byId("professional-highlights"),
+      highlightTabs: byId("highlightTabs"),
       journeyList: byId("journeyList"),
       languageList: byId("languageList"),
       locationSummary: byId("locationSummary"),

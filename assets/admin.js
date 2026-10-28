@@ -101,7 +101,7 @@
     copy.append(make("strong", "", entry.title));
     copy.append(make("small", "", `${entry.category || labels[entry.type]} · Updated ${prettyDate(entry.updated_at?.slice(0, 10))}`));
     const status = make("span", `status status-${entry.status}`, entry.status);
-    button.append(type, copy, status, make("span", "row-arrow", "→"));
+    button.append(type, copy, status);
     button.addEventListener("click", () => openEditor(entry));
     return button;
   }
