@@ -8,7 +8,7 @@
     activeHighlight: "journey",
   };
 
-  const highlightIds = ["journey", "publications", "events", "athleticism", "journal", "media"];
+  const highlightIds = ["journey", "journal", "events", "athleticism", "media"];
 
   const elements = {};
 
@@ -186,7 +186,18 @@
     const nodes = [];
     roles.forEach((role, index) => {
       if (index) nodes.push(make("span", "appointment-role-divider"));
-      nodes.push(make("h3", "", role));
+      const heading = make("h3");
+      const [lead, ...remainder] = role.split(/,\s*/u);
+      if (remainder.length) {
+        heading.append(
+          document.createTextNode(`${lead},`),
+          document.createElement("br"),
+          document.createTextNode(remainder.join(", ")),
+        );
+      } else {
+        heading.textContent = role;
+      }
+      nodes.push(heading);
     });
     elements.academicAppointment.replaceChildren(...nodes);
   }
@@ -556,6 +567,7 @@
     };
 
     function activateHighlight(id, { focus = false, updateHash = false, scroll = false, restart = true } = {}) {
+      if (id === "publications") id = "journal";
       if (!highlightIds.includes(id)) return;
       state.activeHighlight = id;
       for (const tab of tabs) {
@@ -601,7 +613,8 @@
     document.addEventListener("click", (event) => {
       const link = event.target.closest("a[href^='#']");
       if (!link) return;
-      const id = decodeURIComponent(link.getAttribute("href").slice(1));
+      const requestedId = decodeURIComponent(link.getAttribute("href").slice(1));
+      const id = requestedId === "publications" ? "journal" : requestedId;
       if (!highlightIds.includes(id)) return;
       event.preventDefault();
       manuallySelected = true;
@@ -609,7 +622,8 @@
     });
 
     window.addEventListener("popstate", () => {
-      const id = decodeURIComponent(window.location.hash.slice(1));
+      const requestedId = decodeURIComponent(window.location.hash.slice(1));
+      const id = requestedId === "publications" ? "journal" : requestedId;
       if (highlightIds.includes(id)) activateHighlight(id, { scroll: true });
     });
     elements.highlights.addEventListener("mouseenter", stopRotation);
@@ -634,7 +648,8 @@
     }, { threshold: 0.2 });
     visibilityObserver.observe(elements.highlights);
 
-    const initialId = decodeURIComponent(window.location.hash.slice(1));
+    const requestedInitialId = decodeURIComponent(window.location.hash.slice(1));
+    const initialId = requestedInitialId === "publications" ? "journal" : requestedInitialId;
     activateHighlight(highlightIds.includes(initialId) ? initialId : "journey");
   }
 

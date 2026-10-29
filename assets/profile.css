@@ -148,6 +148,7 @@ h2 {
 .portrait-placeholder { border-radius: inherit; background: #d8dce3; }
 .portrait-placeholder img { object-position: center 17%; }
 .hero-art-bottom {
+  bottom: 28px;
   right: 0;
   z-index: 3;
   display: grid;
@@ -656,7 +657,7 @@ h2 {
 .highlight-tabs {
   display: grid;
   overflow: hidden;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0;
   border: 1px solid #d7d4d0;
   background: rgba(255, 255, 255, 0.46);
@@ -716,6 +717,10 @@ h2 {
 }
 .highlight-entry-summary { grid-template-columns: 82px minmax(250px, 0.78fr) minmax(280px, 1.22fr) 40px; }
 .highlight-entry-year { font-size: 9px; }
+.athleticism-list .highlight-entry-year {
+  font-size: 24px;
+  line-height: 1;
+}
 .highlight-entry-more {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -760,6 +765,25 @@ h2 {
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
+}
+.combined-highlight-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+.combined-highlight-heading p {
+  max-width: 640px;
+  margin: 0;
+  color: #767d89;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.combined-highlight-section--news {
+  margin-top: 42px;
+  padding-top: 34px;
+  border-top: 1px solid #d7d4d0;
 }
 .media-intro-card {
   display: flex;
@@ -910,7 +934,7 @@ h2 {
   .appointment-section { padding: 54px 0; }
   .appointment-card { max-width: 620px; }
   .appointment-connect { grid-template-columns: 1fr; gap: 20px; }
-  .highlight-tabs { grid-template-columns: repeat(6, minmax(156px, 1fr)); overflow-x: auto; }
+  .highlight-tabs { grid-template-columns: repeat(5, minmax(156px, 1fr)); overflow-x: auto; }
   .highlight-panels { min-height: 720px; }
   .tiktok-video-grid,
   .social-video-grid { grid-template-columns: 1fr; }
@@ -964,6 +988,7 @@ h2 {
   .highlight-panel-heading { grid-template-columns: 1fr; gap: 8px; }
   .highlight-panel-heading > span { padding-top: 0; }
   .highlight-panel-heading h3 { font-size: 30px; }
+  .combined-highlight-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
   .publication-item:hover { padding-right: 4px; padding-left: 4px; }
   .publication-item { grid-template-columns: 45px 1fr; }
   .media-intro-card { align-items: flex-start; flex-direction: column; padding: 27px 23px; }
