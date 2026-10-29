@@ -8,7 +8,7 @@
     activeHighlight: "journey",
   };
 
-  const highlightIds = ["journey", "publications", "events", "journal", "media"];
+  const highlightIds = ["journey", "publications", "events", "journal"];
 
   const elements = {};
 
@@ -239,7 +239,10 @@
 
     const more = make("div", "expertise-more highlight-entry-more");
     const image = imageFor(entry, "highlight-entry-image");
-    if (image) more.append(image);
+    if (image) {
+      more.classList.add("has-media");
+      more.append(image);
+    }
     const copy = make("div", "highlight-entry-copy");
     copy.append(make("span", "highlight-entry-meta", `${entry.category || entry.type} · ${prettyDate(entry.date)}`));
     if (entry.body) {
@@ -323,17 +326,6 @@
       return;
     }
     for (const entry of entries) container.append(highlightEntry(entry));
-  }
-
-  function renderMedia() {
-    const entries = state.entries.filter((entry) => entry.type === "media");
-    elements.mediaList.replaceChildren();
-    if (!entries.length) {
-      elements.mediaList.append(emptyMessage("Professional images and media will appear here."));
-      return;
-    }
-
-    for (const entry of entries) elements.mediaList.append(highlightEntry(entry));
   }
 
   function renderSocialLinks(container, links) {
@@ -488,7 +480,6 @@
     renderPublications();
     renderCards("event", elements.eventList, "event", "Upcoming and past engagements will appear here.");
     renderCards("news", elements.newsList, "news", "News and reflections will appear here.");
-    renderMedia();
   }
 
   function restoreInitialAnchor(hash) {
@@ -739,7 +730,6 @@
       journeyList: byId("journeyList"),
       languageList: byId("languageList"),
       locationSummary: byId("locationSummary"),
-      mediaList: byId("mediaList"),
       menuToggle: byId("menuToggle"),
       nav: byId("nav"),
       newsList: byId("newsList"),

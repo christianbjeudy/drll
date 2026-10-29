@@ -1,7 +1,7 @@
 {
   "settings": {
     "about": "Dr. Laurenie Louissaint is a board-certified physician in Physical Medicine and Rehabilitation whose practice centers on sports medicine, pain management, interventional spine care, and helping active people return to movement. She serves as Assistant Professor of Sports Medicine at SUNY Downstate Health Sciences University and as Head Team Physician for the Haiti Women’s National Team through the Haitian Football Federation. Her path from Division I athlete and athletic trainer to physician continues to shape a practical, movement-focused approach to care.",
-    "hero_intro": "Board-certified in Physical Medicine & Rehabilitation and Head Team Physician for the Haiti Women’s National Team, with a focus on sports medicine, pain management, and interventional spine care.",
+    "hero_intro": "Board-certified in Physical Medicine & Rehabilitation and an Assistant Professor of Sports Medicine at SUNY Downstate, Dr. Louissaint provides movement-focused care across sports medicine, pain management, and interventional spine treatment. As Head Team Physician for the Haiti Women’s National Team, she brings clinical expertise, an athlete’s perspective, and a commitment to helping patients recover, perform, and remain active.",
     "credentials": "MD, MS, FAAPMR",
     "professional_title": "Assistant Professor of Sports Medicine",
     "academic_appointment": "Assistant Professor of Sports Medicine; Assistant Program Director, Physical Medicine & Rehabilitation Residency",
@@ -50,6 +50,17 @@
       "body": "Published as View One in “Two Views: Integrative Medicine and the Musculoskeletal System” in Family Doctor, A Journal of the New York State Academy of Family Physicians, Summer 2025, Volume 14, Number 1. Co-authored with Christine Persaud, MD, MBA, FAAFP, FAMSSM; Sejal Khan, DO, MS; and Patrick Cleary, DO.",
       "image_url": "",
       "external_url": "https://www.nysafp.org/wp-content/uploads/2025/08/Family-Doctor_Summer25.pdf"
+    },
+    {
+      "type": "event",
+      "status": "published",
+      "title": "Joined the Haiti Women’s National Team as Head Team Physician",
+      "category": "National Team Service",
+      "date": "2026-01-01",
+      "summary": "Joined the Haitian Football Federation as Head Team Physician for the Haiti Women’s National Team.",
+      "body": "In this role, Dr. Louissaint supports the women’s national team with physician leadership, athlete health oversight, injury-prevention planning, and coordinated sports medicine care.",
+      "image_url": "/assets/images/dr-laurenie-louissaint-headshot.jpg",
+      "external_url": ""
     },
     {
       "type": "event",
