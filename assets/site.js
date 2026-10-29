@@ -202,6 +202,28 @@
     elements.academicAppointment.replaceChildren(...nodes);
   }
 
+  function renderLatestSocialPost(settings) {
+    const url = safeUrl(settings.latest_social_url);
+    const publishedAt = Date.parse(settings.latest_social_published_at || "");
+    const age = Date.now() - publishedAt;
+    const recentWindow = 72 * 60 * 60 * 1000;
+    const isRecent = url && Number.isFinite(publishedAt) && age >= -5 * 60 * 1000 && age <= recentWindow;
+
+    elements.latestSocialPost.hidden = !isRecent;
+    if (!isRecent) {
+      elements.latestSocialPost.removeAttribute("href");
+      return;
+    }
+
+    const inferredPlatform = url.includes("tiktok.com") ? "TikTok" : url.includes("instagram.com") ? "Instagram" : "social media";
+    const platform = String(settings.latest_social_platform || inferredPlatform).trim();
+    const elapsedHours = Math.max(0, Math.floor(age / (60 * 60 * 1000)));
+    const ageLabel = elapsedHours < 1 ? "just posted" : elapsedHours < 24 ? `${elapsedHours}h ago` : `${Math.floor(elapsedHours / 24)}d ago`;
+    elements.latestSocialPost.href = url;
+    elements.latestSocialPost.setAttribute("aria-label", `Open Dr. Louissaint’s latest ${platform} post, ${ageLabel}`);
+    elements.latestSocialLabel.textContent = `Latest ${platform} post · ${ageLabel}`;
+  }
+
   function imageFor(entry, className = "") {
     const source = safeUrl(entry.image_url);
     if (!source) return null;
@@ -344,7 +366,7 @@
     for (const entry of entries) container.append(highlightEntry(entry));
   }
 
-  function renderSocialLinks(container, links) {
+  function renderSocialLinks(container, links, { showLabel = false } = {}) {
     container.replaceChildren();
     for (const [label, value] of links) {
       const url = safeUrl(value);
@@ -353,6 +375,7 @@
       const link = make("a", icon ? `social-${label.toLowerCase()}` : "", icon ? undefined : label);
       if (icon) {
         link.append(icon);
+        if (showLabel) link.append(make("span", "social-link-label", label));
         link.setAttribute("aria-label", label);
         link.title = label;
       }
@@ -470,7 +493,8 @@
     ];
     renderSocialLinks(elements.socialLinks, links);
     renderSocialLinks(elements.heroSocialLinks, links.slice(0, 3));
-    renderSocialLinks(elements.profileSocialLinks, links.slice(0, 3));
+    renderSocialLinks(elements.profileSocialLinks, links.slice(0, 3), { showLabel: true });
+    renderLatestSocialPost(settings);
 
     const headerLinks = [
       [elements.headerLinkedin, settings.linkedin],
@@ -705,7 +729,10 @@
   async function loadContent() {
     const initialHash = window.location.hash;
     try {
-      const response = await fetch("/api/site", { headers: { accept: "application/json" } });
+      const response = await fetch("/api/site", {
+        cache: "no-store",
+        headers: { accept: "application/json" },
+      });
       if (!response.ok) throw new Error(`Content request failed with ${response.status}`);
       const payload = await response.json();
       state.settings = payload.settings || {};
@@ -750,6 +777,8 @@
       highlightTabs: byId("highlightTabs"),
       journeyList: byId("journeyList"),
       languageList: byId("languageList"),
+      latestSocialLabel: byId("latestSocialLabel"),
+      latestSocialPost: byId("latestSocialPost"),
       locationSummary: byId("locationSummary"),
       menuToggle: byId("menuToggle"),
       nav: byId("nav"),

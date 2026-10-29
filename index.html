@@ -53,9 +53,15 @@
       <div class="hero-copy">
         <h1>Movement.<br><em>Recovery.</em><br>Performance<span class="dot">.</span></h1>
         <p class="hero-intro" id="heroIntro">Double board-certified in Physical Medicine &amp; Rehabilitation and Sports Medicine, Dr. Louissaint primarily practices sports medicine and interventional spine care. As an Assistant Professor at SUNY Downstate and Head Team Physician for the Haiti Women’s National Team, she brings advanced clinical training and an athlete’s perspective to helping patients recover, perform, and remain active.</p>
-        <div class="hero-buttons">
-          <button id="heroAppointment" class="primary-btn appointment-trigger" type="button">Request an appointment</button>
-          <div id="heroSocialLinks" class="hero-social-links" aria-label="Social profiles"></div>
+        <div class="hero-action-stack">
+          <div class="hero-buttons">
+            <button id="heroAppointment" class="primary-btn appointment-trigger" type="button">Request an appointment</button>
+            <div id="heroSocialLinks" class="hero-social-links" aria-label="Social profiles"></div>
+          </div>
+          <a id="latestSocialPost" class="latest-social-post" target="_blank" rel="noopener noreferrer" hidden>
+            <span class="latest-social-dot" aria-hidden="true"></span>
+            <span id="latestSocialLabel">View latest social post</span>
+          </a>
         </div>
       </div>
       <figure class="hero-art">
@@ -249,9 +255,11 @@
     </section>
   </main>
 
-  <footer class="footer shell">
-    <div class="footer-brand"><span class="brand-monogram">LL<span>.</span></span><span>DR. LAURENIE LOUISSAINT<br><small>SPORTS MEDICINE · PHYSIATRY · ACADEMIC MEDICINE</small></span></div>
-    <div class="footer-bottom"><span>© <span id="year"></span> DR. LAURENIE LOUISSAINT. ALL RIGHTS RESERVED.</span><a href="https://christianbjeudy.com" target="_blank" rel="noopener noreferrer" class="made-by">Made by <strong>christianbjeudy.com</strong></a></div>
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <div class="footer-brand"><span class="brand-monogram">LL<span>.</span></span><span>DR. LAURENIE LOUISSAINT<br><small>SPORTS MEDICINE · PHYSIATRY · ACADEMIC MEDICINE</small></span></div>
+      <div class="footer-bottom"><span>© <span id="year"></span> DR. LAURENIE LOUISSAINT. ALL RIGHTS RESERVED.</span><a href="https://christianbjeudy.com" target="_blank" rel="noopener noreferrer" class="made-by">Made by <strong>christianbjeudy.com</strong></a></div>
+    </div>
   </footer>
 
   <dialog id="searchDialog" class="search-dialog">

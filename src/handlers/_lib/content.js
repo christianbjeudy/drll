@@ -43,6 +43,10 @@ export function normalizeSettings(input) {
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email)) {
     throw new HttpError(400, "Contact email is invalid.");
   }
+  const latestSocialPublishedAt = cleanText(input.latest_social_published_at, 40, "Latest social post date");
+  if (latestSocialPublishedAt && Number.isNaN(Date.parse(latestSocialPublishedAt))) {
+    throw new HttpError(400, "Latest social post date is invalid.");
+  }
 
   return {
     about: cleanText(input.about, 4000, "Biography"),
@@ -69,6 +73,9 @@ export function normalizeSettings(input) {
     linkedin: validateUrl(input.linkedin, { allowRelative: false }),
     instagram: validateUrl(input.instagram, { allowRelative: false }),
     tiktok: validateUrl(input.tiktok, { allowRelative: false }),
+    latest_social_platform: cleanText(input.latest_social_platform, 40, "Latest social platform"),
+    latest_social_published_at: latestSocialPublishedAt ? new Date(latestSocialPublishedAt).toISOString() : "",
+    latest_social_url: validateUrl(input.latest_social_url, { allowRelative: false }),
     scholar: validateUrl(input.scholar, { allowRelative: false }),
     orcid: validateUrl(input.orcid, { allowRelative: false }),
     other_link: validateUrl(input.other_link, { allowRelative: false }),

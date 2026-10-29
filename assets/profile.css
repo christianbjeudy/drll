@@ -117,7 +117,7 @@ h2 {
   grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
   gap: 40px;
   padding-top: 62px;
-  padding-bottom: 76px;
+  padding-bottom: 42px;
   background: radial-gradient(circle at 82% 28%, rgba(116, 97, 143, 0.09), transparent 29%);
 }
 .hero h1 {
@@ -135,13 +135,14 @@ h2 {
   font-weight: 400;
 }
 .hero-intro { max-width: 510px; line-height: 1.75; }
-.hero-buttons { margin-top: 28px; }
+.hero-action-stack { margin-top: 28px; }
+.hero-buttons { margin-top: 0; }
 .hero-foot { margin-top: 45px; }
 .hero-art { height: 744px; margin-left: 0; }
 .portrait-wrap {
   inset: 0 0 132px;
   z-index: 1;
-  border-radius: 14px;
+  border-radius: 20px;
   box-shadow: 0 42px 95px rgba(29, 41, 71, 0.28), 0 12px 34px rgba(29, 41, 71, 0.18);
 }
 .portrait-wrap,
@@ -194,6 +195,34 @@ h2 {
 .hero-social-links .social-tiktok svg { fill: currentColor; }
 .hero-social-links .social-instagram svg { fill: none; stroke: currentColor; stroke-width: 1.8; }
 .hero-social-links .social-instagram .fill-dot { fill: currentColor; stroke: none; }
+.latest-social-post {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 9px;
+  margin-top: 12px;
+  padding: 9px 13px;
+  border: 1px solid rgba(38, 53, 87, 0.16);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 8px 20px rgba(29, 41, 71, 0.07);
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+.latest-social-post[hidden] { display: none; }
+.latest-social-post:hover { background: var(--navy); color: #fff; transform: translateY(-1px); }
+.latest-social-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #8269a3;
+  box-shadow: 0 0 0 4px rgba(130, 105, 163, 0.13);
+}
+.latest-social-post:hover .latest-social-dot { background: #d8cae7; box-shadow: 0 0 0 4px rgba(216, 202, 231, 0.18); }
 
 /* Professional overview */
 .credential-strip {
@@ -434,10 +463,14 @@ h2 {
   padding-top: 12px;
 }
 .profile-social-links a {
-  display: grid;
-  width: 44px;
+  display: inline-flex;
+  width: auto;
+  min-width: 44px;
   height: 44px;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
   background: var(--navy);
   color: #fff;
   box-shadow: 0 10px 24px rgba(29, 41, 71, 0.16);
@@ -449,6 +482,7 @@ h2 {
   transform: translateY(-2px);
 }
 .profile-social-links svg { width: 17px; height: 17px; }
+.profile-social-links .social-link-label { font-size: 10px; font-weight: 700; letter-spacing: 0.025em; }
 .profile-social-links .social-linkedin svg,
 .profile-social-links .social-tiktok svg { fill: currentColor; }
 .profile-social-links .social-instagram svg { fill: none; stroke: currentColor; stroke-width: 1.8; }
@@ -555,7 +589,7 @@ h2 {
 
 /* Appointment callout */
 .appointment-section {
-  padding: 64px 0;
+  padding: 64px 0 30px;
   scroll-margin-top: 90px;
   background: linear-gradient(118deg, #192540 0%, #26375e 58%, #4c426a 135%);
   color: #fff;
@@ -841,7 +875,22 @@ h2 {
   background: rgba(255, 255, 255, 0.72);
   box-shadow: 0 24px 65px rgba(29, 41, 71, 0.1);
 }
-.footer { padding-top: 48px; }
+.footer {
+  max-width: none;
+  margin: 0;
+  padding: 0 0 30px;
+  background: linear-gradient(118deg, #192540 0%, #26375e 58%, #4c426a 135%);
+  color: #fff;
+}
+.footer-inner {
+  padding-top: 32px;
+  border-top: 1px solid rgba(215, 221, 239, 0.2);
+}
+.footer .brand-monogram { color: #fff; }
+.footer .footer-brand { color: #fff; }
+.footer .footer-brand small { color: #aeb9d6; }
+.footer .footer-bottom { border-color: rgba(215, 221, 239, 0.2); color: #aeb9d6; }
+.footer .made-by { border-color: rgba(215, 221, 239, 0.28); color: #fff; }
 .detail-source {
   margin-top: 28px;
   padding-top: 18px;
@@ -913,7 +962,7 @@ h2 {
   .section { padding-top: 78px; padding-bottom: 78px; }
   .header { height: 75px; }
   .nav { top: 75px; }
-  .hero { min-height: auto; grid-template-columns: 1fr; gap: 50px; padding-top: 54px; padding-bottom: 64px; }
+  .hero { min-height: auto; grid-template-columns: 1fr; gap: 44px; padding-top: 54px; padding-bottom: 34px; }
   .hero-art { height: 630px; margin-left: 0; }
   .credential-inner { padding-right: 6%; padding-left: 6%; }
   .credential-inner > div { padding: 20px 18px; }

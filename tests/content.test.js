@@ -31,6 +31,9 @@ test("validates settings email and preserves safe relative portrait paths", () =
     team_role: "Head Team Physician",
     appointment_url: "https://example.com/appointments",
     tiktok: "https://www.tiktok.com/@example",
+    latest_social_platform: "TikTok",
+    latest_social_published_at: "2026-10-28T12:53:38Z",
+    latest_social_url: "https://www.tiktok.com/@example/video/123",
     affiliations: "Example University\nExample Hospital",
   });
   assert.equal(settings.email, "hello@example.com");
@@ -39,8 +42,12 @@ test("validates settings email and preserves safe relative portrait paths", () =
   assert.equal(settings.team_role, "Head Team Physician");
   assert.equal(settings.appointment_url, "https://example.com/appointments");
   assert.equal(settings.tiktok, "https://www.tiktok.com/@example");
+  assert.equal(settings.latest_social_platform, "TikTok");
+  assert.equal(settings.latest_social_published_at, "2026-10-28T12:53:38.000Z");
+  assert.match(settings.latest_social_url, /video\/123/u);
   assert.match(settings.affiliations, /Example Hospital/u);
   assert.throws(() => normalizeSettings({ email: "not-an-email" }), /email is invalid/u);
   assert.throws(() => normalizeSettings({ zocdoc: "javascript:alert(1)" }), /HTTP and HTTPS/u);
+  assert.throws(() => normalizeSettings({ latest_social_published_at: "not-a-date" }), /social post date is invalid/u);
 });
 
