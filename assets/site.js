@@ -76,6 +76,11 @@
     }).format(date);
   }
 
+  function entryDateLabel(entry) {
+    const value = String(entry.date || "");
+    return value.endsWith("-01-01") ? prettyDate(value, { yearOnly: true }) : prettyDate(value);
+  }
+
   function emptyMessage(message, className = "empty-card") {
     return make("div", className, message);
   }
@@ -200,7 +205,7 @@
 
   function openDetail(entry) {
     elements.detailBody.replaceChildren();
-    const category = make("span", "eyebrow purple", `${entry.category || entry.type} · ${prettyDate(entry.date)}`);
+    const category = make("span", "eyebrow purple", `${entry.category || entry.type} · ${entryDateLabel(entry)}`);
     const title = make("h2", "", entry.title);
     elements.detailBody.append(category, title);
 
@@ -244,7 +249,7 @@
       more.append(image);
     }
     const copy = make("div", "highlight-entry-copy");
-    copy.append(make("span", "highlight-entry-meta", `${entry.category || entry.type} · ${prettyDate(entry.date)}`));
+    copy.append(make("span", "highlight-entry-meta", `${entry.category || entry.type} · ${entryDateLabel(entry)}`));
     if (entry.body) {
       for (const paragraph of entry.body.split(/\n{2,}/u)) {
         if (paragraph.trim()) copy.append(make("p", "", paragraph.trim()));
