@@ -848,16 +848,16 @@ h2 {
 }
 .footer-inner {
   display: grid;
-  grid-template-columns: minmax(500px, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(540px, 1.05fr) minmax(0, 0.95fr);
   align-items: center;
-  gap: 28px;
+  gap: 16px;
   padding-top: 24px;
   border-top: 1px solid rgba(215, 221, 239, 0.2);
 }
 .footer .brand-monogram { color: #fff; }
 .footer .footer-brand { min-width: 0; gap: 18px; color: #fff; }
 .footer .footer-brand small { color: #aeb9d6; }
-.footer .footer-identity { flex: 0 1 auto; }
+.footer .footer-identity { flex: 0 0 auto; white-space: nowrap; }
 .footer-socials {
   flex: 0 0 auto;
   flex-wrap: nowrap;
@@ -883,15 +883,26 @@ h2 {
 .footer-socials .social-instagram svg { fill: none; stroke: currentColor; stroke-width: 1.8; }
 .footer-socials .social-instagram .fill-dot { fill: currentColor; stroke: none; }
 .footer .footer-bottom {
-  justify-content: flex-end;
-  gap: 24px;
+  justify-content: flex-start;
+  gap: 10px;
   margin-top: 0;
   padding-top: 0;
   border-top: 0;
   color: #aeb9d6;
-  text-align: right;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-align: left;
 }
-.footer .made-by { border-color: rgba(215, 221, 239, 0.28); color: #fff; }
+.footer .footer-bottom > span,
+.footer .made-by { flex: 0 0 auto; white-space: nowrap; }
+.footer .made-by {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 10px;
+  border-color: rgba(215, 221, 239, 0.28);
+  color: #fff;
+}
+.footer .made-by strong { margin-left: 4px; }
 .detail-source {
   margin-top: 28px;
   padding-top: 18px;
@@ -953,6 +964,11 @@ h2 {
   .profile-layout { grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr); gap: 26px; }
   .profile-details .profile-detail { padding: 24px; }
   .appointment-layout { gap: 45px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 22px; }
+  .footer .footer-bottom { justify-content: space-between; text-align: left; }
+}
+
+@media (max-width: 1140px) {
   .footer-inner { grid-template-columns: 1fr; gap: 22px; }
   .footer .footer-bottom { justify-content: space-between; text-align: left; }
 }
