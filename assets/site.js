@@ -108,34 +108,34 @@
     };
     const expandedDescriptions = {
       "Sports Medicine": {
-        overview: "Clinical interests include sports and overuse injuries, return-to-activity planning, and care organized around each patient’s movement goals.",
-        points: ["Evaluation of sports, overuse, and activity-related concerns", "Individualized rehabilitation and return-to-activity planning", "Collaboration with therapists, trainers, and care teams"],
-        detail: "This approach connects careful diagnosis with practical recovery planning so active patients can move forward with confidence and clear next steps.",
+        meaning: "Sports medicine focuses on preventing, evaluating, and treating activity-related injuries while supporting a safe return to movement and performance.",
+        approach: "Dr. Louissaint pairs her rehabilitation training and athletic background with movement-focused plans shaped around each patient’s goals.",
+        care: "A consultation may include injury evaluation, rehabilitation planning, return-to-sport guidance, and coordination with therapists or athletic trainers.",
       },
       "Physical Medicine & Rehabilitation": {
-        overview: "A function-first approach to conditions affecting muscles, joints, nerves, and mobility, with an emphasis on independence and quality of life.",
-        points: ["Assessment of muscles, joints, nerves, and mobility", "Rehabilitation strategies designed around daily and athletic goals", "Emphasis on independence, participation, and quality of life"],
-        detail: "Care is framed around the whole person, connecting medical findings to the movements, responsibilities, and activities that shape everyday life.",
+        meaning: "Physiatry is a function-first medical specialty addressing conditions that affect muscles, joints, nerves, mobility, and quality of life.",
+        approach: "Dr. Louissaint connects clinical findings with the activities, responsibilities, and movement goals that matter in a patient’s daily life.",
+        care: "Visits may include a functional assessment, rehabilitation strategy, therapy coordination, and non-operative options tailored to mobility and independence.",
       },
       "Pain Management": {
-        overview: "Thoughtful assessment of musculoskeletal pain using rehabilitation, procedural, and lifestyle strategies when appropriate.",
-        points: ["Evaluation of musculoskeletal and activity-related pain", "Rehabilitation, recovery, and lifestyle strategies", "Selected procedure options when clinically appropriate"],
-        detail: "The goal is to understand how pain affects function, then build a balanced plan that supports sustainable progress rather than a one-size-fits-all response.",
+        meaning: "Pain management evaluates how musculoskeletal pain affects movement, function, recovery, work, and participation in everyday activities.",
+        approach: "Dr. Louissaint uses a balanced rehabilitation perspective to identify contributing factors and build practical, evidence-informed next steps.",
+        care: "Consultation may involve a focused examination, recovery and lifestyle planning, therapy recommendations, or selected procedures when clinically appropriate.",
       },
       "Interventional Spine": {
-        overview: "Fellowship-informed evaluation of spine-related pain and selected image-guided treatment options.",
-        points: ["Assessment of spine-related pain and function", "Non-operative care planning informed by fellowship training", "Selected image-guided treatment options when appropriate"],
-        detail: "A detailed history and physical examination help connect symptoms with mobility and function before treatment options are considered.",
+        meaning: "Interventional spine care combines detailed evaluation of spine-related pain with non-operative treatment and image-guided options when appropriate.",
+        approach: "Her fellowship training informs a careful assessment of symptoms, mobility, function, and the role of the spine in a patient’s goals.",
+        care: "A visit may include a spine examination, review of prior imaging, rehabilitation planning, and discussion of appropriate image-guided procedures.",
       },
       "Musculoskeletal Ultrasound": {
-        overview: "Real-time ultrasound may support soft-tissue and joint evaluation and help guide selected procedures with precision.",
-        points: ["Real-time soft-tissue and joint visualization", "Dynamic evaluation when movement matters", "Guidance for selected procedures when clinically appropriate"],
-        detail: "Because ultrasound can show structures in motion, it can add useful context to an examination and support precise, patient-centered decision-making.",
+        meaning: "Musculoskeletal ultrasound provides real-time visualization of selected soft tissues and joints, including structures while they are moving.",
+        approach: "Dr. Louissaint may use ultrasound to add context to a physical examination and support precise, patient-centered decisions.",
+        care: "Consultation may include dynamic ultrasound assessment or ultrasound guidance for selected procedures when clinically indicated.",
       },
       "Cycling & Running Medicine": {
-        overview: "Care for endurance athletes and active patients may include training-related concerns, biomechanics, recovery, and safe return to sport.",
-        points: ["Training-related and overuse concerns", "Biomechanics, recovery, and training-load considerations", "Safe return to endurance activity and sport"],
-        detail: "Her perspective as a cyclist complements clinical training with an appreciation for endurance, consistency, equipment, and the realities of returning to sport.",
+        meaning: "Endurance medicine addresses training-related pain, overuse concerns, biomechanics, recovery, and sustainable participation in cycling and running.",
+        approach: "As a cyclist, Dr. Louissaint brings clinical training and a practical appreciation for endurance, consistency, equipment, and return to sport.",
+        care: "Visits may include an overuse-injury evaluation, training-load review, biomechanics discussion, rehabilitation planning, and return-to-activity guidance.",
       },
     };
     elements.focusList.replaceChildren();
@@ -151,20 +151,39 @@
       summary.lastElementChild.setAttribute("aria-hidden", "true");
       const more = make("div", "expertise-more");
       const expanded = expandedDescriptions[item] || {
-        overview: "Learn more about this area of Dr. Louissaint’s clinical and academic work.",
-        points: [],
-        detail: "Each clinical plan is informed by the individual’s goals, function, and overall health.",
+        meaning: "This is a current area of Dr. Louissaint’s clinical and academic work.",
+        approach: "Her approach is informed by the individual’s goals, function, and overall health.",
+        care: "Consultation options are tailored to the patient and discussed after an appropriate clinical evaluation.",
       };
-      more.append(make("p", "", expanded.overview));
-      if (expanded.points.length) {
-        const list = make("ul");
-        list.append(...expanded.points.map((point) => make("li", "", point)));
-        more.append(list);
+      const columns = make("div", "expertise-columns");
+      for (const [label, copy] of [
+        ["What it means", expanded.meaning],
+        ["Dr. Louissaint’s approach", expanded.approach],
+        ["Consultation & care", expanded.care],
+      ]) {
+        const column = make("article", "expertise-blurb");
+        column.append(make("h4", "", label), make("p", "", copy));
+        columns.append(column);
       }
-      more.append(make("p", "expertise-detail", expanded.detail));
+      more.append(columns);
       card.append(summary, more);
       elements.focusList.append(card);
     });
+  }
+
+  function renderCredentialLines(container, linesToRender) {
+    container.replaceChildren(...linesToRender.filter(Boolean).map((line) => make("span", "", line)));
+  }
+
+  function renderAppointmentRoles(value) {
+    const roles = String(value || "").split(/;\s*/u).map((role) => role.trim()).filter(Boolean);
+    if (!roles.length) return;
+    const nodes = [];
+    roles.forEach((role, index) => {
+      if (index) nodes.push(make("span", "appointment-role-divider"));
+      nodes.push(make("h3", "", role));
+    });
+    elements.academicAppointment.replaceChildren(...nodes);
   }
 
   function imageFor(entry, className = "") {
@@ -207,6 +226,42 @@
     elements.detailDialog.showModal();
   }
 
+  function highlightEntry(entry) {
+    const card = make("details", "expertise-card highlight-entry");
+    const summary = make("summary", "expertise-summary highlight-entry-summary");
+    summary.append(
+      make("span", "expertise-index highlight-entry-year", prettyDate(entry.date, { yearOnly: true })),
+      make("span", "expertise-title", entry.title),
+      make("span", "expertise-summary-text", entry.summary || `${entry.category || entry.type} from Dr. Louissaint’s professional work.`),
+      make("span", "expertise-toggle", "+"),
+    );
+    summary.lastElementChild.setAttribute("aria-hidden", "true");
+
+    const more = make("div", "expertise-more highlight-entry-more");
+    const image = imageFor(entry, "highlight-entry-image");
+    if (image) more.append(image);
+    const copy = make("div", "highlight-entry-copy");
+    copy.append(make("span", "highlight-entry-meta", `${entry.category || entry.type} · ${prettyDate(entry.date)}`));
+    if (entry.body) {
+      for (const paragraph of entry.body.split(/\n{2,}/u)) {
+        if (paragraph.trim()) copy.append(make("p", "", paragraph.trim()));
+      }
+    } else if (entry.summary) {
+      copy.append(make("p", "", entry.summary));
+    }
+    const externalUrl = safeUrl(entry.external_url);
+    if (externalUrl) {
+      const link = make("a", "highlight-entry-link", "Open resource");
+      link.href = externalUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      copy.append(link);
+    }
+    more.append(copy);
+    card.append(summary, more);
+    return card;
+  }
+
   function renderJourney() {
     const entries = state.entries.filter((entry) => entry.type === "milestone");
     elements.journeyList.replaceChildren();
@@ -215,24 +270,7 @@
       return;
     }
 
-    for (const entry of entries) {
-      const row = make("article", "timeline-entry");
-      row.append(make("div", "year", prettyDate(entry.date, { yearOnly: true })));
-      const copy = make("div");
-      copy.append(make("h3", "", entry.title));
-      if (entry.summary) copy.append(make("p", "", entry.summary));
-      row.append(copy, make("div", "tag", entry.category || "Milestone"));
-      if (entry.body || entry.external_url) {
-        row.tabIndex = 0;
-        row.setAttribute("role", "button");
-        row.setAttribute("aria-label", `Read ${entry.title}`);
-        row.addEventListener("click", () => openDetail(entry));
-        row.addEventListener("keydown", (event) => {
-          if (event.key === "Enter" || event.key === " ") openDetail(entry);
-        });
-      }
-      elements.journeyList.append(row);
-    }
+    for (const entry of entries) elements.journeyList.append(highlightEntry(entry));
   }
 
   function renderPublicationFilters(publications) {
@@ -274,33 +312,7 @@
       return;
     }
 
-    for (const entry of visible) {
-      const button = make("button", "publication-item");
-      button.type = "button";
-      button.append(make("span", "pub-year", prettyDate(entry.date, { yearOnly: true })));
-      const copy = make("span", "publication-copy");
-      copy.append(make("h3", "", entry.title));
-      if (entry.summary) copy.append(make("p", "", entry.summary));
-      button.append(copy, make("span", "category", entry.category || "Publication"));
-      button.addEventListener("click", () => openDetail(entry));
-      elements.publicationList.append(button);
-    }
-  }
-
-  function cardFor(entry, kind) {
-    const card = make("button", `${kind}-card`);
-    card.type = "button";
-    const art = make("span", "card-art");
-    const image = imageFor(entry);
-    art.append(image || make("span", "card-symbol", "✦"));
-    const content = make("span", "card-content");
-    content.append(make("span", "card-meta", `${entry.category || kind} · ${prettyDate(entry.date)}`));
-    content.append(make("h3", "", entry.title));
-    if (entry.summary) content.append(make("p", "", entry.summary));
-    const bottom = make("span", "card-bottom", "Read more");
-    card.append(art, content, bottom);
-    card.addEventListener("click", () => openDetail(entry));
-    return card;
+    for (const entry of visible) elements.publicationList.append(highlightEntry(entry));
   }
 
   function renderCards(type, container, kind, emptyText) {
@@ -310,7 +322,7 @@
       container.append(emptyMessage(emptyText));
       return;
     }
-    for (const entry of entries) container.append(cardFor(entry, kind));
+    for (const entry of entries) container.append(highlightEntry(entry));
   }
 
   function renderMedia() {
@@ -321,14 +333,25 @@
       return;
     }
 
-    for (const entry of entries) {
-      const button = make("button", "media-item");
-      button.type = "button";
-      const image = imageFor(entry);
-      button.append(image || make("span", "", "LL."));
-      button.append(make("span", "media-caption", entry.title));
-      button.addEventListener("click", () => openDetail(entry));
-      elements.mediaList.append(button);
+    for (const entry of entries) elements.mediaList.append(highlightEntry(entry));
+  }
+
+  function renderSocialLinks(container, links) {
+    container.replaceChildren();
+    for (const [label, value] of links) {
+      const url = safeUrl(value);
+      if (!url) continue;
+      const icon = socialIcon(label);
+      const link = make("a", icon ? `social-${label.toLowerCase()}` : "", icon ? undefined : label);
+      if (icon) {
+        link.append(icon);
+        link.setAttribute("aria-label", label);
+        link.title = label;
+      }
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      container.append(link);
     }
   }
 
@@ -338,17 +361,28 @@
     if (settings.hero_intro) elements.heroIntro.textContent = settings.hero_intro;
     if (settings.credentials) elements.credentialLine.textContent = settings.credentials;
     if (settings.professional_title) {
-      elements.roleSummary.textContent = settings.professional_title;
-      elements.academicAppointment.textContent = settings.professional_title;
+      const role = settings.professional_title.replace(/ of Sports Medicine$/u, ", Sports Medicine");
+      renderCredentialLines(elements.roleSummary, role.split(/,\s*/u).map((line, index, list) => index < list.length - 1 ? `${line},` : line));
+      renderAppointmentRoles(settings.professional_title);
     }
-    if (settings.academic_appointment) elements.academicAppointment.textContent = settings.academic_appointment;
-    if (settings.team_role) elements.teamRoleSummary.textContent = settings.team_role;
+    if (settings.academic_appointment) renderAppointmentRoles(settings.academic_appointment);
+    if (settings.team_role) {
+      const teamRole = settings.team_role.replace(/\s*[·–—]\s*/u, ", ");
+      renderCredentialLines(elements.teamRoleSummary, teamRole.split(/,\s*/u).map((line, index, list) => index < list.length - 1 ? `${line},` : line));
+    }
     if (settings.location) {
-      elements.locationSummary.textContent = settings.location;
+      renderCredentialLines(elements.locationSummary, [settings.location, "United States"]);
       elements.appointmentLocation.textContent = settings.location;
     }
     if (settings.languages) elements.languageList.textContent = settings.languages;
-    renderFocus(settings.clinical_focus);
+    renderFocus(settings.clinical_focus || [
+      "Sports Medicine",
+      "Physical Medicine & Rehabilitation",
+      "Pain Management",
+      "Interventional Spine",
+      "Musculoskeletal Ultrasound",
+      "Cycling & Running Medicine",
+    ].join("\n"));
     renderTextList(elements.affiliationList, settings.affiliations);
     renderTextList(elements.trainingList, settings.training);
 
@@ -370,7 +404,7 @@
     if (appointmentPhone) {
       elements.appointmentPhone.href = appointmentPhone;
       elements.appointmentPhone.textContent = settings.appointment_phone;
-      elements.heroAppointment.href = "#appointments";
+      elements.appointmentRequestForm.dataset.phone = appointmentPhone;
     }
 
     if (settings.email) {
@@ -390,6 +424,7 @@
       ["WebMD", settings.webmd],
     ];
     elements.bookingLinks.replaceChildren();
+    elements.appointmentRequestForm.dataset.appointmentUrl = safeUrl(settings.appointment_url);
     for (const [label, value, primary = false] of bookingLinks) {
       const url = safeUrl(value);
       if (!url) continue;
@@ -425,22 +460,8 @@
       ["ORCID", settings.orcid],
       ["Professional profile", settings.other_link],
     ];
-    elements.socialLinks.replaceChildren();
-    for (const [label, value] of links) {
-      const url = safeUrl(value);
-      if (!url) continue;
-      const icon = socialIcon(label);
-      const link = make("a", icon ? `social-${label.toLowerCase()}` : "", icon ? undefined : label);
-      if (icon) {
-        link.append(icon);
-        link.setAttribute("aria-label", label);
-        link.title = label;
-      }
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      elements.socialLinks.append(link);
-    }
+    renderSocialLinks(elements.socialLinks, links);
+    renderSocialLinks(elements.heroSocialLinks, links.slice(0, 3));
 
     const headerLinks = [
       [elements.headerLinkedin, settings.linkedin],
@@ -639,8 +660,29 @@
     });
     elements.searchInput.addEventListener("input", () => searchEntries(elements.searchInput.value));
     elements.detailClose.addEventListener("click", () => elements.detailDialog.close());
+    elements.appointmentDialogClose.addEventListener("click", () => elements.appointmentDialog.close());
+    for (const trigger of document.querySelectorAll(".appointment-trigger")) {
+      trigger.addEventListener("click", () => {
+        elements.appointmentDialog.showModal();
+        elements.appointmentInterest.focus();
+      });
+    }
+    elements.appointmentRequestForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const route = new FormData(elements.appointmentRequestForm).get("route");
+      const appointmentUrl = safeUrl(elements.appointmentRequestForm.dataset.appointmentUrl);
+      const appointmentPhone = elements.appointmentRequestForm.dataset.phone || "";
+      elements.appointmentDialog.close();
+      if (route === "phone" && appointmentPhone) {
+        window.location.href = appointmentPhone;
+      } else if (appointmentUrl) {
+        window.open(appointmentUrl, "_blank", "noopener,noreferrer");
+      } else {
+        byId("appointments").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
 
-    for (const dialog of [elements.searchDialog, elements.detailDialog]) {
+    for (const dialog of [elements.searchDialog, elements.detailDialog, elements.appointmentDialog]) {
       dialog.addEventListener("click", (event) => {
         if (event.target === dialog) dialog.close();
       });
@@ -669,8 +711,12 @@
       academicAppointment: byId("academicAppointment"),
       affiliationList: byId("affiliationList"),
       aboutLead: byId("aboutLead"),
+      appointmentDialog: byId("appointmentDialog"),
+      appointmentDialogClose: byId("appointmentDialogClose"),
+      appointmentInterest: byId("appointmentInterest"),
       appointmentLocation: byId("appointmentLocation"),
       appointmentPhone: byId("appointmentPhone"),
+      appointmentRequestForm: byId("appointmentRequestForm"),
       bookingLinks: byId("bookingLinks"),
       contactEmail: byId("contactEmail"),
       credentialLine: byId("credentialLine"),
@@ -684,6 +730,7 @@
       focusList: byId("focusList"),
       heroAppointment: byId("heroAppointment"),
       heroIntro: byId("heroIntro"),
+      heroSocialLinks: byId("heroSocialLinks"),
       headerInstagram: byId("headerInstagram"),
       headerLinkedin: byId("headerLinkedin"),
       headerTiktok: byId("headerTiktok"),
