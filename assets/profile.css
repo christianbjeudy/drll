@@ -640,13 +640,25 @@ h2 {
 }
 .appointment-connect {
   display: grid;
-  grid-template-columns: minmax(250px, 0.7fr) 1.3fr;
+  grid-template-columns: auto minmax(280px, 420px);
   align-items: center;
-  gap: 56px;
+  justify-content: end;
+  gap: 34px;
   margin-top: 42px;
   padding-top: 30px;
   border-top: 1px solid rgba(215, 221, 239, 0.2);
   scroll-margin-top: 100px;
+}
+.appointment-connect-copy {
+  grid-column: 2;
+  grid-row: 1;
+  max-width: 420px;
+  text-align: right;
+}
+.appointment-connect .contact-right {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
 }
 .appointment-connect .mini-label { color: #c7b7dc; }
 .appointment-connect p { margin: 0; }
@@ -878,18 +890,30 @@ h2 {
 .footer {
   max-width: none;
   margin: 0;
-  padding: 0 0 30px;
+  padding: 0 0 24px;
   background: linear-gradient(118deg, #192540 0%, #26375e 58%, #4c426a 135%);
   color: #fff;
 }
 .footer-inner {
-  padding-top: 32px;
+  display: grid;
+  grid-template-columns: minmax(330px, 0.95fr) minmax(0, 1.25fr);
+  align-items: center;
+  gap: 36px;
+  padding-top: 24px;
   border-top: 1px solid rgba(215, 221, 239, 0.2);
 }
 .footer .brand-monogram { color: #fff; }
 .footer .footer-brand { color: #fff; }
 .footer .footer-brand small { color: #aeb9d6; }
-.footer .footer-bottom { border-color: rgba(215, 221, 239, 0.2); color: #aeb9d6; }
+.footer .footer-bottom {
+  justify-content: flex-end;
+  gap: 24px;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  color: #aeb9d6;
+  text-align: right;
+}
 .footer .made-by { border-color: rgba(215, 221, 239, 0.28); color: #fff; }
 .detail-source {
   margin-top: 28px;
@@ -982,7 +1006,18 @@ h2 {
   .appointment-layout { grid-template-columns: 1fr; }
   .appointment-section { padding: 54px 0; }
   .appointment-card { max-width: 620px; }
-  .appointment-connect { grid-template-columns: 1fr; gap: 20px; }
+  .appointment-connect { grid-template-columns: 1fr; justify-content: stretch; gap: 20px; }
+  .appointment-connect-copy,
+  .appointment-connect .contact-right {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+    text-align: left;
+  }
+  .appointment-connect-copy { order: 0; }
+  .appointment-connect .contact-right { order: 1; }
+  .footer-inner { grid-template-columns: 1fr; gap: 22px; }
+  .footer .footer-bottom { justify-content: space-between; text-align: left; }
   .highlight-tabs { grid-template-columns: repeat(5, minmax(156px, 1fr)); overflow-x: auto; }
   .highlight-panels { min-height: 720px; }
   .tiktok-video-grid,
@@ -1031,6 +1066,7 @@ h2 {
   .booking-links { grid-template-columns: 1fr; }
   .booking-links .primary-booking { grid-column: auto; }
   .appointment-connect { margin-top: 34px; padding-top: 25px; }
+  .footer .footer-bottom { align-items: flex-start; flex-direction: column; gap: 14px; }
   .highlight-tabs { margin-right: -6%; margin-left: -6%; border-right: 0; border-left: 0; box-shadow: none; }
   .highlight-tab { min-height: 68px; }
   .highlight-panels { min-height: 0; padding-top: 30px; }
