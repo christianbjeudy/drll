@@ -135,8 +135,14 @@ h2 {
   font-weight: 400;
 }
 .hero-intro { max-width: 510px; line-height: 1.75; }
-.hero-action-stack { margin-top: 28px; }
-.hero-buttons { margin-top: 0; }
+.hero-action-stack {
+  display: inline-flex;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  margin-top: 28px;
+}
+.hero-buttons { width: 100%; margin-top: 0; }
 .hero-foot { margin-top: 45px; }
 .hero-art { height: 744px; margin-left: 0; }
 .portrait-wrap {
@@ -196,9 +202,11 @@ h2 {
 .hero-social-links .social-instagram svg { fill: none; stroke: currentColor; stroke-width: 1.8; }
 .hero-social-links .social-instagram .fill-dot { fill: currentColor; stroke: none; }
 .latest-social-post {
-  display: inline-flex;
+  display: flex;
+  width: 100%;
   min-height: 38px;
   align-items: center;
+  justify-content: center;
   gap: 9px;
   margin-top: 12px;
   padding: 9px 13px;
@@ -208,7 +216,9 @@ h2 {
   color: var(--navy);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
   box-shadow: 0 8px 20px rgba(29, 41, 71, 0.07);
   transition: background 160ms ease, color 160ms ease, transform 160ms ease;
 }
