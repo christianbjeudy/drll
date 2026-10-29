@@ -438,17 +438,6 @@
       elements.appointmentRequestForm.dataset.phone = appointmentPhone;
     }
 
-    if (settings.email) {
-      elements.contactEmail.href = `mailto:${encodeURIComponent(settings.email)}`;
-      elements.contactEmail.setAttribute("aria-label", `Email Dr. Louissaint at ${settings.email}`);
-      elements.contactEmail.classList.remove("is-disabled");
-      elements.contactEmail.hidden = false;
-    } else {
-      elements.contactEmail.removeAttribute("href");
-      elements.contactEmail.classList.add("is-disabled");
-      elements.contactEmail.hidden = true;
-    }
-
     const bookingLinks = [
       ["Official appointment profile", settings.appointment_url, true],
       ["Zocdoc", settings.zocdoc],
@@ -491,7 +480,7 @@
       ["ORCID", settings.orcid],
       ["Professional profile", settings.other_link],
     ];
-    renderSocialLinks(elements.socialLinks, links);
+    renderSocialLinks(elements.socialLinks, links.slice(0, 3));
     renderSocialLinks(elements.heroSocialLinks, links.slice(0, 3));
     renderSocialLinks(elements.profileSocialLinks, links.slice(0, 3), { showLabel: true });
     renderLatestSocialPost(settings);
@@ -757,7 +746,6 @@
       appointmentPhone: byId("appointmentPhone"),
       appointmentRequestForm: byId("appointmentRequestForm"),
       bookingLinks: byId("bookingLinks"),
-      contactEmail: byId("contactEmail"),
       credentialLine: byId("credentialLine"),
       credentialLinks: byId("credentialLinks"),
       detailBody: byId("detailBody"),
