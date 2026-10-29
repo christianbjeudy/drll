@@ -1,14 +1,14 @@
 {
   "settings": {
-    "about": "Dr. Laurenie Louissaint is a board-certified physician in Physical Medicine and Rehabilitation whose practice centers on sports medicine, pain management, interventional spine care, and helping active people return to movement. She serves as Assistant Professor of Sports Medicine at SUNY Downstate Health Sciences University and as Head Team Physician for the Haiti Women’s National Team through the Haitian Football Federation. Her path from Division I athlete and athletic trainer to physician continues to shape a practical, movement-focused approach to care.",
-    "hero_intro": "Board-certified in Physical Medicine & Rehabilitation and an Assistant Professor of Sports Medicine at SUNY Downstate, Dr. Louissaint provides movement-focused care across sports medicine, pain management, and interventional spine treatment. As Head Team Physician for the Haiti Women’s National Team, she brings clinical expertise, an athlete’s perspective, and a commitment to helping patients recover, perform, and remain active.",
+    "about": "Dr. Laurenie Louissaint is double board-certified in Physical Medicine & Rehabilitation and Sports Medicine. Her practice centers on sports medicine and interventional spine care, informed by her own path from Division I athlete and athletic trainer at Florida International University to physician and national-team doctor. She serves as Assistant Professor of Sports Medicine at SUNY Downstate Health Sciences University and as Head Team Physician for the Haiti Women’s National Team through the Haitian Football Federation.",
+    "hero_intro": "Double board-certified in Physical Medicine & Rehabilitation and Sports Medicine, Dr. Louissaint primarily practices sports medicine and interventional spine care. As an Assistant Professor at SUNY Downstate and Head Team Physician for the Haiti Women’s National Team, she brings advanced clinical training and an athlete’s perspective to helping patients recover, perform, and remain active.",
     "credentials": "MD, MS, FAAPMR",
     "professional_title": "Assistant Professor of Sports Medicine",
     "academic_appointment": "Assistant Professor of Sports Medicine; Assistant Program Director, Physical Medicine & Rehabilitation Residency",
     "team_role": "Head Team Physician · Haiti Women’s National Team",
     "clinical_focus": "Sports Medicine\nPhysical Medicine & Rehabilitation\nPain Management\nInterventional Spine\nMusculoskeletal Ultrasound\nCycling & Running Medicine",
     "affiliations": "SUNY Downstate Health Sciences University, Orthopaedic Surgery & Rehabilitation Medicine\nUniversity Hospital at Downstate\nOne Brooklyn Health, Bone & Joint Center at Brookdale Hospital\nUniversity Physicians of Brooklyn, Inc.\nAmerican Academy of Physical Medicine and Rehabilitation\nAmerican Medical Society for Sports Medicine\nAssociation of Academic Physiatrists\nSociety of Haitian Neuroscientists",
-    "training": "Ross University School of Medicine, Doctor of Medicine, 2019\nIcahn School of Medicine at Mount Sinai, Physical Medicine & Rehabilitation Residency\nIcahn School of Medicine at Mount Sinai, Sports Medicine & Interventional Spine Fellowship",
+    "training": "Icahn School of Medicine at Mount Sinai, Sports Medicine & Interventional Spine Fellowship, Aug 2023 – Jul 2024\nIcahn School of Medicine at Mount Sinai, Physical Medicine & Rehabilitation Residency, Jul 2020 – Jul 2023\nRoss University School of Medicine, Doctor of Medicine, 2014 – 2018\nFlorida International University, Master of Arts in Athletic Training, 2005 – 2010; Division I Track & Field and Athletic Training Education Program",
     "languages": "English · French · Spanish · Haitian Creole",
     "location": "Brooklyn, New York",
     "appointment_phone": "(718) 270-2045",
@@ -23,7 +23,7 @@
     "npi": "https://npiregistry.cms.hhs.gov/provider-view/1891255279",
     "linkedin": "https://www.linkedin.com/in/laurenie-louissaint-md-ms-2b199352",
     "instagram": "https://www.instagram.com/dr.louissaint_/",
-    "tiktok": "https://www.tiktok.com/@dr.louissaint_",
+    "tiktok": "https://www.tiktok.com/@dr_knee_nie",
     "scholar": "",
     "orcid": "",
     "other_link": ""
@@ -65,13 +65,24 @@
     {
       "type": "event",
       "status": "published",
-      "title": "Rehabilitation Medicine Service in Namibia",
+      "title": "Rehabilitation Medicine Missions in Namibia",
       "category": "Global Health",
-      "date": "2023-03-01",
-      "summary": "Clinical service and hands-on education with a Mount Sinai rehabilitation team and local health professionals in Windhoek, Namibia.",
-      "body": "Dr. Louissaint joined Mount Sinai colleagues on a service trip supporting pain and rehabilitation care. The team treated patients and worked with local clinicians on training designed to strengthen sustainable access to injection-based pain interventions.",
+      "date": "2024-03-10",
+      "summary": "Two clinical-service trips supporting rehabilitation care and hands-on medical education in Windhoek, Namibia.",
+      "body": "Dr. Louissaint traveled to Namibia twice with rehabilitation medicine colleagues, returning in 2024 after an earlier service mission. The teams treated high volumes of patients, supported image-guided and peripheral joint procedures, and worked alongside local clinicians to expand sustainable pain and rehabilitation care.",
       "image_url": "",
-      "external_url": "https://reports.mountsinai.org/article/rehab2024-07-zakhary-namibia"
+      "external_url": "https://www.gofundme.com/f/namibia-24"
+    },
+    {
+      "type": "event",
+      "status": "published",
+      "title": "Medical and Rehabilitation Service in Haiti",
+      "category": "Global Health",
+      "date": "2019-01-12",
+      "summary": "Mission-based medical and rehabilitation service connected to Haiti after the 2010 earthquake.",
+      "body": "After the 2010 earthquake, Dr. Louissaint volunteered in Haiti through Project Medishare and later returned with the Haiti Rehab Project. The experiences connected her family’s Haitian roots with a long-term commitment to medicine, rehabilitation, and service in communities with limited access to care.",
+      "image_url": "",
+      "external_url": "https://www.gofundme.com/f/lolo-to-haiti"
     },
     {
       "type": "milestone",
@@ -89,9 +100,9 @@
       "status": "published",
       "title": "Sports Medicine & Interventional Spine Fellowship",
       "category": "Postgraduate Training",
-      "date": "2023-07-01",
-      "summary": "Advanced fellowship training at the Icahn School of Medicine at Mount Sinai.",
-      "body": "Following residency in Physical Medicine and Rehabilitation, Dr. Louissaint pursued fellowship training in sports medicine and interventional spine at the Icahn School of Medicine at Mount Sinai.",
+      "date": "2023-08-01",
+      "summary": "Advanced fellowship training at the Icahn School of Medicine at Mount Sinai from August 2023 through July 2024.",
+      "body": "Following residency in Physical Medicine and Rehabilitation, Dr. Louissaint completed fellowship training in Sports Medicine and Interventional Spine at the Icahn School of Medicine at Mount Sinai from August 2023 through July 2024.",
       "image_url": "",
       "external_url": "https://www.downstate.edu/faculty/orthopaedic-surgery/louissaint.html"
     },
@@ -101,8 +112,8 @@
       "title": "Physical Medicine & Rehabilitation Residency",
       "category": "Residency",
       "date": "2020-07-01",
-      "summary": "Began residency training in Physical Medicine and Rehabilitation at the Icahn School of Medicine at Mount Sinai.",
-      "body": "Her residency training developed a broad foundation in rehabilitation medicine, function, and musculoskeletal care.",
+      "summary": "Completed Physical Medicine and Rehabilitation residency at the Icahn School of Medicine at Mount Sinai from July 2020 through July 2023.",
+      "body": "Her residency training from July 2020 through July 2023 developed a broad foundation in rehabilitation medicine, function, musculoskeletal care, and the non-operative treatment of active patients.",
       "image_url": "",
       "external_url": "https://www.doximity.com/pub/laurenie-louissaint-md"
     },
@@ -113,7 +124,7 @@
       "category": "Medical Education",
       "date": "2019-05-01",
       "summary": "Earned her medical degree from Ross University School of Medicine.",
-      "body": "A former Division I athlete and athletic trainer, Dr. Louissaint brought an established foundation in movement and rehabilitation to her medical training.",
+      "body": "Dr. Louissaint studied medicine at Ross University School of Medicine from 2014 through 2018. A former Division I athlete and athletic trainer at Florida International University, she brought an established foundation in movement, performance, and rehabilitation to her medical training.",
       "image_url": "/assets/images/dr-laurenie-louissaint-ross.jpg",
       "external_url": "https://medical.rossu.edu/about/news/it-only-takes-one-2019-alumnus-achieves-her-dream-becomes-a-trailblazer-for-others"
     },

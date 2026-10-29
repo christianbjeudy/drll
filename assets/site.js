@@ -8,7 +8,7 @@
     activeHighlight: "journey",
   };
 
-  const highlightIds = ["journey", "publications", "events", "journal"];
+  const highlightIds = ["journey", "publications", "events", "athleticism", "journal", "media"];
 
   const elements = {};
 
@@ -459,6 +459,7 @@
     ];
     renderSocialLinks(elements.socialLinks, links);
     renderSocialLinks(elements.heroSocialLinks, links.slice(0, 3));
+    renderSocialLinks(elements.profileSocialLinks, links.slice(0, 3));
 
     const headerLinks = [
       [elements.headerLinkedin, settings.linkedin],
@@ -739,6 +740,7 @@
       nav: byId("nav"),
       newsList: byId("newsList"),
       portrait: byId("portrait"),
+      profileSocialLinks: byId("profileSocialLinks"),
       roleSummary: byId("roleSummary"),
       pubCount: byId("pubCount"),
       pubFilters: byId("pubFilters"),

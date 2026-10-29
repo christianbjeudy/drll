@@ -114,6 +114,8 @@ h2 {
 /* Hero */
 .hero {
   min-height: 790px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
+  gap: 40px;
   padding-top: 62px;
   padding-bottom: 76px;
   background: radial-gradient(circle at 82% 28%, rgba(116, 97, 143, 0.09), transparent 29%);
@@ -122,7 +124,7 @@ h2 {
   max-width: 670px;
   margin: 0 0 28px;
   font-family: 'Prata', Georgia, serif;
-  font-size: clamp(58px, 6.2vw, 92px);
+  font-size: clamp(54px, 4.6vw, 74px);
   font-weight: 400;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -135,7 +137,7 @@ h2 {
 .hero-intro { max-width: 510px; line-height: 1.75; }
 .hero-buttons { margin-top: 28px; }
 .hero-foot { margin-top: 45px; }
-.hero-art { height: 744px; margin-left: 38px; }
+.hero-art { height: 744px; margin-left: 0; }
 .portrait-wrap {
   inset: 0 0 132px;
   z-index: 1;
@@ -411,7 +413,7 @@ h2 {
   box-shadow: none;
 }
 .profile-photo-frame {
-  height: clamp(285px, 28vw, 370px);
+  height: clamp(420px, 38vw, 520px);
   overflow: hidden;
   border: 1px solid #dcd8d1;
   background: #d8dce3;
@@ -421,9 +423,35 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 31%;
+  object-position: center 34%;
   filter: saturate(0.82) contrast(1.02);
 }
+.profile-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 12px;
+}
+.profile-social-links a {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  background: var(--navy);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(29, 41, 71, 0.16);
+  transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+.profile-social-links a:hover {
+  background: #445783;
+  box-shadow: 0 14px 28px rgba(29, 41, 71, 0.22);
+  transform: translateY(-2px);
+}
+.profile-social-links svg { width: 17px; height: 17px; }
+.profile-social-links .social-linkedin svg,
+.profile-social-links .social-tiktok svg { fill: currentColor; }
+.profile-social-links .social-instagram svg { fill: none; stroke: currentColor; stroke-width: 1.8; }
+.profile-social-links .social-instagram .fill-dot { fill: currentColor; stroke: none; }
 .profile-photo-caption {
   display: flex;
   align-items: center;
@@ -628,7 +656,7 @@ h2 {
 .highlight-tabs {
   display: grid;
   overflow: hidden;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0;
   border: 1px solid #d7d4d0;
   background: rgba(255, 255, 255, 0.46);
@@ -646,7 +674,7 @@ h2 {
   font-size: 13px;
   font-weight: 600;
   line-height: 1.4;
-  text-align: left;
+  text-align: center;
   transition: background 180ms ease, color 180ms ease;
 }
 .highlight-tab:last-child { border-right: 0; }
@@ -728,6 +756,67 @@ h2 {
   font-weight: 700;
 }
 .highlight-entry-link:hover { background: #33466f; }
+.athleticism-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.media-intro-card {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 20px;
+  padding: 30px 34px;
+  background: linear-gradient(145deg, #1d2947 0%, #344775 70%, #5d4c78 130%);
+  color: #fff;
+  box-shadow: 0 24px 65px rgba(29, 41, 71, 0.16);
+}
+.media-intro-card .mini-label { color: #d2c2e1; }
+.media-intro-card h4 {
+  margin: 18px 0 8px;
+  font-family: 'Prata', Georgia, serif;
+  font-size: clamp(24px, 2.6vw, 36px);
+  font-weight: 400;
+  line-height: 1.12;
+}
+.media-intro-card p { max-width: 620px; margin-bottom: 0; color: #e6e8ef; font-size: 12px; line-height: 1.75; }
+.media-profile-buttons {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+.media-profile-button {
+  display: inline-flex;
+  padding: 13px 16px;
+  background: #fff;
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 700;
+}
+.media-profile-button--secondary { border: 1px solid rgba(255, 255, 255, 0.35); background: transparent; color: #fff; }
+.media-subheading { margin: 34px 0 18px; }
+.media-subheading h4 {
+  margin: 8px 0 0;
+  font-family: 'Prata', Georgia, serif;
+  font-size: clamp(22px, 2.2vw, 32px);
+  font-weight: 400;
+}
+.tiktok-video-grid,
+.social-video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.tiktok-video-grid iframe,
+.social-video-grid iframe {
+  width: 100%;
+  min-height: 610px;
+  overflow: hidden;
+  border: 1px solid #d7d4d0;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 24px 65px rgba(29, 41, 71, 0.1);
+}
 .footer { padding-top: 48px; }
 .detail-source {
   margin-top: 28px;
@@ -800,7 +889,7 @@ h2 {
   .section { padding-top: 78px; padding-bottom: 78px; }
   .header { height: 75px; }
   .nav { top: 75px; }
-  .hero { min-height: auto; padding-top: 54px; padding-bottom: 64px; }
+  .hero { min-height: auto; grid-template-columns: 1fr; gap: 50px; padding-top: 54px; padding-bottom: 64px; }
   .hero-art { height: 630px; margin-left: 0; }
   .credential-inner { padding-right: 6%; padding-left: 6%; }
   .credential-inner > div { padding: 20px 18px; }
@@ -816,13 +905,17 @@ h2 {
   .highlight-entry-image { width: 100%; height: 140px; }
   .profile-layout { grid-template-columns: 1fr; }
   .profile-image-card { position: relative; top: auto; max-width: none; }
-  .profile-photo-frame { height: clamp(300px, 56vw, 430px); }
+  .profile-photo-frame { height: clamp(380px, 70vw, 520px); }
   .appointment-layout { grid-template-columns: 1fr; }
   .appointment-section { padding: 54px 0; }
   .appointment-card { max-width: 620px; }
   .appointment-connect { grid-template-columns: 1fr; gap: 20px; }
-  .highlight-tabs { grid-template-columns: repeat(4, minmax(148px, 1fr)); overflow-x: auto; }
+  .highlight-tabs { grid-template-columns: repeat(6, minmax(156px, 1fr)); overflow-x: auto; }
   .highlight-panels { min-height: 720px; }
+  .tiktok-video-grid,
+  .social-video-grid { grid-template-columns: 1fr; }
+  .tiktok-video-grid iframe,
+  .social-video-grid iframe { min-height: 690px; }
 }
 
 @media (max-width: 540px) {
@@ -849,7 +942,7 @@ h2 {
   .expertise-more { margin: 0 20px; padding: 18px 0 20px; }
   .highlight-entry-more.has-media { grid-template-columns: 1fr; }
   .highlight-entry-image { width: 100%; height: 220px; }
-  .profile-photo-frame { height: 265px; }
+  .profile-photo-frame { height: 340px; }
   .profile-photo-caption { align-items: flex-start; flex-direction: column; gap: 8px; }
   .profile-details { grid-template-columns: 1fr; }
   .profile-details .profile-detail { grid-column: 1; padding: 23px; }
@@ -873,4 +966,8 @@ h2 {
   .highlight-panel-heading h3 { font-size: 30px; }
   .publication-item:hover { padding-right: 4px; padding-left: 4px; }
   .publication-item { grid-template-columns: 45px 1fr; }
+  .media-intro-card { align-items: flex-start; flex-direction: column; padding: 27px 23px; }
+  .media-profile-buttons { width: 100%; flex-wrap: wrap; }
+  .tiktok-video-grid iframe,
+  .social-video-grid iframe { min-height: 620px; }
 }
