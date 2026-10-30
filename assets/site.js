@@ -4,7 +4,6 @@
   const state = {
     entries: [],
     settings: {},
-    publicationFilter: "all",
     activeHighlight: "journey",
   };
 
@@ -314,46 +313,15 @@
     for (const entry of entries) elements.journeyList.append(highlightEntry(entry));
   }
 
-  function renderPublicationFilters(publications) {
-    const categories = [...new Set(publications.map((entry) => entry.category).filter(Boolean))].sort();
-    elements.pubFilters.replaceChildren();
-
-    const filters = [{ value: "all", label: "All work" }, ...categories.map((category) => ({
-      value: category,
-      label: category,
-    }))];
-
-    for (const filter of filters) {
-      const button = make("button", `chip${state.publicationFilter === filter.value ? " active" : ""}`, filter.label);
-      button.type = "button";
-      button.dataset.filter = filter.value;
-      button.setAttribute("aria-pressed", String(state.publicationFilter === filter.value));
-      button.addEventListener("click", () => {
-        state.publicationFilter = filter.value;
-        renderPublications();
-      });
-      elements.pubFilters.append(button);
-    }
-  }
-
   function renderPublications() {
     const publications = state.entries.filter((entry) => entry.type === "publication");
-    if (state.publicationFilter !== "all" && !publications.some((entry) => entry.category === state.publicationFilter)) {
-      state.publicationFilter = "all";
-    }
-    renderPublicationFilters(publications);
-    const visible = state.publicationFilter === "all"
-      ? publications
-      : publications.filter((entry) => entry.category === state.publicationFilter);
-
     elements.publicationList.replaceChildren();
-    elements.pubSummary.textContent = `${visible.length} ${visible.length === 1 ? "entry" : "entries"}`;
-    if (!visible.length) {
+    if (!publications.length) {
       elements.publicationList.append(emptyMessage("Published work will be added to this library soon."));
       return;
     }
 
-    for (const entry of visible) elements.publicationList.append(highlightEntry(entry));
+    for (const entry of publications) elements.publicationList.append(highlightEntry(entry));
   }
 
   function renderCards(type, container, kind, emptyText) {
@@ -775,9 +743,7 @@
       profileSocialLinks: byId("profileSocialLinks"),
       roleSummary: byId("roleSummary"),
       pubCount: byId("pubCount"),
-      pubFilters: byId("pubFilters"),
       publicationList: byId("publicationList"),
-      pubSummary: byId("pubSummary"),
       searchDialog: byId("searchDialog"),
       searchInput: byId("searchInput"),
       searchResults: byId("searchResults"),
