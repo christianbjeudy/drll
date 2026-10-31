@@ -84,6 +84,13 @@
     }).format(date);
   }
 
+  function newestFirst(left, right) {
+    const leftDate = Date.parse(left.date || left.updated_at || left.created_at || "") || 0;
+    const rightDate = Date.parse(right.date || right.updated_at || right.created_at || "") || 0;
+    return rightDate - leftDate
+      || String(right.updated_at || "").localeCompare(String(left.updated_at || ""));
+  }
+
   function filteredEntries() {
     const query = elements.entrySearch.value.trim().toLocaleLowerCase();
     return state.entries.filter((entry) => {
@@ -91,7 +98,7 @@
       if (!query) return true;
       return [entry.title, entry.category, entry.summary, entry.type, entry.status]
         .some((value) => String(value || "").toLocaleLowerCase().includes(query));
-    });
+    }).sort(newestFirst);
   }
 
   function entryRow(entry) {

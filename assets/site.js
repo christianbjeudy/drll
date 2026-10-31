@@ -88,6 +88,17 @@
     return String(value || "").split(/\r?\n/u).map((line) => line.trim()).filter(Boolean);
   }
 
+  function entryTimestamp(entry) {
+    const value = entry.date || entry.updated_at || entry.created_at || "";
+    const timestamp = Date.parse(value);
+    return Number.isFinite(timestamp) ? timestamp : 0;
+  }
+
+  function newestFirst(left, right) {
+    return entryTimestamp(right) - entryTimestamp(left)
+      || String(right.updated_at || "").localeCompare(String(left.updated_at || ""));
+  }
+
   function renderTextList(container, value) {
     const items = lines(value);
     if (!items.length) return;
@@ -315,7 +326,7 @@
   }
 
   function renderJourney() {
-    const entries = state.entries.filter((entry) => entry.type === "milestone");
+    const entries = state.entries.filter((entry) => entry.type === "milestone").sort(newestFirst);
     elements.journeyList.replaceChildren();
     if (!entries.length) {
       elements.journeyList.append(emptyMessage("Professional milestones will appear here as this profile grows.", "empty-inline"));
@@ -326,7 +337,7 @@
   }
 
   function renderPublications() {
-    const publications = state.entries.filter((entry) => entry.type === "publication");
+    const publications = state.entries.filter((entry) => entry.type === "publication").sort(newestFirst);
     elements.publicationList.replaceChildren();
     if (!publications.length) {
       elements.publicationList.append(emptyMessage("Published work will be added to this library soon."));
@@ -337,7 +348,7 @@
   }
 
   function renderCards(type, container, kind, emptyText) {
-    const entries = state.entries.filter((entry) => entry.type === type);
+    const entries = state.entries.filter((entry) => entry.type === type).sort(newestFirst);
     container.replaceChildren();
     if (!entries.length) {
       container.append(emptyMessage(emptyText));
@@ -398,16 +409,11 @@
 
     const portraitUrl = safeUrl(settings.portrait_url);
     if (portraitUrl) {
-      const portrait = make("img");
-      portrait.src = portraitUrl;
-      portrait.alt = "Portrait of Dr. Laurenie Louissaint";
-      portrait.decoding = "async";
-      portrait.width = 1285;
-      portrait.height = 1800;
-      portrait.addEventListener("error", () => {
-        portrait.src = "/assets/images/dr-laurenie-louissaint-headshot.jpg";
+      elements.heroPrimaryPortrait.src = portraitUrl;
+      elements.heroPrimaryPortrait.alt = "Portrait of Dr. Laurenie Louissaint";
+      elements.heroPrimaryPortrait.addEventListener("error", () => {
+        elements.heroPrimaryPortrait.src = "/assets/images/dr-laurenie-louissaint-headshot.jpg";
       }, { once: true });
-      elements.portrait.replaceChildren(portrait);
     }
 
     const credentialLinks = [
@@ -730,6 +736,57 @@
       });
     }
     setUpHighlights();
+    setUpHeroCarousel();
+  }
+
+  function setUpHeroCarousel() {
+    const slides = [...elements.portrait.querySelectorAll("[data-hero-slide]")];
+    const dots = [...elements.portrait.querySelectorAll("[data-hero-dot]")];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let activeIndex = 0;
+    let rotationTimer = 0;
+
+    const showSlide = (index) => {
+      activeIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === activeIndex;
+        slide.classList.toggle("is-active", active);
+        slide.setAttribute("aria-hidden", String(!active));
+      });
+      dots.forEach((dot, dotIndex) => dot.setAttribute("aria-current", String(dotIndex === activeIndex)));
+    };
+
+    const stopRotation = () => {
+      window.clearInterval(rotationTimer);
+      rotationTimer = 0;
+    };
+
+    const startRotation = () => {
+      stopRotation();
+      if (slides.length < 2 || reducedMotion.matches || document.hidden) return;
+      rotationTimer = window.setInterval(() => showSlide(activeIndex + 1), 6500);
+    };
+
+    elements.portrait.querySelector("[data-hero-previous]")?.addEventListener("click", () => {
+      showSlide(activeIndex - 1);
+      startRotation();
+    });
+    elements.portrait.querySelector("[data-hero-next]")?.addEventListener("click", () => {
+      showSlide(activeIndex + 1);
+      startRotation();
+    });
+    dots.forEach((dot, index) => dot.addEventListener("click", () => {
+      showSlide(index);
+      startRotation();
+    }));
+    elements.portrait.addEventListener("mouseenter", stopRotation);
+    elements.portrait.addEventListener("mouseleave", startRotation);
+    elements.portrait.addEventListener("focusin", stopRotation);
+    elements.portrait.addEventListener("focusout", startRotation);
+    document.addEventListener("visibilitychange", () => (document.hidden ? stopRotation() : startRotation()));
+    reducedMotion.addEventListener?.("change", startRotation);
+    showSlide(0);
+    startRotation();
   }
 
   async function loadContent() {
@@ -742,7 +799,7 @@
       if (!response.ok) throw new Error(`Content request failed with ${response.status}`);
       const payload = await response.json();
       state.settings = payload.settings || {};
-      state.entries = Array.isArray(payload.entries) ? payload.entries : [];
+      state.entries = Array.isArray(payload.entries) ? payload.entries.sort(newestFirst) : [];
     } catch (error) {
       console.error("Unable to load site content.", error);
       document.body.classList.add("content-unavailable");
@@ -771,6 +828,7 @@
       eventList: byId("eventList"),
       focusList: byId("focusList"),
       heroAppointment: byId("heroAppointment"),
+      heroPrimaryPortrait: byId("heroPrimaryPortrait"),
       heroIntro: byId("heroIntro"),
       heroSocialLinks: byId("heroSocialLinks"),
       headerInstagram: byId("headerInstagram"),

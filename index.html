@@ -77,8 +77,19 @@
       </div>
       <figure class="hero-art">
         <div class="portrait-wrap">
-          <div id="portrait" class="portrait-placeholder">
-            <img src="/assets/images/dr-laurenie-louissaint-headshot.jpg" alt="Dr. Laurenie Louissaint in a white coat" width="1285" height="1800">
+          <div id="portrait" class="portrait-placeholder hero-carousel" aria-label="Portraits of Dr. Laurenie Louissaint" aria-roledescription="carousel">
+            <div class="hero-slide is-active" data-hero-slide aria-hidden="false">
+              <img id="heroPrimaryPortrait" src="/assets/images/dr-laurenie-louissaint-headshot.jpg" alt="Dr. Laurenie Louissaint in a white coat" width="1285" height="1800">
+            </div>
+            <div class="hero-slide hero-slide--career" data-hero-slide aria-hidden="true">
+              <img src="/assets/images/dr-laurenie-louissaint-ross.jpg" alt="Dr. Laurenie Louissaint during her early medical career" width="1600" height="1309">
+            </div>
+            <button class="hero-carousel-control hero-carousel-control--previous" type="button" data-hero-previous aria-label="Previous portrait">‹</button>
+            <button class="hero-carousel-control hero-carousel-control--next" type="button" data-hero-next aria-label="Next portrait">›</button>
+            <div class="hero-carousel-dots" aria-label="Choose a portrait">
+              <button type="button" data-hero-dot="0" aria-label="Show portrait 1" aria-current="true"></button>
+              <button type="button" data-hero-dot="1" aria-label="Show portrait 2" aria-current="false"></button>
+            </div>
           </div>
         </div>
         <figcaption class="hero-art-bottom">
@@ -157,9 +168,9 @@
           <div id="credentialLinks" class="profile-resource-links" aria-label="Verified clinical profiles"></div>
         </div>
         <div class="profile-details">
-          <article class="profile-detail profile-detail--role"><span class="mini-label">CURRENT APPOINTMENT</span><div id="academicAppointment" class="appointment-roles"><h3>Assistant Professor of Sports Medicine</h3><span class="appointment-role-divider" aria-hidden="true"></span><h3>Assistant Program Director,<br>Physical Medicine &amp; Rehabilitation Residency</h3></div><p>SUNY Downstate Health Sciences University</p></article>
-          <article class="profile-detail"><span class="mini-label">AFFILIATIONS</span><ul id="affiliationList"><li>SUNY Downstate Health Sciences University</li><li>One Brooklyn Health / Brookdale Hospital</li><li>University Physicians of Brooklyn, Inc.</li></ul></article>
-          <article class="profile-detail"><span class="mini-label">EDUCATION &amp; TRAINING</span><ul id="trainingList"><li>Icahn School of Medicine at Mount Sinai, Sports Medicine &amp; Interventional Spine Fellowship, Aug 2023 – Jul 2024</li><li>Icahn School of Medicine at Mount Sinai, Physical Medicine &amp; Rehabilitation Residency, Jul 2020 – Jul 2023</li><li>Ross University School of Medicine, Doctor of Medicine, 2014 – 2018</li><li>Florida International University, Master of Arts in Athletic Training, 2005 – 2010</li></ul><div class="training-languages"><span class="mini-label">LANGUAGES</span><p id="languageList">English · French · Spanish · Haitian Creole</p></div></article>
+          <article class="profile-detail profile-detail--role"><span class="mini-label">CURRENT APPOINTMENT</span><div id="academicAppointment" class="appointment-roles"><h3>Assistant Professor of Sports Medicine &amp; PM&amp;R</h3><span class="appointment-role-divider" aria-hidden="true"></span><h3>Associate Program Director,<br>Physical Medicine &amp; Rehabilitation Residency</h3></div><p>SUNY Downstate Health Sciences University</p></article>
+          <article class="profile-detail"><span class="mini-label">AFFILIATIONS</span><ul id="affiliationList"><li>SUNY Downstate Health Sciences University</li><li>One Brooklyn Health / Brookdale Hospital</li><li>University Physicians of Brooklyn, Inc.</li><li>Haitian Football Federation (Fédération Haïtienne de Football)</li></ul></article>
+          <article class="profile-detail"><span class="mini-label">EDUCATION &amp; TRAINING</span><ul id="trainingList"><li>Icahn School of Medicine at Mount Sinai, Sports Medicine &amp; Interventional Spine Fellowship, Aug 2023 – Jul 2024</li><li>Icahn School of Medicine at Mount Sinai, Physical Medicine &amp; Rehabilitation Residency, Jul 2020 – Jul 2023</li><li>Ross University School of Medicine, Doctor of Medicine, 2014 – 2018</li><li>Florida International University, BS, Master of Arts in Athletic Training, 2005 – 2010; Division I Track &amp; Field and Athletic Training Education Program</li></ul><div class="training-languages"><span class="mini-label">LANGUAGES</span><p id="languageList">English · French · Spanish · Haitian Creole</p></div></article>
         </div>
       </div>
     </section>
@@ -261,7 +272,7 @@
   <footer class="footer">
     <div class="shell footer-inner">
       <div class="footer-brand"><img class="footer-logo" src="/assets/brand/drll-logo-horizontal.png" alt="Dr. Laurenie Louissaint, MD, MS, FAAPMR"><div id="socialLinks" class="social-links footer-socials" aria-label="Social profiles"></div></div>
-      <div class="footer-bottom"><span>© <span id="year"></span> DR. LAURENIE LOUISSAINT. ALL RIGHTS RESERVED.</span><a href="https://christianbjeudy.com" target="_blank" rel="noopener noreferrer" class="made-by">Made by <strong>christianbjeudy.com</strong></a></div>
+      <div class="footer-bottom"><span>© <span id="year"></span> DR. LAURENIE LOUISSAINT. ALL RIGHTS RESERVED.</span><div class="footer-actions"><a class="admin-login" href="/admin.html">Admin login</a><a href="https://christianbjeudy.com" target="_blank" rel="noopener noreferrer" class="made-by">Made by <strong>christianbjeudy.com</strong></a></div></div>
     </div>
   </footer>
 
