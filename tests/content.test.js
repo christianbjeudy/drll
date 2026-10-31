@@ -33,6 +33,7 @@ test("normalizes professional inquiries and rejects incomplete submissions", () 
   });
   assert.equal(inquiry.name, "Future Physician");
   assert.equal(inquiry.request_type, "mentorship");
+  assert.equal(normalizeInquiry({ request_type: "brand-partnerships", name: "Partner", email: "partner@example.com", message: "Collaboration" }).request_type, "brand-partnerships");
   assert.throws(() => normalizeInquiry({ request_type: "patient", name: "A", email: "a@example.com", message: "Help" }), /Request type/u);
   assert.throws(() => normalizeInquiry({ request_type: "press", name: "A", email: "bad", message: "Interview" }), /valid email/u);
 });

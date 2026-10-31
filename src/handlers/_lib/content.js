@@ -2,7 +2,7 @@ import { HttpError, validateUrl } from "./http.js";
 
 export const ENTRY_TYPES = new Set(["publication", "event", "milestone", "news", "media"]);
 export const ENTRY_STATUSES = new Set(["draft", "published"]);
-export const INQUIRY_TYPES = new Set(["mentorship", "press", "sports-coverage"]);
+export const INQUIRY_TYPES = new Set(["brand-partnerships", "speaking-engagements", "mentorship", "press", "sports-coverage"]);
 
 function cleanText(value, maxLength, field) {
   const text = String(value || "").trim();

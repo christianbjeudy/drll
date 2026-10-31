@@ -410,34 +410,10 @@
       elements.portrait.replaceChildren(portrait);
     }
 
-    const appointmentPhone = phoneHref(settings.appointment_phone);
-    if (appointmentPhone) {
-      elements.appointmentPhone.textContent = settings.appointment_phone;
-      elements.appointmentRequestForm.dataset.phone = appointmentPhone;
-    }
-
-    const bookingLinks = [
-      ["Official appointment profile", settings.appointment_url, true],
-      ["Zocdoc", settings.zocdoc],
-      ["WebMD", settings.webmd],
-    ];
-    elements.bookingLinks.replaceChildren();
-    elements.appointmentRequestForm.dataset.appointmentUrl = safeUrl(settings.appointment_url);
-    for (const [label, value, primary = false] of bookingLinks) {
-      const url = safeUrl(value);
-      if (!url) continue;
-      const link = make("a", primary ? "primary-booking" : "", label);
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      elements.bookingLinks.append(link);
-    }
-
     const credentialLinks = [
       ["One Brooklyn Health", settings.one_brooklyn],
       ["Healthgrades", settings.healthgrades],
       ["Doximity", settings.doximity],
-      ["NPI Registry", settings.npi],
     ];
     elements.credentialLinks.replaceChildren();
     for (const [label, value] of credentialLinks) {
@@ -669,11 +645,11 @@
       const patientRequest = elements.inquiryType.value === "patient";
       elements.patientRequestFields.hidden = !patientRequest;
       elements.professionalRequestFields.hidden = patientRequest;
-      elements.appointmentInterest.required = patientRequest;
       for (const fieldName of ["name", "email", "message"]) {
         elements.appointmentRequestForm.elements.namedItem(fieldName).required = !patientRequest;
       }
-      elements.appointmentSubmit.textContent = patientRequest ? "Continue" : "Send request";
+      elements.appointmentSubmit.hidden = patientRequest;
+      elements.appointmentSubmit.textContent = "Send request";
       elements.requestFormMessage.textContent = "";
       elements.requestFormMessage.className = "request-form-message";
     };
@@ -688,6 +664,28 @@
     };
 
     elements.inquiryType.addEventListener("change", updateRequestForm);
+    const connectTriggers = [...document.querySelectorAll(".connect-menu-trigger")];
+    const setConnectMenu = (open) => {
+      elements.connectMenu.hidden = !open;
+      for (const trigger of connectTriggers) trigger.setAttribute("aria-expanded", String(open));
+    };
+    for (const trigger of connectTriggers) {
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setConnectMenu(elements.connectMenu.hidden);
+      });
+    }
+    for (const option of elements.connectMenu.querySelectorAll("[data-inquiry]")) {
+      option.addEventListener("click", () => {
+        setConnectMenu(false);
+        elements.nav.classList.remove("open");
+        elements.menuToggle.setAttribute("aria-expanded", "false");
+        openRequestForm(option.dataset.inquiry);
+      });
+    }
+    document.addEventListener("click", (event) => {
+      if (!elements.connectMenu.hidden && !elements.connectMenu.contains(event.target)) setConnectMenu(false);
+    });
     for (const trigger of document.querySelectorAll(".appointment-trigger")) {
       trigger.addEventListener("click", () => openRequestForm(trigger.dataset.inquiry || "patient"));
     }
@@ -695,19 +693,8 @@
       event.preventDefault();
       const formData = new FormData(elements.appointmentRequestForm);
       const requestType = formData.get("request_type");
-      const route = formData.get("route");
-      const appointmentUrl = safeUrl(elements.appointmentRequestForm.dataset.appointmentUrl);
-      const appointmentPhone = elements.appointmentRequestForm.dataset.phone || "";
 
       if (requestType === "patient") {
-        elements.appointmentDialog.close();
-        if (route === "phone" && appointmentPhone) {
-          window.location.href = appointmentPhone;
-        } else if (appointmentUrl) {
-          window.open(appointmentUrl, "_blank", "noopener,noreferrer");
-        } else {
-          byId("appointments").scrollIntoView({ behavior: "smooth", block: "start" });
-        }
         return;
       }
 
@@ -771,11 +758,9 @@
       aboutLead: byId("aboutLead"),
       appointmentDialog: byId("appointmentDialog"),
       appointmentDialogClose: byId("appointmentDialogClose"),
-      appointmentInterest: byId("appointmentInterest"),
-      appointmentPhone: byId("appointmentPhone"),
       appointmentRequestForm: byId("appointmentRequestForm"),
       appointmentSubmit: document.querySelector(".appointment-submit"),
-      bookingLinks: byId("bookingLinks"),
+      connectMenu: byId("connectMenu"),
       credentialLine: byId("credentialLine"),
       credentialLinks: byId("credentialLinks"),
       detailBody: byId("detailBody"),

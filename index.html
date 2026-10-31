@@ -28,6 +28,7 @@
       <a href="#expertise">Expertise</a>
       <a href="#profile">Credentials</a>
       <a href="#professional-highlights">More</a>
+      <button class="nav-connect connect-menu-trigger" type="button" aria-haspopup="menu" aria-controls="connectMenu">Let’s Connect</button>
     </nav>
     <div class="head-actions">
       <div class="header-socials" aria-label="Social profiles">
@@ -44,7 +45,16 @@
       <button id="searchToggle" class="icon-btn" aria-label="Search site">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>
       </button>
-      <button class="contact-cta appointment-trigger" type="button" data-inquiry="patient">Appointments</button>
+      <div class="connect-wrap">
+        <button id="connectToggle" class="contact-cta connect-menu-trigger" type="button" aria-expanded="false" aria-haspopup="menu" aria-controls="connectMenu">Let’s Connect</button>
+        <div id="connectMenu" class="connect-menu" role="menu" hidden>
+          <button type="button" role="menuitem" data-inquiry="brand-partnerships">Brand Partnerships</button>
+          <button type="button" role="menuitem" data-inquiry="speaking-engagements">Speaking Engagements</button>
+          <button type="button" role="menuitem" data-inquiry="sports-coverage">Sports Coverage</button>
+          <button type="button" role="menuitem" data-inquiry="mentorship">Mentorship</button>
+          <button type="button" role="menuitem" data-inquiry="patient">Book a Medical Appointment</button>
+        </div>
+      </div>
       <button id="menuToggle" class="menu-btn" aria-label="Toggle menu" aria-expanded="false">☰</button>
     </div>
   </header>
@@ -233,14 +243,15 @@
           <div>
             <span class="eyebrow">REQUESTS &amp; PROFESSIONAL CONTACT</span>
             <h2>Connect with<br><em>Dr. Louissaint.</em></h2>
-            <p>Choose the request that best fits your needs. Patient appointments are routed to the SUNY Downstate office; professional requests are sent to Dr. Louissaint’s private administrative dashboard.</p>
+            <p>Choose the request that best fits your needs. Medical appointments connect directly to the appropriate Brooklyn office; professional requests are sent to Dr. Louissaint’s private administrative dashboard.</p>
             <p class="medical-note">This website provides professional information only and does not offer medical advice. If you are experiencing an emergency, call 911.</p>
           </div>
           <div class="request-option-grid" aria-label="Request options">
-            <button class="request-option appointment-trigger" type="button" data-inquiry="patient"><span>01</span><strong>Patient appointments</strong><small>Sports medicine, rehabilitation, spine, and musculoskeletal care.</small></button>
-            <button class="request-option appointment-trigger" type="button" data-inquiry="mentorship"><span>02</span><strong>Mentorship</strong><small>Guidance for students and others interested in pursuing medicine.</small></button>
-            <button class="request-option appointment-trigger" type="button" data-inquiry="press"><span>03</span><strong>Press &amp; public engagement</strong><small>Media, conferences, panels, speaking, and public-health engagement.</small></button>
-            <button class="request-option appointment-trigger" type="button" data-inquiry="sports-coverage"><span>04</span><strong>Sports coverage</strong><small>On-site or on-call physician coverage for sporting events.</small></button>
+            <button class="request-option appointment-trigger" type="button" data-inquiry="brand-partnerships"><span>01</span><strong>Brand partnerships</strong><small>Professional collaborations aligned with health, movement, and performance.</small></button>
+            <button class="request-option appointment-trigger" type="button" data-inquiry="speaking-engagements"><span>02</span><strong>Speaking engagements</strong><small>Conferences, panels, media, and public-health conversations.</small></button>
+            <button class="request-option appointment-trigger" type="button" data-inquiry="sports-coverage"><span>03</span><strong>Sports coverage</strong><small>On-site or on-call physician coverage for sporting events.</small></button>
+            <button class="request-option appointment-trigger" type="button" data-inquiry="mentorship"><span>04</span><strong>Mentorship</strong><small>Guidance for students and others interested in pursuing medicine.</small></button>
+            <button class="request-option appointment-trigger request-option--wide" type="button" data-inquiry="patient"><span>05</span><strong>Book a medical appointment</strong><small>Direct appointment lines for SUNY Downstate University Physicians of Brooklyn and Brookdale Hospital.</small></button>
           </div>
         </div>
       </div>
@@ -268,27 +279,24 @@
       <label for="inquiryType">Request type</label>
       <select id="inquiryType" name="request_type" required>
         <option value="patient">Patient appointment</option>
+        <option value="brand-partnerships">Brand partnership</option>
+        <option value="speaking-engagements">Speaking engagement</option>
         <option value="mentorship">Mentorship</option>
-        <option value="press">Press, public engagement, or conference</option>
         <option value="sports-coverage">Sports coverage: on-site or on-call physician</option>
       </select>
       <div id="patientRequestFields">
-        <label for="appointmentInterest">Area of care</label>
-        <select id="appointmentInterest" name="interest">
-          <option value="">Select an area</option>
-          <option>Sports Medicine</option>
-          <option>Physical Medicine &amp; Rehabilitation</option>
-          <option>Pain Management &amp; Interventional Spine</option>
-          <option>Women’s Musculoskeletal Health</option>
-          <option>Musculoskeletal Ultrasound</option>
-          <option>Cycling &amp; Running Medicine</option>
-        </select>
-        <fieldset>
-          <legend>Preferred next step</legend>
-          <label class="appointment-choice"><input type="radio" name="route" value="online" checked><span><strong>Continue online</strong><small>Open the verified SUNY Downstate appointment profile.</small></span></label>
-          <label class="appointment-choice"><input type="radio" name="route" value="phone"><span><strong>Call the office</strong><small>Connect with the appointment line at <span id="appointmentPhone">(718) 270-2045</span>.</small></span></label>
-        </fieldset>
-        <div id="bookingLinks" class="booking-links appointment-booking-links"></div>
+        <div class="medical-location-list">
+          <article class="medical-location">
+            <span class="mini-label">SUNY DOWNSTATE UNIVERSITY PHYSICIANS OF BROOKLYN</span>
+            <h3>760 Parkside Avenue, Suite 111</h3>
+            <a class="medical-call" href="tel:+17182702045">Call (718) 270-2045 for an appointment</a>
+          </article>
+          <article class="medical-location">
+            <span class="mini-label">BROOKDALE HOSPITAL · BONE &amp; JOINT CENTER</span>
+            <h3>1235 Linden Blvd, Brooklyn, NY 11212 · Lower Level</h3>
+            <div class="medical-location-actions"><a class="medical-call" href="tel:+17182406784">Call (718) 240-ORTHO (6784)</a><a href="https://maps.google.com/maps?saddr=Current+Location&amp;daddr=1235+Linden+Blvd+Brooklyn+NY+11212" target="_blank" rel="noopener noreferrer">View map</a></div>
+          </article>
+        </div>
       </div>
       <div id="professionalRequestFields" class="professional-request-fields" hidden>
         <div class="request-field-grid">
