@@ -932,7 +932,11 @@ h2 {
   border-top: 0;
 }
 .footer .footer-brand { min-width: 0; gap: 18px; color: var(--navy); }
-.footer-logo { width: min(430px, 100%); height: auto; }
+.footer-identity { display: flex; min-width: 0; align-items: center; gap: 17px; }
+.footer-monogram { width: 118px; height: auto; flex: 0 0 auto; }
+.footer-name { display: grid; gap: 7px; }
+.footer-name strong { font-family: 'Prata', Georgia, serif; font-size: clamp(18px, 1.8vw, 27px); font-weight: 400; line-height: 1.15; }
+.footer-name span { color: var(--purple); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; }
 .footer-socials {
   flex: 0 0 auto;
   flex-wrap: nowrap;

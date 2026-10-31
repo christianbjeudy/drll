@@ -359,7 +359,10 @@
     const settings = state.settings;
     if (settings.about) elements.aboutLead.textContent = settings.about;
     if (settings.hero_intro) elements.heroIntro.textContent = settings.hero_intro;
-    if (settings.credentials) elements.credentialLine.textContent = settings.credentials;
+    if (settings.credentials) {
+      elements.credentialLine.textContent = settings.credentials;
+      elements.footerCredentialLine.textContent = settings.credentials;
+    }
     if (settings.professional_title) {
       const role = settings.professional_title.replace(/ of Sports Medicine$/u, ", Sports Medicine");
       renderCredentialLines(elements.roleSummary, role.split(/,\s*/u).map((line, index, list) => index < list.length - 1 ? `${line},` : line));
@@ -804,6 +807,7 @@
       eventCount: byId("eventCount"),
       eventList: byId("eventList"),
       focusList: byId("focusList"),
+      footerCredentialLine: byId("footerCredentialLine"),
       heroAppointment: byId("heroAppointment"),
       heroPrimaryPortrait: byId("heroPrimaryPortrait"),
       heroIntro: byId("heroIntro"),

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "The professional website and academic portfolio of Dr. Laurenie Louissaint.",
+  "description": "The professional website and academic portfolio of Dr. Laurenie Louissaint, MD, MS, FAAPMR, CAQSM.",
   "scripts": {
     "dev": "wrangler dev",
     "check": "node --test tests/*.test.js && node scripts/check-source.js",
