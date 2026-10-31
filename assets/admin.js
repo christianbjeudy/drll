@@ -229,12 +229,6 @@
 
   function renderSettings() {
     fillForm(elements.settingsForm, state.settings);
-    const publishedAtField = elements.settingsForm.elements.namedItem("latest_social_published_at");
-    const publishedAt = new Date(state.settings.latest_social_published_at || "");
-    if (publishedAtField && !Number.isNaN(publishedAt.getTime())) {
-      const localDate = new Date(publishedAt.getTime() - publishedAt.getTimezoneOffset() * 60_000);
-      publishedAtField.value = localDate.toISOString().slice(0, 16);
-    }
   }
 
   async function saveSettings(event) {
@@ -244,9 +238,6 @@
     setMessage(elements.message, "Saving settings…");
     try {
       const data = formObject(elements.settingsForm);
-      if (data.latest_social_published_at) {
-        data.latest_social_published_at = new Date(data.latest_social_published_at).toISOString();
-      }
       const file = elements.portraitUpload.files[0];
       if (file) data.portrait_url = await uploadFile(file);
       const payload = await request("/api/admin/settings", {
