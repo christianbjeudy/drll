@@ -61,6 +61,12 @@ h2 {
   border-color: rgba(38, 53, 87, 0.12);
   box-shadow: 0 10px 34px rgba(29, 41, 71, 0.06);
 }
+.brand { min-width: 180px; }
+.brand-logo {
+  width: 166px;
+  height: auto;
+  object-fit: contain;
+}
 
 .header-socials { display: flex; align-items: center; gap: 6px; }
 .header-socials a {
@@ -847,8 +853,9 @@ h2 {
   max-width: none;
   margin: 0;
   padding: 0 0 24px;
-  background: linear-gradient(118deg, #192540 0%, #26375e 58%, #4c426a 135%);
-  color: #fff;
+  border-top: 4px solid var(--purple);
+  background: #faf9f6;
+  color: var(--navy);
 }
 .footer-inner {
   display: grid;
@@ -856,18 +863,16 @@ h2 {
   align-items: center;
   gap: 16px;
   padding-top: 24px;
-  border-top: 1px solid rgba(215, 221, 239, 0.2);
+  border-top: 0;
 }
-.footer .brand-monogram { color: #fff; }
-.footer .footer-brand { min-width: 0; gap: 18px; color: #fff; }
-.footer .footer-brand small { color: #aeb9d6; }
-.footer .footer-identity { flex: 0 0 auto; white-space: nowrap; }
+.footer .footer-brand { min-width: 0; gap: 18px; color: var(--navy); }
+.footer-logo { width: min(430px, 100%); height: auto; }
 .footer-socials {
   flex: 0 0 auto;
   flex-wrap: nowrap;
   gap: 9px;
   margin: 0 0 0 8px;
-  color: #fff;
+  color: var(--navy);
 }
 .footer-socials a {
   display: grid;
@@ -875,12 +880,12 @@ h2 {
   height: 36px;
   place-items: center;
   padding: 0;
-  border: 1px solid rgba(215, 221, 239, 0.3);
+  border: 1px solid rgba(29, 41, 71, 0.22);
   border-radius: 50%;
   text-decoration: none;
   transition: background 160ms ease, color 160ms ease;
 }
-.footer-socials a:hover { background: #fff; color: var(--navy); }
+.footer-socials a:hover { background: var(--purple); color: #fff; }
 .footer-socials svg { width: 15px; height: 15px; }
 .footer-socials .social-linkedin svg,
 .footer-socials .social-tiktok svg { fill: currentColor; }
@@ -892,7 +897,7 @@ h2 {
   margin-top: 0;
   padding-top: 0;
   border-top: 0;
-  color: #aeb9d6;
+  color: #657080;
   font-size: 9px;
   letter-spacing: 0.5px;
   text-align: left;
@@ -903,8 +908,8 @@ h2 {
   display: inline-flex;
   align-items: center;
   padding: 9px 10px;
-  border-color: rgba(215, 221, 239, 0.28);
-  color: #fff;
+  border-color: rgba(29, 41, 71, 0.2);
+  color: var(--navy);
 }
 .footer .made-by strong { margin-left: 4px; }
 .detail-source {
@@ -1014,6 +1019,7 @@ h2 {
 }
 
 @media (max-width: 540px) {
+  .brand-logo { width: 120px; }
   .header-socials { gap: 4px; }
   .header-socials a { width: 28px; height: 28px; }
   .header-socials svg { width: 12px; height: 12px; }
