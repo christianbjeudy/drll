@@ -1,4 +1,5 @@
 const ENTRY_PREFIX = "content/entries/";
+const INQUIRY_PREFIX = "content/inquiries/";
 const SETTINGS_KEY = "content/settings.json";
 
 export const EMPTY_SETTINGS = {
@@ -80,6 +81,16 @@ export function saveEntry(bucket, entry) {
 
 export function deleteEntry(bucket, id) {
   return bucket.delete(entryKey(id));
+}
+
+export function saveInquiry(bucket, inquiry) {
+  return writeJsonObject(bucket, `${INQUIRY_PREFIX}${inquiry.id}.json`, inquiry);
+}
+
+export async function listInquiries(bucket) {
+  const page = await bucket.list({ prefix: INQUIRY_PREFIX });
+  const inquiries = (await Promise.all(page.objects.map((object) => readJsonObject(bucket, object.key)))).filter(Boolean);
+  return inquiries.sort((left, right) => String(right.created_at || "").localeCompare(String(left.created_at || "")));
 }
 
 export async function getSettings(bucket) {

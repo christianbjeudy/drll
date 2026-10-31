@@ -3,6 +3,7 @@
 
   const state = {
     entries: [],
+    inquiries: [],
     settings: {},
     view: "all",
     editingId: null,
@@ -16,6 +17,7 @@
     milestone: "Journey",
     news: "News",
     media: "Media",
+    inquiries: "Professional requests",
     settings: "Professional profile",
   };
 
@@ -115,6 +117,29 @@
       return;
     }
     for (const entry of entries) elements.entryRows.append(entryRow(entry));
+  }
+
+  function renderInquiries() {
+    elements.inquiryRows.replaceChildren();
+    if (!state.inquiries.length) {
+      elements.inquiryRows.append(make("div", "empty-state", "No professional requests have been submitted yet."));
+      return;
+    }
+    for (const inquiry of state.inquiries) {
+      const article = make("article", "inquiry-row");
+      const meta = make("div", "inquiry-meta");
+      const type = String(inquiry.request_type || "request").replace(/-/gu, " ");
+      meta.append(
+        make("span", "status status-new", "New"),
+        make("span", "inquiry-type", type),
+        make("time", "", new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short" }).format(new Date(inquiry.created_at))),
+      );
+      const heading = make("h2", "", inquiry.name);
+      const contact = make("p", "inquiry-contact", `${inquiry.email}${inquiry.organization ? ` · ${inquiry.organization}` : ""}`);
+      const message = make("p", "inquiry-message", inquiry.message);
+      article.append(meta, heading, contact, message);
+      elements.inquiryRows.append(article);
+    }
   }
 
   function fillForm(form, values) {
@@ -240,23 +265,29 @@
       button.setAttribute("aria-current", button.dataset.view === view ? "page" : "false");
     }
     const settings = view === "settings";
-    elements.entriesPane.hidden = settings;
+    const inquiries = view === "inquiries";
+    elements.entriesPane.hidden = settings || inquiries;
+    elements.inquiriesPane.hidden = !inquiries;
     elements.settingsPane.hidden = !settings;
-    elements.newBtn.hidden = settings;
+    elements.newBtn.hidden = settings || inquiries;
     setMessage(elements.message);
     if (settings) renderSettings();
+    else if (inquiries) renderInquiries();
     else renderEntries();
   }
 
   async function loadData() {
-    const [entryPayload, settingsPayload] = await Promise.all([
+    const [entryPayload, settingsPayload, inquiryPayload] = await Promise.all([
       request("/api/admin/entries"),
       request("/api/admin/settings"),
+      request("/api/admin/inquiries"),
     ]);
     state.entries = entryPayload.entries || [];
     state.settings = settingsPayload.settings || {};
+    state.inquiries = inquiryPayload.inquiries || [];
     renderEntries();
     renderSettings();
+    renderInquiries();
   }
 
   async function login(event) {
@@ -319,6 +350,8 @@
       entryRows: byId("entryRows"),
       entrySearch: byId("entrySearch"),
       entryUpload: byId("entryUpload"),
+      inquiriesPane: byId("inquiriesPane"),
+      inquiryRows: byId("inquiryRows"),
       login: byId("login"),
       loginForm: byId("loginForm"),
       loginMsg: byId("loginMsg"),

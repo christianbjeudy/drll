@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { normalizeEntry, normalizeSettings } from "../src/handlers/_lib/content.js";
+import { normalizeEntry, normalizeInquiry, normalizeSettings } from "../src/handlers/_lib/content.js";
 
 test("normalizes a valid content entry", () => {
   const entry = normalizeEntry({
@@ -21,6 +21,20 @@ test("normalizes a valid content entry", () => {
 test("rejects unsupported entry types and unsafe URLs", () => {
   assert.throws(() => normalizeEntry({ type: "page", title: "Bad" }), /Content type/u);
   assert.throws(() => normalizeEntry({ type: "news", title: "Bad", external_url: "javascript:alert(1)" }), /HTTP and HTTPS/u);
+});
+
+test("normalizes professional inquiries and rejects incomplete submissions", () => {
+  const inquiry = normalizeInquiry({
+    request_type: "mentorship",
+    name: "  Future Physician  ",
+    email: "student@example.com",
+    organization: "Example University",
+    message: "I would appreciate guidance about preparing for medical school.",
+  });
+  assert.equal(inquiry.name, "Future Physician");
+  assert.equal(inquiry.request_type, "mentorship");
+  assert.throws(() => normalizeInquiry({ request_type: "patient", name: "A", email: "a@example.com", message: "Help" }), /Request type/u);
+  assert.throws(() => normalizeInquiry({ request_type: "press", name: "A", email: "bad", message: "Interview" }), /valid email/u);
 });
 
 test("validates settings email and preserves safe relative portrait paths", () => {

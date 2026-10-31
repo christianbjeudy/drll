@@ -16,6 +16,8 @@ import {
   onRequestPut as updateAdminSettings,
 } from "./handlers/api/admin/settings.js";
 import { onRequestPost as uploadAdminMedia } from "./handlers/api/admin/upload.js";
+import { onRequestGet as listAdminInquiries } from "./handlers/api/admin/inquiries.js";
+import { onRequestPost as createInquiry } from "./handlers/api/inquiries.js";
 import { onRequestGet as getMedia } from "./handlers/media/[key].js";
 import { json, methodNotAllowed } from "./handlers/_lib/http.js";
 
@@ -38,6 +40,7 @@ async function dispatch(request, env, executionContext) {
   const context = contextFor(request, env, executionContext);
 
   if (pathname === "/api/site") return methodHandler(request, { GET: getPublicSite })(context);
+  if (pathname === "/api/inquiries") return methodHandler(request, { POST: createInquiry })(context);
   if (pathname === "/api/admin/login") return methodHandler(request, { POST: login })(context);
   if (pathname === "/api/admin/logout") return methodHandler(request, { POST: logout })(context);
   if (pathname === "/api/admin/session") return methodHandler(request, { GET: getSession })(context);
@@ -48,6 +51,7 @@ async function dispatch(request, env, executionContext) {
     return methodHandler(request, { GET: getAdminSettings, PUT: updateAdminSettings })(context);
   }
   if (pathname === "/api/admin/upload") return methodHandler(request, { POST: uploadAdminMedia })(context);
+  if (pathname === "/api/admin/inquiries") return methodHandler(request, { GET: listAdminInquiries })(context);
 
   const entryMatch = pathname.match(/^\/api\/admin\/entries\/([^/]+)$/u);
   if (entryMatch) {

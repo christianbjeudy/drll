@@ -31,6 +31,7 @@
         <button class="nav" data-view="milestone">Journey</button>
         <button class="nav" data-view="news">News</button>
         <button class="nav" data-view="media">Media</button>
+        <button class="nav" data-view="inquiries">Professional requests</button>
         <button class="nav" data-view="settings">Professional profile</button>
       </nav>
       <div class="side-bottom"><a href="/" target="_blank">View live site</a><button id="logout">Log out</button></div>
@@ -45,6 +46,11 @@
       <section id="entriesPane">
         <div class="tools"><input id="entrySearch" placeholder="Search your content..."><span id="entryCount"></span></div>
         <div id="entryRows" class="entry-rows"></div>
+      </section>
+
+      <section id="inquiriesPane" hidden>
+        <p class="inquiry-pane-intro">Mentorship, press, conference, public-engagement, and sports-coverage requests submitted through the website.</p>
+        <div id="inquiryRows" class="inquiry-rows"></div>
       </section>
 
       <section id="settingsPane" hidden>

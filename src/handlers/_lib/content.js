@@ -2,6 +2,7 @@ import { HttpError, validateUrl } from "./http.js";
 
 export const ENTRY_TYPES = new Set(["publication", "event", "milestone", "news", "media"]);
 export const ENTRY_STATUSES = new Set(["draft", "published"]);
+export const INQUIRY_TYPES = new Set(["mentorship", "press", "sports-coverage"]);
 
 function cleanText(value, maxLength, field) {
   const text = String(value || "").trim();
@@ -35,6 +36,28 @@ export function normalizeEntry(input) {
     body: cleanText(input.body, 50_000, "Content"),
     image_url: validateUrl(input.image_url),
     external_url: validateUrl(input.external_url, { allowRelative: false }),
+  };
+}
+
+export function normalizeInquiry(input) {
+  const requestType = cleanText(input.request_type, 40, "Request type");
+  const name = cleanText(input.name, 120, "Name");
+  const email = cleanText(input.email, 320, "Email");
+  const message = cleanText(input.message, 2500, "Request details");
+
+  if (!INQUIRY_TYPES.has(requestType)) throw new HttpError(400, "Request type is invalid.");
+  if (!name) throw new HttpError(400, "Name is required.");
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email)) {
+    throw new HttpError(400, "A valid email address is required.");
+  }
+  if (!message) throw new HttpError(400, "Request details are required.");
+
+  return {
+    request_type: requestType,
+    name,
+    email,
+    organization: cleanText(input.organization, 160, "Organization"),
+    message,
   };
 }
 

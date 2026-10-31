@@ -107,6 +107,8 @@
       "Physical Medicine & Rehabilitation": "Function-focused care informed by rehabilitation medicine.",
       "Pain Management": "Evidence-informed evaluation and care for musculoskeletal pain.",
       "Interventional Spine": "Specialized training in spine care and image-guided procedures.",
+      "Pain Management & Interventional Spine": "Evidence-informed spine and musculoskeletal pain care with image-guided options.",
+      "Women’s Musculoskeletal Health": "Evidence-based sports medicine care for women across the lifespan.",
       "Musculoskeletal Ultrasound": "Ultrasound-supported assessment and procedural care.",
       "Cycling & Running Medicine": "Movement-focused care for endurance athletes and active patients.",
     };
@@ -130,6 +132,16 @@
         meaning: "Interventional spine care combines detailed evaluation of spine-related pain with non-operative treatment and image-guided options when appropriate.",
         approach: "Her fellowship training informs a careful assessment of symptoms, mobility, function, and the role of the spine in a patient’s goals.",
         care: "A visit may include a spine examination, review of prior imaging, rehabilitation planning, and discussion of appropriate image-guided procedures.",
+      },
+      "Pain Management & Interventional Spine": {
+        meaning: "This specialty combines detailed evaluation of spine-related and musculoskeletal pain with rehabilitation, non-operative treatment, and image-guided options when appropriate.",
+        approach: "Dr. Louissaint’s fellowship training informs a careful assessment of symptoms, mobility, function, and the individual’s recovery goals.",
+        care: "A consultation may include a focused spine and musculoskeletal examination, imaging review, rehabilitation planning, or discussion of selected image-guided procedures.",
+      },
+      "Women’s Musculoskeletal Health": {
+        meaning: "Women’s musculoskeletal health addresses injury prevention, diagnosis, recovery, concussion, pain, and physical performance across the lifespan.",
+        approach: "Dr. Louissaint provides comprehensive, evidence-based sports medicine care shaped around each patient’s stage of life, activity, and athletic goals.",
+        care: "Visits may include injury evaluation, non-surgical orthopedic care, concussion management, pain-management options, and guidance supporting physical health and performance.",
       },
       "Musculoskeletal Ultrasound": {
         meaning: "Musculoskeletal ultrasound provides real-time visualization of selected soft tissues and joints, including structures while they are moving.",
@@ -371,14 +383,13 @@
     }
     if (settings.location) {
       renderCredentialLines(elements.locationSummary, [settings.location, "United States"]);
-      elements.appointmentLocation.textContent = settings.location;
     }
     if (settings.languages) elements.languageList.textContent = settings.languages;
     renderFocus(settings.clinical_focus || [
       "Sports Medicine",
       "Physical Medicine & Rehabilitation",
-      "Pain Management",
-      "Interventional Spine",
+      "Pain Management & Interventional Spine",
+      "Women’s Musculoskeletal Health",
       "Musculoskeletal Ultrasound",
       "Cycling & Running Medicine",
     ].join("\n"));
@@ -401,7 +412,6 @@
 
     const appointmentPhone = phoneHref(settings.appointment_phone);
     if (appointmentPhone) {
-      elements.appointmentPhone.href = appointmentPhone;
       elements.appointmentPhone.textContent = settings.appointment_phone;
       elements.appointmentRequestForm.dataset.phone = appointmentPhone;
     }
@@ -654,24 +664,76 @@
     elements.searchInput.addEventListener("input", () => searchEntries(elements.searchInput.value));
     elements.detailClose.addEventListener("click", () => elements.detailDialog.close());
     elements.appointmentDialogClose.addEventListener("click", () => elements.appointmentDialog.close());
+
+    const updateRequestForm = () => {
+      const patientRequest = elements.inquiryType.value === "patient";
+      elements.patientRequestFields.hidden = !patientRequest;
+      elements.professionalRequestFields.hidden = patientRequest;
+      elements.appointmentInterest.required = patientRequest;
+      for (const fieldName of ["name", "email", "message"]) {
+        elements.appointmentRequestForm.elements.namedItem(fieldName).required = !patientRequest;
+      }
+      elements.appointmentSubmit.textContent = patientRequest ? "Continue" : "Send request";
+      elements.requestFormMessage.textContent = "";
+      elements.requestFormMessage.className = "request-form-message";
+    };
+
+    const openRequestForm = (requestType = "patient") => {
+      elements.appointmentRequestForm.reset();
+      elements.inquiryType.value = requestType;
+      elements.appointmentRequestForm.elements.namedItem("started_at").value = String(Date.now());
+      updateRequestForm();
+      elements.appointmentDialog.showModal();
+      elements.inquiryType.focus();
+    };
+
+    elements.inquiryType.addEventListener("change", updateRequestForm);
     for (const trigger of document.querySelectorAll(".appointment-trigger")) {
-      trigger.addEventListener("click", () => {
-        elements.appointmentDialog.showModal();
-        elements.appointmentInterest.focus();
-      });
+      trigger.addEventListener("click", () => openRequestForm(trigger.dataset.inquiry || "patient"));
     }
-    elements.appointmentRequestForm.addEventListener("submit", (event) => {
+    elements.appointmentRequestForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const route = new FormData(elements.appointmentRequestForm).get("route");
+      const formData = new FormData(elements.appointmentRequestForm);
+      const requestType = formData.get("request_type");
+      const route = formData.get("route");
       const appointmentUrl = safeUrl(elements.appointmentRequestForm.dataset.appointmentUrl);
       const appointmentPhone = elements.appointmentRequestForm.dataset.phone || "";
-      elements.appointmentDialog.close();
-      if (route === "phone" && appointmentPhone) {
-        window.location.href = appointmentPhone;
-      } else if (appointmentUrl) {
-        window.open(appointmentUrl, "_blank", "noopener,noreferrer");
-      } else {
-        byId("appointments").scrollIntoView({ behavior: "smooth", block: "start" });
+
+      if (requestType === "patient") {
+        elements.appointmentDialog.close();
+        if (route === "phone" && appointmentPhone) {
+          window.location.href = appointmentPhone;
+        } else if (appointmentUrl) {
+          window.open(appointmentUrl, "_blank", "noopener,noreferrer");
+        } else {
+          byId("appointments").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        return;
+      }
+
+      elements.appointmentSubmit.disabled = true;
+      elements.requestFormMessage.textContent = "Sending…";
+      try {
+        const response = await fetch("/api/inquiries", {
+          method: "POST",
+          headers: { accept: "application/json", "content-type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(formData.entries())),
+        });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "The request could not be sent.");
+        elements.requestFormMessage.textContent = payload.message;
+        elements.requestFormMessage.className = "request-form-message success";
+        elements.appointmentRequestForm.reset();
+        elements.inquiryType.value = requestType;
+        elements.appointmentRequestForm.elements.namedItem("started_at").value = String(Date.now());
+        updateRequestForm();
+        elements.requestFormMessage.textContent = payload.message;
+        elements.requestFormMessage.className = "request-form-message success";
+      } catch (error) {
+        elements.requestFormMessage.textContent = error.message;
+        elements.requestFormMessage.className = "request-form-message error";
+      } finally {
+        elements.appointmentSubmit.disabled = false;
       }
     });
 
@@ -710,9 +772,9 @@
       appointmentDialog: byId("appointmentDialog"),
       appointmentDialogClose: byId("appointmentDialogClose"),
       appointmentInterest: byId("appointmentInterest"),
-      appointmentLocation: byId("appointmentLocation"),
       appointmentPhone: byId("appointmentPhone"),
       appointmentRequestForm: byId("appointmentRequestForm"),
+      appointmentSubmit: document.querySelector(".appointment-submit"),
       bookingLinks: byId("bookingLinks"),
       credentialLine: byId("credentialLine"),
       credentialLinks: byId("credentialLinks"),
@@ -735,11 +797,14 @@
       languageList: byId("languageList"),
       latestSocialLabel: byId("latestSocialLabel"),
       latestSocialPost: byId("latestSocialPost"),
+      inquiryType: byId("inquiryType"),
       locationSummary: byId("locationSummary"),
       menuToggle: byId("menuToggle"),
       nav: byId("nav"),
       newsList: byId("newsList"),
       portrait: byId("portrait"),
+      patientRequestFields: byId("patientRequestFields"),
+      professionalRequestFields: byId("professionalRequestFields"),
       profileSocialLinks: byId("profileSocialLinks"),
       roleSummary: byId("roleSummary"),
       pubCount: byId("pubCount"),
@@ -749,6 +814,7 @@
       searchResults: byId("searchResults"),
       searchToggle: byId("searchToggle"),
       socialLinks: byId("socialLinks"),
+      requestFormMessage: byId("requestFormMessage"),
       teamRoleSummary: byId("teamRoleSummary"),
       trainingList: byId("trainingList"),
     });

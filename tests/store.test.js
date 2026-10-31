@@ -5,8 +5,10 @@ import {
   deleteEntry,
   getEntry,
   getSettings,
+  listInquiries,
   listEntries,
   saveEntry,
+  saveInquiry,
   saveSettings,
 } from "../src/handlers/_lib/store.js";
 
@@ -62,4 +64,11 @@ test("returns default settings and persists updates", async () => {
   assert.equal(settings.team_role, "");
   assert.equal(settings.appointment_url, "");
   assert.equal(settings.affiliations, "");
+});
+
+test("stores and sorts professional inquiries", async () => {
+  const bucket = new MockBucket();
+  await saveInquiry(bucket, { id: "older", name: "Older", created_at: "2026-10-30T12:00:00.000Z" });
+  await saveInquiry(bucket, { id: "newer", name: "Newer", created_at: "2026-10-31T12:00:00.000Z" });
+  assert.deepEqual((await listInquiries(bucket)).map((inquiry) => inquiry.id), ["newer", "older"]);
 });
