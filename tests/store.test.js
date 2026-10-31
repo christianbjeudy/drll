@@ -54,6 +54,7 @@ test("stores, sorts, reads, and deletes content entries", async () => {
 test("returns default settings and persists updates", async () => {
   const bucket = new MockBucket();
   assert.equal((await getSettings(bucket)).about, "");
+  assert.equal((await getSettings(bucket)).hero_slideshow, "");
   await saveSettings(bucket, { about: "Approved biography", email: "hello@example.com" });
   const settings = await getSettings(bucket);
   assert.equal(settings.about, "Approved biography");

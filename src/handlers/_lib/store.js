@@ -16,6 +16,7 @@ export const EMPTY_SETTINGS = {
   location: "",
   appointment_phone: "",
   portrait_url: "",
+  hero_slideshow: "",
   email: "",
   appointment_url: "",
   one_brooklyn: "",

@@ -5,6 +5,7 @@
     entries: [],
     settings: {},
     activeHighlight: "journey",
+    heroCarousel: null,
   };
 
   const highlightIds = ["journey", "journal", "events", "athleticism", "media"];
@@ -388,14 +389,11 @@
     renderTextList(elements.affiliationList, settings.affiliations);
     renderTextList(elements.trainingList, settings.training);
 
-    const portraitUrl = safeUrl(settings.portrait_url);
-    if (portraitUrl) {
-      elements.heroPrimaryPortrait.src = portraitUrl;
-      elements.heroPrimaryPortrait.alt = "Portrait of Dr. Laurenie Louissaint";
-      elements.heroPrimaryPortrait.addEventListener("error", () => {
-        elements.heroPrimaryPortrait.src = "/assets/images/dr-laurenie-louissaint-headshot.jpg";
-      }, { once: true });
-    }
+    const portraitUrl = safeUrl(settings.portrait_url) || "/assets/images/dr-laurenie-louissaint-headshot.jpg";
+    const slideshowUrls = lines(settings.hero_slideshow).map((url) => safeUrl(url)).filter(Boolean);
+    state.heroCarousel?.setImages(slideshowUrls.length
+      ? slideshowUrls
+      : [portraitUrl, "/assets/images/dr-laurenie-louissaint-ross.jpg"]);
 
     const credentialLinks = [
       ["One Brooklyn Health", settings.one_brooklyn],
@@ -720,9 +718,11 @@
   }
 
   function setUpHeroCarousel() {
-    const slides = [...elements.portrait.querySelectorAll("[data-hero-slide]")];
-    const dots = [...elements.portrait.querySelectorAll("[data-hero-dot]")];
+    let slides = [...elements.portrait.querySelectorAll("[data-hero-slide]")];
+    let dots = [...elements.portrait.querySelectorAll("[data-hero-dot]")];
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const previous = elements.portrait.querySelector("[data-hero-previous]");
+    const next = elements.portrait.querySelector("[data-hero-next]");
     let activeIndex = 0;
     let rotationTimer = 0;
 
@@ -747,24 +747,68 @@
       rotationTimer = window.setInterval(() => showSlide(activeIndex + 1), 6500);
     };
 
-    elements.portrait.querySelector("[data-hero-previous]")?.addEventListener("click", () => {
-      showSlide(activeIndex - 1);
-      startRotation();
-    });
-    elements.portrait.querySelector("[data-hero-next]")?.addEventListener("click", () => {
-      showSlide(activeIndex + 1);
-      startRotation();
-    });
-    dots.forEach((dot, index) => dot.addEventListener("click", () => {
+    const bindDots = () => dots.forEach((dot, index) => dot.addEventListener("click", () => {
       showSlide(index);
       startRotation();
     }));
+
+    previous?.addEventListener("click", () => {
+      showSlide(activeIndex - 1);
+      startRotation();
+    });
+    next?.addEventListener("click", () => {
+      showSlide(activeIndex + 1);
+      startRotation();
+    });
+    bindDots();
     elements.portrait.addEventListener("mouseenter", stopRotation);
     elements.portrait.addEventListener("mouseleave", startRotation);
     elements.portrait.addEventListener("focusin", stopRotation);
     elements.portrait.addEventListener("focusout", startRotation);
     document.addEventListener("visibilitychange", () => (document.hidden ? stopRotation() : startRotation()));
     reducedMotion.addEventListener?.("change", startRotation);
+
+    state.heroCarousel = {
+      setImages(imageUrls) {
+        const urls = [...new Set(imageUrls.map((url) => safeUrl(url)).filter(Boolean))];
+        if (!urls.length) return;
+
+        const slideNodes = urls.map((url, index) => {
+          const slide = make("div", `hero-slide${index ? " hero-slide--career" : ""}`);
+          slide.dataset.heroSlide = "";
+          const image = make("img");
+          image.src = url;
+          image.alt = `Portrait of Dr. Laurenie Louissaint, image ${index + 1} of ${urls.length}`;
+          image.loading = index ? "lazy" : "eager";
+          image.addEventListener("error", () => {
+            if (!image.src.endsWith("/assets/images/dr-laurenie-louissaint-headshot.jpg")) {
+              image.src = "/assets/images/dr-laurenie-louissaint-headshot.jpg";
+            }
+          }, { once: true });
+          slide.append(image);
+          return slide;
+        });
+        elements.heroCarouselSlides.replaceChildren(...slideNodes);
+
+        const dotNodes = urls.map((url, index) => {
+          const dot = make("button");
+          dot.type = "button";
+          dot.dataset.heroDot = String(index);
+          dot.setAttribute("aria-label", `Show portrait ${index + 1}`);
+          return dot;
+        });
+        elements.heroCarouselDots.replaceChildren(...dotNodes);
+        slides = slideNodes;
+        dots = dotNodes;
+        bindDots();
+        const hasMultipleSlides = urls.length > 1;
+        if (previous) previous.hidden = !hasMultipleSlides;
+        if (next) next.hidden = !hasMultipleSlides;
+        elements.heroCarouselDots.hidden = !hasMultipleSlides;
+        showSlide(0);
+        startRotation();
+      },
+    };
     showSlide(0);
     startRotation();
   }
@@ -809,7 +853,8 @@
       focusList: byId("focusList"),
       footerCredentialLine: byId("footerCredentialLine"),
       heroAppointment: byId("heroAppointment"),
-      heroPrimaryPortrait: byId("heroPrimaryPortrait"),
+      heroCarouselDots: byId("heroCarouselDots"),
+      heroCarouselSlides: byId("heroCarouselSlides"),
       heroIntro: byId("heroIntro"),
       heroSocialLinks: byId("heroSocialLinks"),
       headerInstagram: byId("headerInstagram"),

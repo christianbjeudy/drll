@@ -12,6 +12,12 @@ function cleanText(value, maxLength, field) {
   return text;
 }
 
+function normalizeUrlList(value, field) {
+  const text = cleanText(value, 8000, field);
+  if (!text) return "";
+  return [...new Set(text.split(/\r?\n/u).map((line) => line.trim()).filter(Boolean).map((url) => validateUrl(url)))].join("\n");
+}
+
 export function normalizeEntry(input) {
   const type = cleanText(input.type, 40, "Content type");
   const status = cleanText(input.status || "draft", 20, "Status");
@@ -85,6 +91,7 @@ export function normalizeSettings(input) {
     location: cleanText(input.location, 500, "Location"),
     appointment_phone: cleanText(input.appointment_phone, 50, "Appointment phone"),
     portrait_url: validateUrl(input.portrait_url),
+    hero_slideshow: normalizeUrlList(input.hero_slideshow, "Hero slideshow"),
     email,
     appointment_url: validateUrl(input.appointment_url, { allowRelative: false }),
     one_brooklyn: validateUrl(input.one_brooklyn, { allowRelative: false }),

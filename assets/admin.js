@@ -240,6 +240,12 @@
       const data = formObject(elements.settingsForm);
       const file = elements.portraitUpload.files[0];
       if (file) data.portrait_url = await uploadFile(file);
+      const slideshowFiles = [...elements.heroSlideshowUpload.files];
+      if (slideshowFiles.length) {
+        const existingUrls = String(data.hero_slideshow || "").split(/\r?\n/u).map((url) => url.trim()).filter(Boolean);
+        const uploadedUrls = await Promise.all(slideshowFiles.map(uploadFile));
+        data.hero_slideshow = [...new Set([...existingUrls, ...uploadedUrls])].join("\n");
+      }
       const payload = await request("/api/admin/settings", {
         method: "PUT",
         body: JSON.stringify(data),
@@ -247,6 +253,7 @@
       state.settings = payload.settings;
       renderSettings();
       elements.portraitUpload.value = "";
+      elements.heroSlideshowUpload.value = "";
       setMessage(elements.message, "Site settings saved.", "success");
     } catch (error) {
       setMessage(elements.message, error.message, "error");
@@ -348,6 +355,7 @@
       entryRows: byId("entryRows"),
       entrySearch: byId("entrySearch"),
       entryUpload: byId("entryUpload"),
+      heroSlideshowUpload: byId("heroSlideshowUpload"),
       inquiriesPane: byId("inquiriesPane"),
       inquiryRows: byId("inquiryRows"),
       login: byId("login"),
