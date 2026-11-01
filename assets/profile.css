@@ -686,7 +686,7 @@ h2 {
 .affiliation-marquee-track {
   display: flex;
   width: max-content;
-  animation: affiliation-glide 46s linear infinite;
+  animation: affiliation-glide 78s linear infinite;
   will-change: transform;
 }
 .affiliation-marquee-set {
@@ -714,8 +714,8 @@ h2 {
 .affiliation-logo--mount-sinai img { max-height: 45px; }
 .affiliation-logo--ross img { max-height: 51px; }
 .affiliation-logo--fiu img { max-height: 47px; }
-.affiliation-logo--football { width: 76px; }
-.affiliation-logo--football img { max-height: 58px; }
+.affiliation-logo--football { width: 82px; }
+.affiliation-logo--football img { width: auto; max-width: 72px; max-height: 45px; }
 .affiliation-logo--obh { width: clamp(165px, 14vw, 215px); }
 .affiliation-logo--obh img { max-height: 43px; }
 .affiliation-marquee:hover .affiliation-marquee-track { animation-play-state: paused; }
@@ -1214,7 +1214,8 @@ h2 {
   .affiliation-marquee { padding-top: 14px; padding-bottom: 13px; }
   .affiliation-marquee-label { margin-bottom: 10px; font-size: 7px; }
   .affiliation-logo { width: 132px; height: 44px; }
-  .affiliation-logo--football { width: 62px; }
+  .affiliation-logo--football { width: 68px; }
+  .affiliation-logo--football img { max-width: 58px; max-height: 38px; }
   .affiliation-logo--obh { width: 154px; }
   .affiliation-marquee-set { gap: 44px; padding-right: 44px; }
   .credential-inner { grid-template-columns: 1fr; padding-top: 8px; padding-bottom: 8px; }
