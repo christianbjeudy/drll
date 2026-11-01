@@ -94,6 +94,8 @@ button:disabled { cursor:wait; opacity:.6; }
 .slideshow-card-controls button:disabled { cursor:default; opacity:.32; }
 .slideshow-card-controls .slideshow-remove { margin-left:auto; color:var(--danger); }
 .slideshow-default-label { color:var(--muted); font-size:9px; letter-spacing:.04em; text-transform:uppercase; }
+.slideshow-save-row { display:flex; align-items:center; gap:16px; margin-top:-4px; }
+.slideshow-save-row .message { margin:0; }
 .form-section { margin:28px 0 0; padding:22px 0 3px; border-top:1px solid var(--line); color:var(--navy); font-family:"Playfair Display",Georgia,serif; font-size:26px; font-weight:500; letter-spacing:-.5px; }
 .form-section:first-child { margin-top:0; padding-top:0; border-top:0; }
 label small { color:var(--muted); font-size:9px; font-weight:400; }
@@ -133,5 +135,7 @@ label small { color:var(--muted); font-size:9px; font-weight:400; }
   .editor-actions { flex-direction:column-reverse; }
   .editor-actions button { width:100%; }
   .slideshow-preview { grid-template-columns:1fr; }
+  .slideshow-save-row { align-items:stretch; flex-direction:column; }
+  .slideshow-save-row .primary { width:100%; }
 }
 @media(prefers-reduced-motion:reduce){ *,*::before,*::after { scroll-behavior:auto!important; transition-duration:.01ms!important; } }

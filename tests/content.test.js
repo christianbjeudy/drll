@@ -42,7 +42,7 @@ test("validates settings email and preserves safe relative portrait paths", () =
   const settings = normalizeSettings({
     email: "hello@example.com",
     portrait_url: "/media/example.jpg",
-    hero_slideshow: "/media/example.jpg\nhttps://example.com/portrait-two.jpg\n/media/example.jpg",
+    hero_slideshow: "/media/example.jpg\nhttps://example.com/portrait-two.jpg\n/media/example.jpg\n/media/portrait-three.jpg",
     professional_title: "Assistant Professor",
     team_role: "Head Team Physician",
     appointment_url: "https://example.com/appointments",
@@ -54,7 +54,7 @@ test("validates settings email and preserves safe relative portrait paths", () =
   });
   assert.equal(settings.email, "hello@example.com");
   assert.equal(settings.portrait_url, "/media/example.jpg");
-  assert.equal(settings.hero_slideshow, "/media/example.jpg\nhttps://example.com/portrait-two.jpg");
+  assert.equal(settings.hero_slideshow, "/media/example.jpg\nhttps://example.com/portrait-two.jpg\n/media/portrait-three.jpg");
   assert.equal(settings.professional_title, "Assistant Professor");
   assert.equal(settings.team_role, "Head Team Physician");
   assert.equal(settings.appointment_url, "https://example.com/appointments");

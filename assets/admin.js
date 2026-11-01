@@ -246,6 +246,13 @@
     return String(field?.value || "").split(/\r?\n/u).map((url) => url.trim()).filter(Boolean);
   }
 
+  function defaultSlideshowUrls(portraitUrl = state.settings.portrait_url) {
+    return [...new Set([
+      portraitUrl || "/assets/images/dr-laurenie-louissaint-headshot.jpg",
+      "/assets/images/dr-laurenie-louissaint-ross.jpg",
+    ])];
+  }
+
   function updateSlideshowUrls(urls) {
     elements.settingsForm.elements.namedItem("hero_slideshow").value = urls.join("\n");
     renderSlideshowPreview();
@@ -317,10 +324,7 @@
     if (urls.length) {
       urls.forEach((url, index) => elements.heroSlideshowPreview.append(slideshowCard(url, index, urls.length)));
     } else {
-      const defaults = [
-        state.settings.portrait_url || "/assets/images/dr-laurenie-louissaint-headshot.jpg",
-        "/assets/images/dr-laurenie-louissaint-ross.jpg",
-      ];
+      const defaults = defaultSlideshowUrls();
       defaults.forEach((url, index) => elements.heroSlideshowPreview.append(slideshowCard(url, index, defaults.length, false, true)));
     }
 
@@ -336,18 +340,36 @@
     renderSlideshowPreview();
   }
 
+  function selectSlideshowFiles() {
+    renderSlideshowPreview();
+    const files = [...elements.heroSlideshowUpload.files];
+    if (!files.length) {
+      setMessage(elements.slideshowMessage);
+      return;
+    }
+    const oversized = files.find((file) => file.size > 10 * 1024 * 1024);
+    if (oversized) {
+      setMessage(elements.slideshowMessage, `${oversized.name} is larger than 10 MB. Choose a smaller image.`, "error");
+      return;
+    }
+    setMessage(elements.slideshowMessage, `${files.length} new ${files.length === 1 ? "photo is" : "photos are"} ready. Select Save slideshow changes.`, "success");
+  }
+
   async function saveSettings(event) {
     event.preventDefault();
-    const submit = elements.settingsForm.querySelector('[type="submit"]');
-    submit.disabled = true;
+    const submitButtons = [...elements.settingsForm.querySelectorAll('[type="submit"]')];
+    const savingSlideshow = event.submitter === elements.slideshowSaveButton || elements.heroSlideshowUpload.files.length > 0;
+    submitButtons.forEach((button) => { button.disabled = true; });
     setMessage(elements.message, "Saving settings…");
+    if (savingSlideshow) setMessage(elements.slideshowMessage, "Uploading and saving slideshow…");
     try {
       const data = formObject(elements.settingsForm);
       const file = elements.portraitUpload.files[0];
       if (file) data.portrait_url = await uploadFile(file);
       const slideshowFiles = [...elements.heroSlideshowUpload.files];
       if (slideshowFiles.length) {
-        const existingUrls = String(data.hero_slideshow || "").split(/\r?\n/u).map((url) => url.trim()).filter(Boolean);
+        const savedUrls = String(data.hero_slideshow || "").split(/\r?\n/u).map((url) => url.trim()).filter(Boolean);
+        const existingUrls = savedUrls.length ? savedUrls : defaultSlideshowUrls(data.portrait_url);
         const uploadedUrls = await Promise.all(slideshowFiles.map(uploadFile));
         data.hero_slideshow = [...new Set([...existingUrls, ...uploadedUrls])].join("\n");
       }
@@ -360,10 +382,15 @@
       elements.heroSlideshowUpload.value = "";
       renderSettings();
       setMessage(elements.message, "Site settings saved.", "success");
+      if (savingSlideshow) {
+        const activeSlides = String(payload.settings.hero_slideshow || "").split(/\r?\n/u).filter(Boolean).length || defaultSlideshowUrls(payload.settings.portrait_url).length;
+        setMessage(elements.slideshowMessage, `Slideshow saved. ${activeSlides} photos are active.`, "success");
+      }
     } catch (error) {
       setMessage(elements.message, error.message, "error");
+      if (savingSlideshow) setMessage(elements.slideshowMessage, error.message, "error");
     } finally {
-      submit.disabled = false;
+      submitButtons.forEach((button) => { button.disabled = false; });
     }
   }
 
@@ -437,7 +464,7 @@
     elements.entryForm.addEventListener("submit", saveEntry);
     elements.deleteBtn.addEventListener("click", deleteEntry);
     elements.settingsForm.addEventListener("submit", saveSettings);
-    elements.heroSlideshowUpload.addEventListener("change", renderSlideshowPreview);
+    elements.heroSlideshowUpload.addEventListener("change", selectSlideshowFiles);
     elements.closeEditor.addEventListener("click", () => elements.editor.close());
     elements.editor.addEventListener("click", (event) => {
       if (event.target === elements.editor) elements.editor.close();
@@ -476,6 +503,8 @@
       portraitUpload: byId("portraitUpload"),
       settingsForm: byId("settingsForm"),
       settingsPane: byId("settingsPane"),
+      slideshowMessage: byId("slideshowMessage"),
+      slideshowSaveButton: byId("slideshowSaveButton"),
       viewTitle: byId("viewTitle"),
     });
     setUpEvents();

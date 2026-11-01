@@ -62,8 +62,9 @@
             <textarea name="hero_slideshow" hidden></textarea>
             <div id="heroSlideshowPreview" class="slideshow-preview"></div>
           </section>
-          <label class="wide">Add photos to the slideshow<input type="file" id="heroSlideshowUpload" accept="image/*" multiple></label>
-          <p class="wide form-note">Select several photos at once. New photos appear above before you save; use the Earlier and Later controls to set the order.</p>
+          <label class="wide">Add photos to the slideshow<input type="file" id="heroSlideshowUpload" accept="image/jpeg,image/png,image/webp,image/gif" multiple></label>
+          <p class="wide form-note">Select JPG, PNG, WebP, or GIF photos up to 10 MB each. New photos appear above before you save; use the Earlier and Later controls to set the order.</p>
+          <div class="wide slideshow-save-row"><button type="submit" class="primary" id="slideshowSaveButton">Save slideshow changes</button><p class="message" id="slideshowMessage" aria-live="polite"></p></div>
 
           <h2 class="form-section wide">Credentials &amp; patient information</h2>
           <label class="wide">Academic appointment<input name="academic_appointment" placeholder="Assistant Professor...; Assistant Program Director..."></label>
