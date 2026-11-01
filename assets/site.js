@@ -396,6 +396,7 @@
       : [portraitUrl, "/assets/images/dr-laurenie-louissaint-ross.jpg"]);
 
     const credentialLinks = [
+      ["SUNY Downstate", settings.appointment_url],
       ["One Brooklyn Health", settings.one_brooklyn],
       ["Healthgrades", settings.healthgrades],
       ["Doximity", settings.doximity],

@@ -7,6 +7,7 @@
     settings: {},
     view: "all",
     editingId: null,
+    slideshowObjectUrls: [],
   };
 
   const elements = {};
@@ -105,12 +106,25 @@
     const button = make("button", "entry-row");
     button.type = "button";
     button.dataset.id = entry.id;
-    const type = make("span", `type-icon type-${entry.type}`, entry.type.slice(0, 1).toUpperCase());
+    const thumbnail = make("span", "entry-thumbnail");
+    if (entry.image_url) {
+      const image = document.createElement("img");
+      image.src = entry.image_url;
+      image.alt = "";
+      image.loading = "lazy";
+      image.addEventListener("error", () => {
+        image.remove();
+        thumbnail.classList.add("is-empty");
+      }, { once: true });
+      thumbnail.append(image);
+    } else {
+      thumbnail.classList.add("is-empty");
+    }
     const copy = make("span", "entry-copy");
     copy.append(make("strong", "", entry.title));
     copy.append(make("small", "", `${entry.category || labels[entry.type]} · Updated ${prettyDate(entry.updated_at?.slice(0, 10))}`));
     const status = make("span", `status status-${entry.status}`, entry.status);
-    button.append(type, copy, status);
+    button.append(thumbnail, copy, status);
     button.addEventListener("click", () => openEditor(entry));
     return button;
   }
@@ -227,8 +241,99 @@
     }
   }
 
+  function slideshowUrls() {
+    const field = elements.settingsForm.elements.namedItem("hero_slideshow");
+    return String(field?.value || "").split(/\r?\n/u).map((url) => url.trim()).filter(Boolean);
+  }
+
+  function updateSlideshowUrls(urls) {
+    elements.settingsForm.elements.namedItem("hero_slideshow").value = urls.join("\n");
+    renderSlideshowPreview();
+  }
+
+  function slideshowCard(url, index, total, pending = false, readOnly = false) {
+    const card = make("article", `slideshow-card${pending ? " is-pending" : ""}${readOnly ? " is-default" : ""}`);
+    const imageWrap = make("div", "slideshow-card-image");
+    const image = document.createElement("img");
+    image.src = url;
+    image.alt = pending ? `New slideshow photo ${index + 1}` : `Slideshow photo ${index + 1}`;
+    image.loading = "lazy";
+    image.addEventListener("error", () => imageWrap.classList.add("is-error"), { once: true });
+    imageWrap.append(image);
+
+    const footer = make("div", "slideshow-card-footer");
+    footer.append(make("strong", "", pending ? `New photo ${index + 1}` : `${readOnly ? "Default slide" : "Slide"} ${index + 1}`));
+    const controls = make("div", "slideshow-card-controls");
+    if (readOnly) {
+      controls.append(make("span", "slideshow-default-label", "Active default"));
+    } else if (pending) {
+      const remove = make("button", "slideshow-remove", "Remove");
+      remove.type = "button";
+      remove.addEventListener("click", () => {
+        const transfer = new DataTransfer();
+        [...elements.heroSlideshowUpload.files].forEach((file, fileIndex) => {
+          if (fileIndex !== index) transfer.items.add(file);
+        });
+        elements.heroSlideshowUpload.files = transfer.files;
+        renderSlideshowPreview();
+      });
+      controls.append(remove);
+    } else {
+      const urls = slideshowUrls();
+      const earlier = make("button", "", "Earlier");
+      earlier.type = "button";
+      earlier.title = "Move photo earlier";
+      earlier.setAttribute("aria-label", `Move slide ${index + 1} earlier`);
+      earlier.disabled = index === 0;
+      earlier.addEventListener("click", () => {
+        [urls[index - 1], urls[index]] = [urls[index], urls[index - 1]];
+        updateSlideshowUrls(urls);
+      });
+      const later = make("button", "", "Later");
+      later.type = "button";
+      later.title = "Move photo later";
+      later.setAttribute("aria-label", `Move slide ${index + 1} later`);
+      later.disabled = index === total - 1;
+      later.addEventListener("click", () => {
+        [urls[index], urls[index + 1]] = [urls[index + 1], urls[index]];
+        updateSlideshowUrls(urls);
+      });
+      const remove = make("button", "slideshow-remove", "Remove");
+      remove.type = "button";
+      remove.addEventListener("click", () => updateSlideshowUrls(urls.filter((_, itemIndex) => itemIndex !== index)));
+      controls.append(earlier, later, remove);
+    }
+    footer.append(controls);
+    card.append(imageWrap, footer);
+    return card;
+  }
+
+  function renderSlideshowPreview() {
+    state.slideshowObjectUrls.forEach((url) => URL.revokeObjectURL(url));
+    state.slideshowObjectUrls = [];
+    elements.heroSlideshowPreview.replaceChildren();
+
+    const urls = slideshowUrls();
+    if (urls.length) {
+      urls.forEach((url, index) => elements.heroSlideshowPreview.append(slideshowCard(url, index, urls.length)));
+    } else {
+      const defaults = [
+        state.settings.portrait_url || "/assets/images/dr-laurenie-louissaint-headshot.jpg",
+        "/assets/images/dr-laurenie-louissaint-ross.jpg",
+      ];
+      defaults.forEach((url, index) => elements.heroSlideshowPreview.append(slideshowCard(url, index, defaults.length, false, true)));
+    }
+
+    [...elements.heroSlideshowUpload.files].forEach((file, index) => {
+      const objectUrl = URL.createObjectURL(file);
+      state.slideshowObjectUrls.push(objectUrl);
+      elements.heroSlideshowPreview.append(slideshowCard(objectUrl, index, elements.heroSlideshowUpload.files.length, true));
+    });
+  }
+
   function renderSettings() {
     fillForm(elements.settingsForm, state.settings);
+    renderSlideshowPreview();
   }
 
   async function saveSettings(event) {
@@ -251,9 +356,9 @@
         body: JSON.stringify(data),
       });
       state.settings = payload.settings;
-      renderSettings();
       elements.portraitUpload.value = "";
       elements.heroSlideshowUpload.value = "";
+      renderSettings();
       setMessage(elements.message, "Site settings saved.", "success");
     } catch (error) {
       setMessage(elements.message, error.message, "error");
@@ -332,6 +437,7 @@
     elements.entryForm.addEventListener("submit", saveEntry);
     elements.deleteBtn.addEventListener("click", deleteEntry);
     elements.settingsForm.addEventListener("submit", saveSettings);
+    elements.heroSlideshowUpload.addEventListener("change", renderSlideshowPreview);
     elements.closeEditor.addEventListener("click", () => elements.editor.close());
     elements.editor.addEventListener("click", (event) => {
       if (event.target === elements.editor) elements.editor.close();
@@ -356,6 +462,7 @@
       entrySearch: byId("entrySearch"),
       entryUpload: byId("entryUpload"),
       heroSlideshowUpload: byId("heroSlideshowUpload"),
+      heroSlideshowPreview: byId("heroSlideshowPreview"),
       inquiriesPane: byId("inquiriesPane"),
       inquiryRows: byId("inquiryRows"),
       login: byId("login"),

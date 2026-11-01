@@ -263,7 +263,7 @@ h2 {
 }
 .hero-art-bottom strong { color: var(--purple); font-weight: 600; }
 .hero-person-name {
-  font-size: clamp(10px, 3vw, 20px);
+  font-size: clamp(9px, 2.45vw, 17px);
   letter-spacing: 0;
   white-space: nowrap;
 }
@@ -1002,17 +1002,18 @@ h2 {
   padding-top: 24px;
   border-top: 0;
 }
-.footer .footer-brand { min-width: 0; gap: 18px; color: var(--navy); }
+.footer .footer-brand { min-width: 0; color: var(--navy); }
 .footer-identity { display: flex; min-width: 0; align-items: center; gap: 17px; }
 .footer-monogram { width: 118px; height: auto; flex: 0 0 auto; }
 .footer-name { display: grid; gap: 7px; }
 .footer-name strong { font-family: 'Prata', Georgia, serif; font-size: clamp(18px, 1.8vw, 27px); font-weight: 400; line-height: 1.15; }
 .footer-name span { color: var(--purple); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; }
 .footer-socials {
-  flex: 0 0 auto;
+  grid-area: social;
   flex-wrap: nowrap;
   gap: 9px;
-  margin: 0 0 0 8px;
+  justify-content: flex-end;
+  margin: 0;
   color: var(--navy);
 }
 .footer-socials a {
@@ -1032,35 +1033,41 @@ h2 {
 .footer-socials .social-tiktok svg { fill: currentColor; }
 .footer-socials .social-instagram svg { fill: none; stroke: currentColor; stroke-width: 1.8; }
 .footer-socials .social-instagram .fill-dot { fill: currentColor; stroke: none; }
-.footer .footer-bottom {
-  justify-content: flex-start;
-  gap: 10px;
-  margin-top: 0;
-  padding-top: 0;
-  border-top: 0;
-  color: #657080;
-  font-size: 9px;
-  letter-spacing: 0.5px;
-  text-align: left;
+.footer-right {
+  display: grid;
+  grid-template-areas: "social actions" "copyright actions";
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  justify-content: end;
+  gap: 7px 14px;
+  min-width: 0;
 }
-.footer-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+.footer-copyright {
+  grid-area: copyright;
+  color: #657080;
+  font-size: 8px;
+  letter-spacing: 0.35px;
+  text-align: right;
+  white-space: nowrap;
+}
+.footer-actions { grid-area: actions; display:flex; align-items:stretch; flex-direction:column; justify-content:center; gap:5px; }
 .admin-login {
-  padding: 10px 13px;
+  padding: 6px 9px;
   border: 1px solid rgba(38, 53, 87, 0.14);
   border-radius: 20px;
   color: var(--navy);
-  font-size: 10px;
+  font-size: 8px;
   letter-spacing: 0.04em;
 }
 .admin-login:hover { border-color: var(--navy); background: var(--navy); color: #fff; }
-.footer .footer-bottom > span,
 .footer .made-by { flex: 0 0 auto; white-space: nowrap; }
 .footer .made-by {
   display: inline-flex;
   align-items: center;
-  padding: 9px 10px;
+  padding: 6px 8px;
   border-color: rgba(29, 41, 71, 0.2);
   color: var(--navy);
+  font-size: 8px;
 }
 .footer .made-by strong { margin-left: 4px; }
 .detail-source {
@@ -1156,12 +1163,12 @@ h2 {
   .profile-details .profile-detail { padding: 24px; }
   .appointment-layout { gap: 45px; }
   .footer-inner { grid-template-columns: 1fr; gap: 22px; }
-  .footer .footer-bottom { justify-content: space-between; text-align: left; }
+  .footer-right { width:100%; }
 }
 
 @media (max-width: 1140px) {
   .footer-inner { grid-template-columns: 1fr; gap: 22px; }
-  .footer .footer-bottom { justify-content: space-between; text-align: left; }
+  .footer-right { width:100%; }
 }
 
 @media (max-width: 980px) and (min-width: 831px) {
@@ -1254,9 +1261,9 @@ h2 {
   .booking-links { grid-template-columns: 1fr; }
   .booking-links .primary-booking { grid-column: auto; }
   .footer .footer-brand { align-items: flex-start; flex-wrap: wrap; }
-  .footer-socials { width: 100%; margin: 2px 0 0 0; }
-  .footer .footer-bottom { align-items: flex-start; flex-direction: column; gap: 14px; }
-  .footer-actions { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+  .footer-socials { width: 100%; }
+  .footer-right { grid-template-areas:"social actions" "copyright copyright"; grid-template-columns:minmax(0,1fr) auto; gap:10px 12px; }
+  .footer-copyright { text-align:left; white-space:normal; }
   .highlight-tabs { margin-right: -6%; margin-left: -6%; border-right: 0; border-left: 0; box-shadow: none; }
   .highlight-tab { min-height: 68px; }
   .highlight-panels { min-height: 0; padding-top: 30px; }
