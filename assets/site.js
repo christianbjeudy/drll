@@ -360,10 +360,12 @@
     const settings = state.settings;
     if (settings.about) elements.aboutLead.textContent = settings.about;
     if (settings.hero_intro) elements.heroIntro.textContent = settings.hero_intro;
-    if (settings.credentials) {
-      elements.credentialLine.textContent = settings.credentials;
-      elements.footerCredentialLine.textContent = settings.credentials;
-    }
+    const credentials = settings.credentials
+      ? (settings.credentials.includes("CAQSM") ? settings.credentials : `${settings.credentials}, CAQSM`)
+      : "MD, MS, FAAPMR, CAQSM";
+    elements.credentialLine.textContent = credentials;
+    elements.headerCredentialLine.textContent = credentials;
+    elements.footerCredentialLine.textContent = credentials;
     if (settings.professional_title) {
       const role = settings.professional_title.replace(/ of Sports Medicine$/u, ", Sports Medicine");
       renderCredentialLines(elements.roleSummary, role.split(/,\s*/u).map((line, index, list) => index < list.length - 1 ? `${line},` : line));
@@ -859,6 +861,7 @@
       heroIntro: byId("heroIntro"),
       heroSocialLinks: byId("heroSocialLinks"),
       headerInstagram: byId("headerInstagram"),
+      headerCredentialLine: byId("headerCredentialLine"),
       headerLinkedin: byId("headerLinkedin"),
       headerTiktok: byId("headerTiktok"),
       highlights: byId("professional-highlights"),

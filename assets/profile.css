@@ -61,12 +61,17 @@ h2 {
   border-color: rgba(38, 53, 87, 0.12);
   box-shadow: 0 10px 34px rgba(29, 41, 71, 0.06);
 }
-.brand { min-width: 180px; }
+.brand { min-width: 320px; gap: 13px; }
 .brand-logo {
-  width: 166px;
+  width: 114px;
   height: auto;
   object-fit: contain;
 }
+.brand-copy { display: grid; min-width: 0; gap: 3px; }
+.brand-copy strong { font-family: 'Prata', Georgia, serif; font-size: 12px; font-weight: 400; line-height: 1.15; white-space: nowrap; }
+.brand-copy small { color: var(--purple); font-size: 6.5px; font-weight: 700; letter-spacing: 0.14em; white-space: nowrap; }
+.contact-cta,
+.hero-buttons .primary-btn { border-radius: 7px; }
 
 .header-socials { display: flex; align-items: center; gap: 6px; }
 .header-socials a {
@@ -263,7 +268,7 @@ h2 {
 }
 .hero-art-bottom strong { color: var(--purple); font-weight: 600; }
 .hero-person-name {
-  font-size: clamp(9px, 2.45vw, 17px);
+  font-size: clamp(10px, 2.45vw, 19px);
   letter-spacing: 0;
   white-space: nowrap;
 }
@@ -588,17 +593,19 @@ h2 {
 .profile-photo-caption a:hover { background: #33466f; }
 .profile-resource-links {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 6px;
   padding: 10px 0 0;
 }
 .profile-resource-links a {
-  padding: 10px 13px;
+  flex: 0 1 auto;
+  padding: 9px 6px;
   border: 1px solid var(--navy);
-  border-radius: 0;
+  border-radius: 6px;
   background: var(--navy);
   color: #fff;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.02em;
   box-shadow: none;
@@ -702,6 +709,8 @@ h2 {
   height: 52px;
   flex: 0 0 auto;
   place-items: center;
+  border-radius: 7px;
+  text-decoration: none;
 }
 .affiliation-logo img {
   display: block;
@@ -710,7 +719,10 @@ h2 {
   object-fit: contain;
   filter: grayscale(1) sepia(0.12) saturate(0.72) hue-rotate(178deg) contrast(0.92);
   opacity: 0.76;
+  transition: opacity 180ms ease, transform 180ms ease;
 }
+.affiliation-logo:hover img,
+.affiliation-logo:focus-visible img { opacity: 1; transform: translateY(-2px); }
 .affiliation-logo--mount-sinai img { max-height: 45px; }
 .affiliation-logo--ross img { max-height: 51px; }
 .affiliation-logo--fiu img { max-height: 47px; }
@@ -718,7 +730,8 @@ h2 {
 .affiliation-logo--football img { width: auto; max-width: 72px; max-height: 45px; }
 .affiliation-logo--obh { width: clamp(165px, 14vw, 215px); }
 .affiliation-logo--obh img { max-height: 43px; }
-.affiliation-marquee:hover .affiliation-marquee-track { animation-play-state: paused; }
+.affiliation-marquee:hover .affiliation-marquee-track,
+.affiliation-marquee:focus-within .affiliation-marquee-track { animation-play-state: paused; }
 
 @keyframes affiliation-glide {
   to { transform: translateX(-50%); }
@@ -1003,11 +1016,11 @@ h2 {
   border-top: 0;
 }
 .footer .footer-brand { min-width: 0; color: var(--navy); }
-.footer-identity { display: flex; min-width: 0; align-items: center; gap: 17px; }
+.footer-identity { display: flex; min-width: 0; align-items: center; gap: 13px; }
 .footer-monogram { width: 118px; height: auto; flex: 0 0 auto; }
-.footer-name { display: grid; gap: 7px; }
-.footer-name strong { font-family: 'Prata', Georgia, serif; font-size: clamp(18px, 1.8vw, 27px); font-weight: 400; line-height: 1.15; }
-.footer-name span { color: var(--purple); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; }
+.footer-name { display: grid; gap: 3px; }
+.footer-name strong { font-family: 'Prata', Georgia, serif; font-size: clamp(17px, 1.6vw, 24px); font-weight: 400; line-height: 1.08; white-space: nowrap; }
+.footer-name span { color: var(--purple); font-size: 8px; font-weight: 700; letter-spacing: 0.14em; white-space: nowrap; }
 .footer-socials {
   grid-area: social;
   flex-wrap: nowrap;
@@ -1167,6 +1180,9 @@ h2 {
 }
 
 @media (max-width: 1140px) {
+  .brand { min-width: 185px; }
+  .brand-logo { width: 150px; }
+  .brand-copy { display: none; }
   .footer-inner { grid-template-columns: 1fr; gap: 22px; }
   .footer-right { width:100%; }
 }
@@ -1242,6 +1258,8 @@ h2 {
   .highlight-entry-more.has-media { grid-template-columns: 1fr; }
   .highlight-entry-image { width: 100%; height: 220px; }
   .profile-photo-frame { height: 340px; }
+  .profile-resource-links { gap: 4px; }
+  .profile-resource-links a { padding-right: 4px; padding-left: 4px; font-size: 7.3px; }
   .profile-photo-caption { align-items: flex-start; flex-direction: column; gap: 8px; }
   .profile-details { grid-template-columns: 1fr; }
   .profile-details .profile-detail { grid-column: 1; padding: 23px; }
