@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" href="/assets/brand/drll-icon.png">
   <link rel="apple-touch-icon" href="/assets/brand/drll-icon.png">
   <link rel="stylesheet" href="/assets/styles.css">
-  <link rel="stylesheet" href="/assets/profile.css?v=20261104-connect-2">
+  <link rel="stylesheet" href="/assets/profile.css?v=20261104-connect-3">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -67,7 +67,16 @@
         <p class="hero-intro" id="heroIntro">Double board-certified in Physical Medicine &amp; Rehabilitation and Sports Medicine, Dr. Louissaint primarily practices sports medicine and interventional spine care. As an Assistant Professor at SUNY Downstate and Head Team Physician for the Haiti Women’s National Team, she brings advanced clinical training and an athlete’s perspective to helping patients recover, perform, and remain active.</p>
         <div class="hero-action-stack">
           <div class="hero-buttons">
-            <button id="heroAppointment" class="primary-btn connect-menu-trigger" type="button" aria-expanded="false" aria-haspopup="menu" aria-controls="connectMenu">Let’s Connect</button>
+            <div class="hero-connect">
+              <button id="heroAppointment" class="primary-btn connect-menu-trigger" type="button" aria-expanded="false" aria-haspopup="menu" aria-controls="heroConnectMenu">Let’s Connect</button>
+              <div id="heroConnectMenu" class="connect-menu hero-connect-menu" role="menu" hidden>
+                <button type="button" role="menuitem" data-inquiry="brand-partnerships">Brand Partnerships</button>
+                <button type="button" role="menuitem" data-inquiry="speaking-engagements">Speaking Engagements</button>
+                <button type="button" role="menuitem" data-inquiry="sports-coverage">Sports Coverage</button>
+                <button type="button" role="menuitem" data-inquiry="mentorship">Mentorship</button>
+                <button type="button" role="menuitem" data-inquiry="patient">Book a Medical Appointment</button>
+              </div>
+            </div>
             <div id="heroSocialLinks" class="hero-social-links" aria-label="Social profiles"></div>
           </div>
         </div>
@@ -346,6 +355,6 @@
       <button class="primary-btn appointment-submit" type="submit">Continue</button>
     </form>
   </dialog>
-  <script src="/assets/site.js?v=20261104-connect"></script>
+  <script src="/assets/site.js?v=20261104-connect-3"></script>
 </body>
 </html>

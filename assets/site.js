@@ -652,26 +652,50 @@
 
     elements.inquiryType.addEventListener("change", updateRequestForm);
     const connectTriggers = [...document.querySelectorAll(".connect-menu-trigger")];
-    const setConnectMenu = (open) => {
-      elements.connectMenu.hidden = !open;
-      for (const trigger of connectTriggers) trigger.setAttribute("aria-expanded", String(open));
+    const connectMenus = [...document.querySelectorAll(".connect-menu")];
+    const setConnectMenu = (menu, open) => {
+      menu.hidden = !open;
+      for (const trigger of connectTriggers) {
+        if (trigger.getAttribute("aria-controls") === menu.id) {
+          trigger.setAttribute("aria-expanded", String(open));
+        }
+      }
+    };
+    const closeConnectMenus = (except = null) => {
+      for (const menu of connectMenus) {
+        if (menu !== except) setConnectMenu(menu, false);
+      }
     };
     for (const trigger of connectTriggers) {
       trigger.addEventListener("click", (event) => {
         event.stopPropagation();
-        setConnectMenu(elements.connectMenu.hidden);
+        const menu = byId(trigger.getAttribute("aria-controls"));
+        if (!menu) return;
+        const shouldOpen = menu.hidden;
+        closeConnectMenus(menu);
+        setConnectMenu(menu, shouldOpen);
       });
     }
-    for (const option of elements.connectMenu.querySelectorAll("[data-inquiry]")) {
-      option.addEventListener("click", () => {
-        setConnectMenu(false);
-        elements.nav.classList.remove("open");
-        elements.menuToggle.setAttribute("aria-expanded", "false");
-        openRequestForm(option.dataset.inquiry);
-      });
+    for (const menu of connectMenus) {
+      for (const option of menu.querySelectorAll("[data-inquiry]")) {
+        option.addEventListener("click", () => {
+          closeConnectMenus();
+          setConnectMenu(menu, false);
+          elements.nav.classList.remove("open");
+          elements.menuToggle.setAttribute("aria-expanded", "false");
+          openRequestForm(option.dataset.inquiry);
+        });
+      }
     }
     document.addEventListener("click", (event) => {
-      if (!elements.connectMenu.hidden && !elements.connectMenu.contains(event.target)) setConnectMenu(false);
+      if (!event.target.closest(".connect-menu, .connect-menu-trigger")) closeConnectMenus();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeConnectMenus();
+        elements.nav.classList.remove("open");
+        elements.menuToggle.setAttribute("aria-expanded", "false");
+      }
     });
     for (const trigger of document.querySelectorAll(".appointment-trigger")) {
       trigger.addEventListener("click", () => openRequestForm(trigger.dataset.inquiry || "patient"));
