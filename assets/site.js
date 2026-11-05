@@ -532,6 +532,17 @@
       rotationTimer = 0;
     };
 
+    const activeCards = () => [...byId(state.activeHighlight).querySelectorAll("details.highlight-entry")];
+
+    const syncExpandAll = () => {
+      const cards = activeCards();
+      const allOpen = cards.length > 0 && cards.every((card) => card.open);
+      elements.highlightExpandAll.hidden = cards.length === 0;
+      elements.highlightExpandAll.textContent = allOpen ? "Collapse All" : "Expand All";
+      elements.highlightExpandAll.setAttribute("aria-expanded", String(allOpen));
+      elements.highlightExpandAll.setAttribute("aria-controls", state.activeHighlight);
+    };
+
     const startRotation = () => {
       stopRotation();
       if (reducedMotion.matches || document.hidden || !highlightsVisible || manuallySelected) return;
@@ -555,6 +566,7 @@
         const panel = byId(panelId);
         panel.hidden = panelId !== id;
       }
+      syncExpandAll();
       if (updateHash) window.history.pushState(null, "", `#${id}`);
       if (scroll) {
         elements.highlights.scrollIntoView({
@@ -564,6 +576,22 @@
       }
       if (restart) startRotation();
     }
+
+    elements.highlightExpandAll.addEventListener("click", () => {
+      manuallySelected = true;
+      stopRotation();
+      const cards = activeCards();
+      const shouldOpen = cards.some((card) => !card.open);
+      for (const card of cards) card.open = shouldOpen;
+      syncExpandAll();
+    });
+
+    elements.highlights.addEventListener("toggle", (event) => {
+      if (event.target.matches("details.highlight-entry") && !event.target.closest("[hidden]")) syncExpandAll();
+    }, true);
+
+    const highlightObserver = new MutationObserver(syncExpandAll);
+    highlightObserver.observe(elements.highlights.querySelector(".highlight-panels"), { childList: true, subtree: true });
 
     for (const tab of tabs) {
       tab.addEventListener("click", () => {
@@ -992,6 +1020,7 @@
       headerLinkedin: byId("headerLinkedin"),
       headerTiktok: byId("headerTiktok"),
       highlights: byId("professional-highlights"),
+      highlightExpandAll: byId("highlightExpandAll"),
       highlightTabs: byId("highlightTabs"),
       journeyList: byId("journeyList"),
       languageList: byId("languageList"),
