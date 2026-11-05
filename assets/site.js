@@ -834,9 +834,9 @@
     let rotationTimer = 0;
     const hero = elements.portrait.closest(".hero");
     const heroPalettes = [
-      ["rgba(68, 91, 142, 0.21)", "rgba(139, 112, 163, 0.19)", "rgba(204, 174, 159, 0.11)"],
-      ["rgba(57, 82, 132, 0.18)", "rgba(119, 91, 151, 0.22)", "rgba(193, 153, 134, 0.1)"],
-      ["rgba(56, 91, 145, 0.22)", "rgba(151, 122, 174, 0.17)", "rgba(185, 153, 125, 0.12)"],
+      ["rgba(68, 91, 142, 0.28)", "rgba(139, 112, 163, 0.26)", "rgba(204, 174, 159, 0.16)"],
+      ["rgba(57, 82, 132, 0.24)", "rgba(119, 91, 151, 0.29)", "rgba(193, 153, 134, 0.15)"],
+      ["rgba(56, 91, 145, 0.29)", "rgba(151, 122, 174, 0.23)", "rgba(185, 153, 125, 0.17)"],
     ];
     const sampledPalettes = new Map();
 
@@ -875,9 +875,9 @@
         if (!accentBucket) return null;
         const accent = [accentBucket.red, accentBucket.green, accentBucket.blue].map((value) => Math.round(value / accentBucket.weight));
         const palette = [
-          `rgba(${blendChannel(accent[0], 68)}, ${blendChannel(accent[1], 91)}, ${blendChannel(accent[2], 142)}, 0.21)`,
-          `rgba(${blendChannel(accent[0], 139, 0.25)}, ${blendChannel(accent[1], 112, 0.25)}, ${blendChannel(accent[2], 163, 0.25)}, 0.19)`,
-          `rgba(${accent[0]}, ${accent[1]}, ${accent[2]}, 0.12)`,
+          `rgba(${blendChannel(accent[0], 68)}, ${blendChannel(accent[1], 91)}, ${blendChannel(accent[2], 142)}, 0.28)`,
+          `rgba(${blendChannel(accent[0], 139, 0.25)}, ${blendChannel(accent[1], 112, 0.25)}, ${blendChannel(accent[2], 163, 0.25)}, 0.26)`,
+          `rgba(${accent[0]}, ${accent[1]}, ${accent[2]}, 0.16)`,
         ];
         sampledPalettes.set(source, palette);
         return palette;

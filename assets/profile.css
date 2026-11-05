@@ -18,8 +18,8 @@
 
 body {
   background:
-    radial-gradient(circle at 9% 17%, rgba(116, 97, 143, 0.11), transparent 24rem),
-    radial-gradient(circle at 92% 46%, rgba(77, 96, 151, 0.095), transparent 28rem),
+    radial-gradient(circle at 9% 17%, rgba(116, 97, 143, 0.17), transparent 25rem),
+    radial-gradient(circle at 92% 46%, rgba(77, 96, 151, 0.14), transparent 29rem),
     #fbfaf7;
   text-rendering: optimizeLegibility;
 }
@@ -157,15 +157,15 @@ h2 {
 
 /* Hero */
 .hero {
-  --hero-glow-blue: rgba(68, 91, 142, 0.21);
-  --hero-glow-purple: rgba(139, 112, 163, 0.19);
-  --hero-glow-warm: rgba(204, 174, 159, 0.11);
+  --hero-glow-blue: rgba(68, 91, 142, 0.28);
+  --hero-glow-purple: rgba(139, 112, 163, 0.26);
+  --hero-glow-warm: rgba(204, 174, 159, 0.16);
   min-height: 790px;
   grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
   gap: 40px;
   padding-top: 62px;
   padding-bottom: 42px;
-  background: radial-gradient(circle at 82% 28%, rgba(116, 97, 143, 0.09), transparent 29%);
+  background: radial-gradient(circle at 82% 28%, rgba(116, 97, 143, 0.16), transparent 32%);
 }
 .hero-copy {
   position: relative;
@@ -404,7 +404,7 @@ h2 {
   #expertise .section-heading h2,
   #profile .section-heading h2 { white-space: nowrap; }
 }
-.expertise-section { background: var(--paper); }
+.expertise-section { background: linear-gradient(135deg, #f1eff5 0%, var(--paper) 52%, #edf1f7 100%); }
 .expertise-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -580,7 +580,7 @@ h2 {
   width: 48vw;
   height: 70%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(77, 96, 151, 0.12), rgba(167, 152, 188, 0.065) 46%, transparent 72%);
+  background: radial-gradient(circle, rgba(77, 96, 151, 0.18), rgba(167, 152, 188, 0.1) 46%, transparent 72%);
   content: '';
   filter: blur(22px);
   pointer-events: none;
@@ -905,7 +905,7 @@ h2 {
 .request-option--wide { min-height: 118px; grid-column: 1 / -1; }
 /* Professional highlights */
 .highlights-section {
-  background: linear-gradient(145deg, #f2f1ef 0%, #fbfaf7 53%, #efecf3 120%);
+  background: linear-gradient(145deg, #eeedf4 0%, #fbfaf7 47%, #e8edf6 120%);
 }
 .highlights-heading {
   display: flex;
