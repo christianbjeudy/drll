@@ -890,6 +890,7 @@
       hero.style.setProperty("--hero-glow-blue", palette[0]);
       hero.style.setProperty("--hero-glow-purple", palette[1]);
       hero.style.setProperty("--hero-glow-warm", palette[2]);
+      hero.style.setProperty("--hero-shadow-color", palette[2]);
     };
 
     const updateHeroPalette = (slideIndex) => {

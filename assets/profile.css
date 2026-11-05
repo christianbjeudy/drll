@@ -160,6 +160,7 @@ h2 {
   --hero-glow-blue: rgba(68, 91, 142, 0.28);
   --hero-glow-purple: rgba(139, 112, 163, 0.26);
   --hero-glow-warm: rgba(204, 174, 159, 0.16);
+  --hero-shadow-color: rgba(204, 174, 159, 0.16);
   min-height: 790px;
   grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
   gap: 40px;
@@ -219,10 +220,10 @@ h2 {
   inset: 0 0 132px;
   z-index: 1;
   border-radius: var(--hero-card-radius);
-  box-shadow: 0 44px 100px rgba(29, 41, 71, 0.29), 0 13px 36px rgba(29, 41, 71, 0.18), 0 0 0 1px rgba(116, 97, 143, 0.08);
+  box-shadow: 0 44px 100px var(--hero-shadow-color), 0 13px 36px rgba(29, 41, 71, 0.18), 0 0 0 1px rgba(116, 97, 143, 0.08);
   transition: box-shadow 600ms ease, transform 600ms ease;
 }
-.hero-art:hover .portrait-wrap { box-shadow: 0 52px 112px rgba(29, 41, 71, 0.32), 0 16px 42px rgba(29, 41, 71, 0.2), 0 0 0 1px rgba(116, 97, 143, 0.13); transform: translateY(-3px); }
+.hero-art:hover .portrait-wrap { box-shadow: 0 52px 112px var(--hero-shadow-color), 0 16px 42px rgba(29, 41, 71, 0.2), 0 0 0 1px rgba(116, 97, 143, 0.13); transform: translateY(-3px); }
 .portrait-wrap { background: #d8dce3; }
 .portrait-placeholder { position: relative; overflow: hidden; border-radius: inherit; background: #d8dce3; }
 .hero-carousel-slides { position: absolute; inset: 0; }
