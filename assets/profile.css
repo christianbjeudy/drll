@@ -18,8 +18,8 @@
 
 body {
   background:
-    radial-gradient(circle at 9% 17%, rgba(116, 97, 143, 0.065), transparent 24rem),
-    radial-gradient(circle at 92% 46%, rgba(77, 96, 151, 0.06), transparent 28rem),
+    radial-gradient(circle at 9% 17%, rgba(116, 97, 143, 0.11), transparent 24rem),
+    radial-gradient(circle at 92% 46%, rgba(77, 96, 151, 0.095), transparent 28rem),
     #fbfaf7;
   text-rendering: optimizeLegibility;
 }
@@ -185,7 +185,7 @@ h2 {
     radial-gradient(ellipse at 52% 78%, var(--hero-glow-warm), transparent 46%);
   content: '';
   filter: blur(42px);
-  opacity: 0.86;
+  opacity: 1;
   pointer-events: none;
   transform: translateZ(0);
   transition: background 1800ms ease, opacity 900ms ease;
@@ -237,19 +237,6 @@ h2 {
 .hero-slide.is-active { opacity: 1; transform: scale(1); pointer-events: auto; }
 .hero-slide img { height: 100%; width: 100%; object-fit: cover; object-position: center 17%; }
 .hero-slide.is-active img { animation: portrait-drift 8.7s ease-in-out both; }
-.hero-motion-video {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 17%;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 900ms ease;
-}
-.hero-motion-video.is-ready { opacity: 1; }
 .hero-slide--career img { object-position: 50% 50%; }
 @keyframes portrait-drift {
   from { transform: scale(1.015) translate3d(0, 0, 0); }
@@ -593,7 +580,7 @@ h2 {
   width: 48vw;
   height: 70%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(77, 96, 151, 0.075), rgba(167, 152, 188, 0.035) 46%, transparent 72%);
+  background: radial-gradient(circle, rgba(77, 96, 151, 0.12), rgba(167, 152, 188, 0.065) 46%, transparent 72%);
   content: '';
   filter: blur(22px);
   pointer-events: none;
@@ -1321,8 +1308,7 @@ h2 {
 }
 
 @media (max-width: 830px) {
-  .hero-motion-video { display: none; }
-  .hero-copy::before { top: -60px; left: -18%; width: 118%; height: 360px; opacity: 0.72; }
+  .hero-copy::before { top: -60px; left: -18%; width: 118%; height: 360px; opacity: 0.86; }
   .section { padding-top: 78px; padding-bottom: 78px; }
   .header { height: 75px; }
   .nav { top: 75px; }
@@ -1431,7 +1417,6 @@ h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-motion-video { display: none; }
   .hero-slide.is-active img { animation: none; }
   .hero-art:hover .portrait-wrap,
   .profile-photo-frame:hover img { transform: none; }
