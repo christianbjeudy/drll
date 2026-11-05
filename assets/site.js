@@ -834,6 +834,74 @@
     const next = elements.portrait.querySelector("[data-hero-next]");
     let activeIndex = 0;
     let rotationTimer = 0;
+    const hero = elements.portrait.closest(".hero");
+    const heroPalettes = [
+      ["rgba(68, 91, 142, 0.21)", "rgba(139, 112, 163, 0.19)", "rgba(204, 174, 159, 0.11)"],
+      ["rgba(57, 82, 132, 0.18)", "rgba(119, 91, 151, 0.22)", "rgba(193, 153, 134, 0.1)"],
+      ["rgba(56, 91, 145, 0.22)", "rgba(151, 122, 174, 0.17)", "rgba(185, 153, 125, 0.12)"],
+    ];
+    const sampledPalettes = new Map();
+
+    const blendChannel = (accent, brand, accentWeight = 0.34) => Math.round((accent * accentWeight) + (brand * (1 - accentWeight)));
+
+    const sampleImageAccent = async (image) => {
+      const source = image.currentSrc || image.src;
+      if (sampledPalettes.has(source)) return sampledPalettes.get(source);
+      try {
+        if (!image.complete) await image.decode();
+        const canvas = document.createElement("canvas");
+        canvas.width = 32;
+        canvas.height = 32;
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+        const buckets = new Map();
+        for (let offset = 0; offset < pixels.length; offset += 4) {
+          const [red, green, blue, alpha] = pixels.slice(offset, offset + 4);
+          if (alpha < 220) continue;
+          const high = Math.max(red, green, blue);
+          const low = Math.min(red, green, blue);
+          const lightness = (high + low) / 510;
+          const saturation = high === low ? 0 : (high - low) / (255 - Math.abs((high + low) - 255));
+          if (lightness < 0.16 || lightness > 0.88 || saturation < 0.16) continue;
+          const key = `${red >> 5}-${green >> 5}-${blue >> 5}`;
+          const bucket = buckets.get(key) || { red: 0, green: 0, blue: 0, weight: 0 };
+          const weight = 0.5 + saturation;
+          bucket.red += red * weight;
+          bucket.green += green * weight;
+          bucket.blue += blue * weight;
+          bucket.weight += weight;
+          buckets.set(key, bucket);
+        }
+        const accentBucket = [...buckets.values()].sort((a, b) => b.weight - a.weight)[0];
+        if (!accentBucket) return null;
+        const accent = [accentBucket.red, accentBucket.green, accentBucket.blue].map((value) => Math.round(value / accentBucket.weight));
+        const palette = [
+          `rgba(${blendChannel(accent[0], 68)}, ${blendChannel(accent[1], 91)}, ${blendChannel(accent[2], 142)}, 0.21)`,
+          `rgba(${blendChannel(accent[0], 139, 0.25)}, ${blendChannel(accent[1], 112, 0.25)}, ${blendChannel(accent[2], 163, 0.25)}, 0.19)`,
+          `rgba(${accent[0]}, ${accent[1]}, ${accent[2]}, 0.12)`,
+        ];
+        sampledPalettes.set(source, palette);
+        return palette;
+      } catch {
+        return null;
+      }
+    };
+
+    const applyHeroPalette = (palette) => {
+      hero.style.setProperty("--hero-glow-blue", palette[0]);
+      hero.style.setProperty("--hero-glow-purple", palette[1]);
+      hero.style.setProperty("--hero-glow-warm", palette[2]);
+    };
+
+    const updateHeroPalette = (slideIndex) => {
+      applyHeroPalette(heroPalettes[slideIndex % heroPalettes.length]);
+      const image = slides[slideIndex]?.querySelector("img");
+      if (!image) return;
+      sampleImageAccent(image).then((palette) => {
+        if (palette && activeIndex === slideIndex) applyHeroPalette(palette);
+      });
+    };
 
     const motionAllowed = () => !reducedMotion.matches && desktopMotion.matches && !navigator.connection?.saveData;
 
@@ -865,6 +933,7 @@
 
     const showSlide = (index) => {
       activeIndex = (index + slides.length) % slides.length;
+      updateHeroPalette(activeIndex);
       slides.forEach((slide, slideIndex) => {
         const active = slideIndex === activeIndex;
         slide.classList.toggle("is-active", active);
@@ -882,7 +951,7 @@
     const startRotation = () => {
       stopRotation();
       if (slides.length < 2 || reducedMotion.matches || document.hidden) return;
-      rotationTimer = window.setInterval(() => showSlide(activeIndex + 1), 8500);
+      rotationTimer = window.setInterval(() => showSlide(activeIndex + 1), 12500);
     };
 
     const bindDots = () => dots.forEach((dot, index) => dot.addEventListener("click", () => {

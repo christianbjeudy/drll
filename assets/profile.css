@@ -18,8 +18,8 @@
 
 body {
   background:
-    radial-gradient(circle at 9% 17%, rgba(116, 97, 143, 0.045), transparent 24rem),
-    radial-gradient(circle at 92% 46%, rgba(77, 96, 151, 0.04), transparent 28rem),
+    radial-gradient(circle at 9% 17%, rgba(116, 97, 143, 0.065), transparent 24rem),
+    radial-gradient(circle at 92% 46%, rgba(77, 96, 151, 0.06), transparent 28rem),
     #fbfaf7;
   text-rendering: optimizeLegibility;
 }
@@ -157,12 +157,38 @@ h2 {
 
 /* Hero */
 .hero {
+  --hero-glow-blue: rgba(68, 91, 142, 0.21);
+  --hero-glow-purple: rgba(139, 112, 163, 0.19);
+  --hero-glow-warm: rgba(204, 174, 159, 0.11);
   min-height: 790px;
   grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
   gap: 40px;
   padding-top: 62px;
   padding-bottom: 42px;
   background: radial-gradient(circle at 82% 28%, rgba(116, 97, 143, 0.09), transparent 29%);
+}
+.hero-copy {
+  position: relative;
+  isolation: isolate;
+}
+.hero-copy::before {
+  position: absolute;
+  z-index: -1;
+  top: -92px;
+  left: -118px;
+  width: min(690px, 58vw);
+  height: 430px;
+  border-radius: 48%;
+  background:
+    radial-gradient(ellipse at 24% 40%, var(--hero-glow-purple), transparent 48%),
+    radial-gradient(ellipse at 66% 30%, var(--hero-glow-blue), transparent 50%),
+    radial-gradient(ellipse at 52% 78%, var(--hero-glow-warm), transparent 46%);
+  content: '';
+  filter: blur(42px);
+  opacity: 0.86;
+  pointer-events: none;
+  transform: translateZ(0);
+  transition: background 1800ms ease, opacity 900ms ease;
 }
 .hero h1 {
   max-width: 670px;
@@ -558,7 +584,20 @@ h2 {
 .expertise-speaking button:hover { background: linear-gradient(118deg, var(--navy), #554a73); color: #fff; box-shadow: 0 10px 24px rgba(29, 41, 71, 0.16); transform: translateY(-2px); }
 
 /* Credentials */
-.profile-section { position: relative; }
+.profile-section { position: relative; isolation: isolate; }
+.profile-section::before {
+  position: absolute;
+  z-index: -1;
+  top: 3%;
+  right: -13vw;
+  width: 48vw;
+  height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(77, 96, 151, 0.075), rgba(167, 152, 188, 0.035) 46%, transparent 72%);
+  content: '';
+  filter: blur(22px);
+  pointer-events: none;
+}
 .profile-layout {
   display: grid;
   grid-template-columns: minmax(300px, 0.76fr) minmax(0, 1.4fr);
@@ -1283,6 +1322,7 @@ h2 {
 
 @media (max-width: 830px) {
   .hero-motion-video { display: none; }
+  .hero-copy::before { top: -60px; left: -18%; width: 118%; height: 360px; opacity: 0.72; }
   .section { padding-top: 78px; padding-bottom: 78px; }
   .header { height: 75px; }
   .nav { top: 75px; }
