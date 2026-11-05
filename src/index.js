@@ -17,6 +17,14 @@ import {
 } from "./handlers/api/admin/settings.js";
 import { onRequestPost as uploadAdminMedia } from "./handlers/api/admin/upload.js";
 import { onRequestGet as listAdminInquiries } from "./handlers/api/admin/inquiries.js";
+import {
+  onRequestGet as listAdminWorkflows,
+  onRequestPost as createAdminWorkflow,
+} from "./handlers/api/admin/workflows/index.js";
+import {
+  onRequestDelete as deleteAdminWorkflow,
+  onRequestPut as updateAdminWorkflow,
+} from "./handlers/api/admin/workflows/[id].js";
 import { onRequestPost as createInquiry } from "./handlers/api/inquiries.js";
 import { onRequestGet as getMedia } from "./handlers/media/[key].js";
 import { json, methodNotAllowed } from "./handlers/_lib/http.js";
@@ -52,11 +60,20 @@ async function dispatch(request, env, executionContext) {
   }
   if (pathname === "/api/admin/upload") return methodHandler(request, { POST: uploadAdminMedia })(context);
   if (pathname === "/api/admin/inquiries") return methodHandler(request, { GET: listAdminInquiries })(context);
+  if (pathname === "/api/admin/workflows") {
+    return methodHandler(request, { GET: listAdminWorkflows, POST: createAdminWorkflow })(context);
+  }
 
   const entryMatch = pathname.match(/^\/api\/admin\/entries\/([^/]+)$/u);
   if (entryMatch) {
     const entryContext = contextFor(request, env, executionContext, { id: decodeURIComponent(entryMatch[1]) });
     return methodHandler(request, { PUT: updateAdminEntry, DELETE: deleteAdminEntry })(entryContext);
+  }
+
+  const workflowMatch = pathname.match(/^\/api\/admin\/workflows\/([^/]+)$/u);
+  if (workflowMatch) {
+    const workflowContext = contextFor(request, env, executionContext, { id: decodeURIComponent(workflowMatch[1]) });
+    return methodHandler(request, { PUT: updateAdminWorkflow, DELETE: deleteAdminWorkflow })(workflowContext);
   }
 
   const mediaMatch = pathname.match(/^\/media\/([^/]+)$/u);

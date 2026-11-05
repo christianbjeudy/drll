@@ -3,13 +3,17 @@ import assert from "node:assert/strict";
 
 import {
   deleteEntry,
+  deleteWorkflow,
   getEntry,
   getSettings,
+  getWorkflow,
   listInquiries,
   listEntries,
+  listWorkflows,
   saveEntry,
   saveInquiry,
   saveSettings,
+  saveWorkflow,
 } from "../src/handlers/_lib/store.js";
 
 class MockBucket {
@@ -72,4 +76,14 @@ test("stores and sorts professional inquiries", async () => {
   await saveInquiry(bucket, { id: "older", name: "Older", created_at: "2026-10-30T12:00:00.000Z" });
   await saveInquiry(bucket, { id: "newer", name: "Newer", created_at: "2026-10-31T12:00:00.000Z" });
   assert.deepEqual((await listInquiries(bucket)).map((inquiry) => inquiry.id), ["newer", "older"]);
+});
+
+test("stores, sorts, reads, and deletes workflows", async () => {
+  const bucket = new MockBucket();
+  await saveWorkflow(bucket, { id: "older", title: "Older", updated_at: "2026-10-30T12:00:00.000Z" });
+  await saveWorkflow(bucket, { id: "newer", title: "Newer", updated_at: "2026-10-31T12:00:00.000Z" });
+  assert.deepEqual((await listWorkflows(bucket)).map((workflow) => workflow.id), ["newer", "older"]);
+  assert.equal((await getWorkflow(bucket, "newer")).title, "Newer");
+  await deleteWorkflow(bucket, "newer");
+  assert.equal(await getWorkflow(bucket, "newer"), null);
 });

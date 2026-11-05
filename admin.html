@@ -26,6 +26,7 @@
       <div class="mark"><img src="/assets/brand/drll-monogram.png" alt="Dr. Laurenie Louissaint, MD, MS, FAAPMR, CAQSM"><small>CONTENT STUDIO</small></div>
       <nav>
         <button class="nav active" data-view="all">All entries</button>
+        <button class="nav" data-view="workflows">Workflows</button>
         <button class="nav" data-view="inquiries">Professional requests</button>
         <button class="nav" data-view="settings">Professional profile</button>
       </nav>
@@ -46,6 +47,27 @@
       <section id="inquiriesPane" hidden>
         <p class="inquiry-pane-intro">Mentorship, press, conference, public-engagement, and sports-coverage requests submitted through the website.</p>
         <div id="inquiryRows" class="inquiry-rows"></div>
+      </section>
+
+      <section id="workflowsPane" hidden>
+        <div class="workflow-overview">
+          <div><span>ACTIVE</span><strong id="activeWorkflowCount">0</strong><small>Open opportunities</small></div>
+          <div><span>AWAITING</span><strong id="awaitingWorkflowCount">0</strong><small>Need information</small></div>
+          <div><span>CONFIRMED</span><strong id="confirmedWorkflowCount">0</strong><small>Ready to deliver</small></div>
+        </div>
+        <div class="tools workflow-tools">
+          <input id="workflowSearch" placeholder="Search workflows, contacts, or organizations...">
+          <select id="workflowStatusFilter" aria-label="Filter workflows by status">
+            <option value="">All statuses</option>
+            <option value="lead">Lead</option>
+            <option value="reviewing">Reviewing</option>
+            <option value="awaiting-information">Awaiting Information</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="declined">Declined</option>
+          </select>
+        </div>
+        <div id="workflowRows" class="workflow-rows"></div>
       </section>
 
       <section id="settingsPane" hidden>
@@ -112,6 +134,48 @@
       <label class="wide">External resource URL<input name="external_url" placeholder="https://..."></label>
       <div class="editor-actions wide"><button type="button" id="deleteBtn" class="danger" hidden>Delete</button><button type="submit" class="primary">Save entry</button></div>
       <p class="message wide" id="editorMessage"></p>
+    </form>
+  </dialog>
+
+  <dialog id="workflowEditor" class="workflow-editor">
+    <div class="editor-head"><div><span class="dialog-kicker">OPPORTUNITY WORKFLOW</span><h2 id="workflowEditorTitle">New workflow</h2></div><button id="closeWorkflowEditor" type="button" aria-label="Close">✕</button></div>
+    <form id="workflowForm" class="editor-grid">
+      <input type="hidden" name="id">
+      <input type="hidden" name="source_inquiry_id">
+      <label>Workflow type<select name="type" id="workflowType">
+        <option value="brand-partnerships">Brand Partnerships</option>
+        <option value="speaking-engagements">Speaking Engagements</option>
+        <option value="sports-coverage">Sports Coverage</option>
+        <option value="mentorship">Mentorship</option>
+        <option value="press-public-engagement">Press &amp; Public Engagement</option>
+      </select></label>
+      <label>Status<select name="status">
+        <option value="lead">Lead</option>
+        <option value="reviewing">Reviewing</option>
+        <option value="awaiting-information">Awaiting Information</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="completed">Completed</option>
+        <option value="declined">Declined</option>
+      </select></label>
+      <label class="wide">Opportunity / project title<input name="title" required maxlength="250" placeholder="Conference keynote, campaign partnership, event coverage..."></label>
+      <label>Contact name<input name="contact_name" required maxlength="120"></label>
+      <label>Contact email<input name="contact_email" required type="email"></label>
+      <label>Organization<input name="organization" maxlength="180"></label>
+      <label>Contact phone<input name="contact_phone" type="tel" maxlength="50"></label>
+      <label>Event or deadline date<input name="event_date" type="date"></label>
+      <div class="wide workflow-requirements-section">
+        <div class="workflow-section-heading"><div><strong>Requirements checklist</strong><small>Track the information and approvals needed before confirming.</small></div><button id="addRequirement" type="button">+ Add requirement</button></div>
+        <div id="workflowRequirements" class="workflow-requirements"></div>
+      </div>
+      <label class="wide">Internal notes<textarea name="notes" rows="4" placeholder="Budget, timing, follow-up notes, decision makers..."></textarea></label>
+      <div class="wide workflow-email-section">
+        <div class="workflow-section-heading"><div><strong>Reusable email draft</strong><small>The contact’s first name and opportunity details are inserted automatically.</small></div><label class="template-picker">Template<select id="workflowEmailTemplate"><option value="introduction">Introduction / response</option><option value="requirements">Request requirements</option><option value="follow-up">Follow up</option><option value="confirmation">Confirmation</option></select></label></div>
+        <label>Subject<input name="email_subject" maxlength="300"></label>
+        <label class="wide">Message<textarea name="email_body" rows="12"></textarea></label>
+        <div class="workflow-email-actions"><button id="copyWorkflowEmail" type="button">Copy email</button><a id="openWorkflowEmail" href="#">Open in email app</a></div>
+      </div>
+      <div class="editor-actions wide"><button type="button" id="deleteWorkflowBtn" class="danger" hidden>Delete workflow</button><button type="submit" class="primary">Save workflow</button></div>
+      <p class="message wide" id="workflowEditorMessage"></p>
     </form>
   </dialog>
   <script src="/assets/admin.js"></script>

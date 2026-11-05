@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { normalizeEntry, normalizeInquiry, normalizeSettings } from "../src/handlers/_lib/content.js";
+import { normalizeEntry, normalizeInquiry, normalizeSettings, normalizeWorkflow } from "../src/handlers/_lib/content.js";
 
 test("normalizes a valid content entry", () => {
   const entry = normalizeEntry({
@@ -67,5 +67,25 @@ test("validates settings email and preserves safe relative portrait paths", () =
   assert.throws(() => normalizeSettings({ zocdoc: "javascript:alert(1)" }), /HTTP and HTTPS/u);
   assert.throws(() => normalizeSettings({ hero_slideshow: "/media/safe.jpg\njavascript:alert(1)" }), /HTTP and HTTPS/u);
   assert.throws(() => normalizeSettings({ latest_social_published_at: "not-a-date" }), /social post date is invalid/u);
+});
+
+test("normalizes opportunity workflows and their requirements", () => {
+  const workflow = normalizeWorkflow({
+    type: "speaking-engagements",
+    status: "awaiting-information",
+    title: "Sports medicine keynote",
+    contact_name: "Jordan Smith",
+    contact_email: "jordan@example.com",
+    organization: "Example Conference",
+    event_date: "2027-03-18",
+    requirements: [{ label: "Audience and format", completed: true }, { label: "Honorarium", completed: false }],
+    email_subject: "Keynote details",
+    email_body: "Hello Jordan",
+  });
+  assert.equal(workflow.type, "speaking-engagements");
+  assert.equal(workflow.requirements.length, 2);
+  assert.equal(workflow.requirements[0].completed, true);
+  assert.throws(() => normalizeWorkflow({ type: "unknown", title: "Bad", contact_name: "A", contact_email: "a@example.com" }), /Workflow type/u);
+  assert.throws(() => normalizeWorkflow({ type: "mentorship", title: "Bad", contact_name: "A", contact_email: "bad" }), /valid contact email/u);
 });
 

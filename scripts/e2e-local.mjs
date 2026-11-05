@@ -14,6 +14,7 @@ if (!password) throw new Error("Pass the test password or --credentials-file <pa
 
 let cookie = "";
 let createdEntryId = "";
+let createdWorkflowId = "";
 let uploadedUrl = "";
 let assertions = 0;
 let originalSettings = null;
@@ -69,6 +70,47 @@ try {
   const originalSettingsResponse = await request("/api/admin/settings");
   check(originalSettingsResponse.status === 200, "Admin settings should load.");
   originalSettings = (await originalSettingsResponse.json()).settings;
+
+  const workflowResponse = await request("/api/admin/workflows", {
+    method: "POST",
+    body: JSON.stringify({
+      type: "speaking-engagements",
+      status: "lead",
+      title: "Temporary workflow test",
+      contact_name: "Test Contact",
+      contact_email: "contact@example.com",
+      organization: "Example Conference",
+      event_date: "2027-03-18",
+      requirements: [{ label: "Audience and format", completed: false }],
+      notes: "Temporary end-to-end workflow.",
+      email_subject: "Speaking engagement",
+      email_body: "Hello Test",
+    }),
+  });
+  check(workflowResponse.status === 201, "Admin should create a workflow.");
+  createdWorkflowId = (await workflowResponse.json()).workflow.id;
+
+  const workflows = await request("/api/admin/workflows");
+  check(workflows.status === 200, "Admin workflows should load.");
+  check((await workflows.json()).workflows.some((workflow) => workflow.id === createdWorkflowId), "Created workflow should appear in the dashboard API.");
+
+  const updateWorkflow = await request(`/api/admin/workflows/${createdWorkflowId}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      type: "speaking-engagements",
+      status: "confirmed",
+      title: "Temporary workflow test",
+      contact_name: "Test Contact",
+      contact_email: "contact@example.com",
+      organization: "Example Conference",
+      event_date: "2027-03-18",
+      requirements: [{ label: "Audience and format", completed: true }],
+      notes: "Temporary end-to-end workflow.",
+      email_subject: "Speaking engagement confirmed",
+      email_body: "Hello Test",
+    }),
+  });
+  check(updateWorkflow.status === 200, "Admin should update a workflow.");
 
   const entryResponse = await request("/api/admin/entries", {
     method: "POST",
@@ -142,6 +184,10 @@ try {
   check(deleted.status === 200, "Admin should delete an entry.");
   createdEntryId = "";
 
+  const deletedWorkflow = await request(`/api/admin/workflows/${createdWorkflowId}`, { method: "DELETE" });
+  check(deletedWorkflow.status === 200, "Admin should delete a workflow.");
+  createdWorkflowId = "";
+
   const resetSettings = await request("/api/admin/settings", {
     method: "PUT",
     body: JSON.stringify(originalSettings),
@@ -157,5 +203,8 @@ try {
 } finally {
   if (createdEntryId && cookie) {
     await request(`/api/admin/entries/${createdEntryId}`, { method: "DELETE" }).catch(() => {});
+  }
+  if (createdWorkflowId && cookie) {
+    await request(`/api/admin/workflows/${createdWorkflowId}`, { method: "DELETE" }).catch(() => {});
   }
 }

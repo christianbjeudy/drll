@@ -1,5 +1,6 @@
 const ENTRY_PREFIX = "content/entries/";
 const INQUIRY_PREFIX = "content/inquiries/";
+const WORKFLOW_PREFIX = "content/workflows/";
 const SETTINGS_KEY = "content/settings.json";
 
 export const EMPTY_SETTINGS = {
@@ -89,9 +90,43 @@ export function saveInquiry(bucket, inquiry) {
 }
 
 export async function listInquiries(bucket) {
-  const page = await bucket.list({ prefix: INQUIRY_PREFIX });
-  const inquiries = (await Promise.all(page.objects.map((object) => readJsonObject(bucket, object.key)))).filter(Boolean);
+  const keys = [];
+  let cursor;
+  do {
+    const page = await bucket.list({ prefix: INQUIRY_PREFIX, cursor });
+    keys.push(...page.objects.map((object) => object.key));
+    cursor = page.truncated ? page.cursor : undefined;
+  } while (cursor);
+  const inquiries = (await Promise.all(keys.map((key) => readJsonObject(bucket, key)))).filter(Boolean);
   return inquiries.sort((left, right) => String(right.created_at || "").localeCompare(String(left.created_at || "")));
+}
+
+function workflowKey(id) {
+  return `${WORKFLOW_PREFIX}${id}.json`;
+}
+
+export async function listWorkflows(bucket) {
+  const keys = [];
+  let cursor;
+  do {
+    const page = await bucket.list({ prefix: WORKFLOW_PREFIX, cursor });
+    keys.push(...page.objects.map((object) => object.key));
+    cursor = page.truncated ? page.cursor : undefined;
+  } while (cursor);
+  const workflows = (await Promise.all(keys.map((key) => readJsonObject(bucket, key)))).filter(Boolean);
+  return workflows.sort((left, right) => String(right.updated_at || right.created_at || "").localeCompare(String(left.updated_at || left.created_at || "")));
+}
+
+export function getWorkflow(bucket, id) {
+  return readJsonObject(bucket, workflowKey(id));
+}
+
+export function saveWorkflow(bucket, workflow) {
+  return writeJsonObject(bucket, workflowKey(workflow.id), workflow);
+}
+
+export function deleteWorkflow(bucket, id) {
+  return bucket.delete(workflowKey(id));
 }
 
 export async function getSettings(bucket) {

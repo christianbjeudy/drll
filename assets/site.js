@@ -166,6 +166,16 @@
         care: "Visits may include an overuse-injury evaluation, training-load review, biomechanics discussion, rehabilitation planning, and return-to-activity guidance.",
       },
     };
+    const speakingSubjects = {
+      "Sports Medicine": "Injury prevention, athlete health, return to sport, team medicine, and performance-minded care.",
+      "Physical Medicine & Rehabilitation": "Function-first care, rehabilitation medicine, medical education, mentorship, and multidisciplinary recovery.",
+      "Pain Management": "Evidence-informed pain care, active recovery, and preserving function through musculoskeletal conditions.",
+      "Interventional Spine": "Interventional spine care, non-operative treatment, image-guided options, and active recovery.",
+      "Pain Management & Interventional Spine": "Interventional spine care, evidence-informed pain management, image-guided treatment, and active recovery.",
+      "Women’s Musculoskeletal Health": "Women’s musculoskeletal health, injury prevention, concussion, lifelong activity, and athletic performance.",
+      "Musculoskeletal Ultrasound": "Musculoskeletal ultrasound, dynamic assessment, procedural precision, and technology in sports medicine.",
+      "Cycling & Running Medicine": "Endurance health, training load, overuse prevention, cycling, running, and sustainable performance.",
+    };
     elements.focusList.replaceChildren();
     items.forEach((item, index) => {
       const card = make("details", "expertise-card");
@@ -194,6 +204,17 @@
         columns.append(column);
       }
       more.append(columns);
+      const speaking = make("aside", "expertise-speaking");
+      const speakingCopy = make("div");
+      speakingCopy.append(
+        make("h4", "", "Speaking subjects"),
+        make("p", "", speakingSubjects[item] || `Dr. Louissaint speaks on ${item.toLocaleLowerCase()}, clinical leadership, and patient-centered care.`),
+      );
+      const speakingButton = make("button", "appointment-trigger", "Invite Dr. Louissaint to speak");
+      speakingButton.type = "button";
+      speakingButton.dataset.inquiry = "speaking-engagements";
+      speaking.append(speakingCopy, speakingButton);
+      more.append(speaking);
       card.append(summary, more);
       elements.focusList.append(card);
     });
@@ -697,9 +718,10 @@
         elements.menuToggle.setAttribute("aria-expanded", "false");
       }
     });
-    for (const trigger of document.querySelectorAll(".appointment-trigger")) {
-      trigger.addEventListener("click", () => openRequestForm(trigger.dataset.inquiry || "patient"));
-    }
+    document.addEventListener("click", (event) => {
+      const trigger = event.target.closest(".appointment-trigger");
+      if (trigger) openRequestForm(trigger.dataset.inquiry || "patient");
+    });
     elements.appointmentRequestForm.addEventListener("submit", async (event) => {
       event.preventDefault();
       const formData = new FormData(elements.appointmentRequestForm);
@@ -744,6 +766,34 @@
     setUpHeroCarousel();
   }
 
+  function setUpScrollReveals() {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reducedMotion.matches || !("IntersectionObserver" in window)) return;
+    const targets = [...document.querySelectorAll([
+      ".section-heading",
+      ".about-main > *",
+      ".expertise-card",
+      ".profile-layout",
+      ".highlight-tabs",
+      ".highlight-panels",
+      ".request-option",
+      ".affiliation-marquee-label",
+    ].join(","))];
+    targets.forEach((target, index) => {
+      target.classList.add("reveal-item");
+      target.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 55}ms`);
+    });
+    document.body.classList.add("motion-enabled");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -7%", threshold: 0.08 });
+    targets.forEach((target) => observer.observe(target));
+  }
+
   function setUpHeroCarousel() {
     let slides = [...elements.portrait.querySelectorAll("[data-hero-slide]")];
     let dots = [...elements.portrait.querySelectorAll("[data-hero-dot]")];
@@ -771,7 +821,7 @@
     const startRotation = () => {
       stopRotation();
       if (slides.length < 2 || reducedMotion.matches || document.hidden) return;
-      rotationTimer = window.setInterval(() => showSlide(activeIndex + 1), 6500);
+      rotationTimer = window.setInterval(() => showSlide(activeIndex + 1), 8500);
     };
 
     const bindDots = () => dots.forEach((dot, index) => dot.addEventListener("click", () => {
@@ -856,6 +906,7 @@
       document.body.classList.add("content-unavailable");
     }
     renderAll();
+    setUpScrollReveals();
     restoreInitialAnchor(initialHash);
   }
 
