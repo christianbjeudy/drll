@@ -614,7 +614,10 @@
       }, 0);
     });
     document.addEventListener("visibilitychange", () => (document.hidden ? stopRotation() : startRotation()));
-    reducedMotion.addEventListener?.("change", startRotation);
+    reducedMotion.addEventListener?.("change", () => {
+      startRotation();
+      syncSlideMotion();
+    });
 
     const visibilityObserver = new IntersectionObserver(([entry]) => {
       highlightsVisible = entry.isIntersecting;
@@ -798,10 +801,39 @@
     let slides = [...elements.portrait.querySelectorAll("[data-hero-slide]")];
     let dots = [...elements.portrait.querySelectorAll("[data-hero-dot]")];
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const desktopMotion = window.matchMedia("(min-width: 831px)");
     const previous = elements.portrait.querySelector("[data-hero-previous]");
     const next = elements.portrait.querySelector("[data-hero-next]");
     let activeIndex = 0;
     let rotationTimer = 0;
+
+    const motionAllowed = () => !reducedMotion.matches && desktopMotion.matches && !navigator.connection?.saveData;
+
+    const syncSlideMotion = () => {
+      slides.forEach((slide, slideIndex) => {
+        const video = slide.querySelector(".hero-motion-video");
+        if (!video) return;
+        if (slideIndex === activeIndex && motionAllowed()) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    };
+
+    const prepareMotionVideos = () => {
+      slides.forEach((slide) => {
+        const video = slide.querySelector(".hero-motion-video");
+        if (!video || video.dataset.prepared || !motionAllowed()) return;
+        video.dataset.prepared = "true";
+        video.src = video.dataset.src;
+        video.addEventListener("canplay", () => {
+          video.classList.add("is-ready");
+          syncSlideMotion();
+        }, { once: true });
+        video.load();
+      });
+    };
 
     const showSlide = (index) => {
       activeIndex = (index + slides.length) % slides.length;
@@ -811,6 +843,7 @@
         slide.setAttribute("aria-hidden", String(!active));
       });
       dots.forEach((dot, dotIndex) => dot.setAttribute("aria-current", String(dotIndex === activeIndex)));
+      syncSlideMotion();
     };
 
     const stopRotation = () => {
@@ -863,6 +896,19 @@
             }
           }, { once: true });
           slide.append(image);
+          const imagePath = new URL(url, window.location.origin).pathname;
+          if (index === 0 && imagePath === "/assets/images/dr-laurenie-louissaint-headshot.jpg") {
+            const video = make("video", "hero-motion-video");
+            video.dataset.src = "/assets/video/dr-laurenie-louissaint-living-portrait.mp4";
+            video.poster = "/assets/images/dr-laurenie-louissaint-headshot.jpg";
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.preload = "none";
+            video.tabIndex = -1;
+            video.setAttribute("aria-hidden", "true");
+            slide.append(video);
+          }
           return slide;
         });
         elements.heroCarouselSlides.replaceChildren(...slideNodes);
@@ -878,6 +924,7 @@
         slides = slideNodes;
         dots = dotNodes;
         bindDots();
+        prepareMotionVideos();
         const hasMultipleSlides = urls.length > 1;
         if (previous) previous.hidden = !hasMultipleSlides;
         if (next) next.hidden = !hasMultipleSlides;
@@ -886,7 +933,12 @@
         startRotation();
       },
     };
+    desktopMotion.addEventListener?.("change", () => {
+      prepareMotionVideos();
+      syncSlideMotion();
+    });
     showSlide(0);
+    prepareMotionVideos();
     startRotation();
   }
 
