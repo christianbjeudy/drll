@@ -14,6 +14,25 @@
   };
 
   const elements = {};
+  const defaultSiteCopy = {
+    hero_heading: "Movement.\nRecovery.\nPerformance.",
+    hero_intro: "Double board-certified in Physical Medicine & Rehabilitation and Sports Medicine.",
+    about_label: "01 / ABOUT",
+    about_heading: "Care informed by movement & purpose.",
+    about_intro: "Professional biography introduction.",
+    expertise_label: "AREAS OF EXPERTISE",
+    expertise_heading: "Specialized care for active lives.",
+    expertise_intro: "Professional expertise reflected through Dr. Louissaint’s academic and clinical experience.",
+    profile_label: "PROFESSIONAL PROFILE",
+    profile_heading: "Credentials & Affiliations.",
+    highlights_label: "PROFESSIONAL HIGHLIGHTS",
+    highlights_heading: "Life in Motion.",
+    appointments_label: "REQUESTS & PROFESSIONAL CONTACT",
+    appointments_heading: "Connect with Dr. Louissaint.",
+    footer_name: "Dr. Laurenie Louissaint",
+    footer_copyright: "© 2026 DR. LAURENIE LOUISSAINT, MD, MS, FAAPMR, CAQSM. ALL RIGHTS RESERVED.",
+    tab_labels: { journey: "Education & Career", journal: "Articles & News", events: "Service & Engagement", athleticism: "Athleticism", media: "Social Media" },
+  };
   const labels = {
     all: "All entries",
     publication: "Publications",
@@ -585,6 +604,8 @@
 
   function renderSettings() {
     fillForm(elements.settingsForm, state.settings);
+    const copyField = elements.settingsForm.elements.namedItem("site_copy");
+    if (copyField) copyField.value = JSON.stringify({ ...defaultSiteCopy, ...(state.settings.site_copy || {}) }, null, 2);
     renderSlideshowPreview();
   }
 

@@ -35,6 +35,7 @@ export const EMPTY_SETTINGS = {
   scholar: "",
   orcid: "",
   other_link: "",
+  site_copy: {},
 };
 
 function entryKey(id) {

@@ -20,6 +20,21 @@ function normalizeUrlList(value, field) {
   return [...new Set(text.split(/\r?\n/u).map((line) => line.trim()).filter(Boolean).map((url) => validateUrl(url)))].join("\n");
 }
 
+function normalizeSiteCopy(value) {
+  if (!value) return {};
+  const raw = typeof value === "string" ? value : JSON.stringify(value);
+  let copy;
+  try {
+    copy = JSON.parse(raw);
+  } catch {
+    throw new HttpError(400, "Site wording must be valid JSON.");
+  }
+  if (!copy || typeof copy !== "object" || Array.isArray(copy) || raw.length > 50_000) {
+    throw new HttpError(400, "Site wording must be a JSON object under 50 KB.");
+  }
+  return copy;
+}
+
 export function normalizeEntry(input) {
   const type = cleanText(input.type, 40, "Content type");
   const status = cleanText(input.status || "draft", 20, "Status");
@@ -155,6 +170,7 @@ export function normalizeSettings(input) {
     scholar: validateUrl(input.scholar, { allowRelative: false }),
     orcid: validateUrl(input.orcid, { allowRelative: false }),
     other_link: validateUrl(input.other_link, { allowRelative: false }),
+    site_copy: normalizeSiteCopy(input.site_copy),
   };
 }
 

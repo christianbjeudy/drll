@@ -377,8 +377,41 @@
     }
   }
 
+  function renderSiteCopy(copy = {}) {
+    const targets = {
+      hero_heading: ".hero h1",
+      hero_intro: "#heroIntro",
+      about_label: "#about .eyebrow",
+      about_heading: "#about h2",
+      about_intro: "#aboutLead",
+      expertise_label: "#expertise .eyebrow",
+      expertise_heading: "#expertise h2",
+      expertise_intro: "#expertise .section-heading p",
+      profile_label: "#profile .eyebrow",
+      profile_heading: "#profile h2",
+      highlights_label: "#professional-highlights .eyebrow",
+      highlights_heading: "#professional-highlights h2",
+      appointments_label: "#appointments .eyebrow",
+      appointments_heading: "#appointments h2",
+      footer_name: ".footer-name strong",
+      footer_copyright: ".footer-copyright",
+    };
+    for (const [key, selector] of Object.entries(targets)) {
+      const value = String(copy[key] || "").trim();
+      const target = document.querySelector(selector);
+      if (!value || !target) continue;
+      target.replaceChildren(...value.split(/\n/u).flatMap((line, index, lines) => index < lines.length - 1 ? [document.createTextNode(line), document.createElement("br")] : [document.createTextNode(line)]));
+    }
+    const labels = copy.tab_labels && typeof copy.tab_labels === "object" ? copy.tab_labels : {};
+    for (const tab of document.querySelectorAll("#highlightTabs [data-highlight]")) {
+      const value = String(labels[tab.dataset.highlight] || "").trim();
+      if (value) tab.textContent = value;
+    }
+  }
+
   function renderSettings() {
     const settings = state.settings;
+    renderSiteCopy(settings.site_copy);
     if (settings.about) elements.aboutLead.textContent = settings.about;
     if (settings.hero_intro) elements.heroIntro.textContent = settings.hero_intro;
     const credentials = settings.credentials
