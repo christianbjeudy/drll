@@ -393,6 +393,8 @@
       highlights_heading: "#professional-highlights h2",
       appointments_label: "#appointments .eyebrow",
       appointments_heading: "#appointments h2",
+      appointments_intro: "#appointments .appointment-intro",
+      appointments_disclaimer: "#appointments .medical-note",
       footer_name: ".footer-name strong",
       footer_copyright: ".footer-copyright",
     };
@@ -407,6 +409,14 @@
       const value = String(labels[tab.dataset.highlight] || "").trim();
       if (value) tab.textContent = value;
     }
+    const requestCards = ["brand_partnerships", "speaking_engagements", "sports_coverage", "mentorship", "medical_appointment"];
+    requestCards.forEach((key, index) => {
+      const card = document.querySelector(`#appointments .request-option:nth-child(${index + 1})`);
+      const title = String(copy[`${key}_title`] || "").trim();
+      const description = String(copy[`${key}_description`] || "").trim();
+      if (card && title) card.querySelector("strong")?.replaceChildren(document.createTextNode(title));
+      if (card && description) card.querySelector("small")?.replaceChildren(document.createTextNode(description));
+    });
   }
 
   function renderSettings() {
