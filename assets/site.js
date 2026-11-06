@@ -378,6 +378,13 @@
   }
 
   function renderSiteCopy(copy = {}) {
+    const selectorOverrides = copy && typeof copy.selector_overrides === "object" ? copy.selector_overrides : {};
+    for (const [selector, value] of Object.entries(selectorOverrides)) {
+      if (!selector || typeof value !== "string") continue;
+      document.querySelectorAll(selector).forEach((target) => {
+        target.replaceChildren(...value.split(/\n/u).flatMap((line, index, lines) => index < lines.length - 1 ? [document.createTextNode(line), document.createElement("br")] : [document.createTextNode(line)]));
+      });
+    }
     const targets = {
       hero_heading: ".hero h1",
       hero_intro: "#heroIntro",

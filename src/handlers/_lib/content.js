@@ -29,8 +29,8 @@ function normalizeSiteCopy(value) {
   } catch {
     throw new HttpError(400, "Site wording must be valid JSON.");
   }
-  if (!copy || typeof copy !== "object" || Array.isArray(copy) || raw.length > 50_000) {
-    throw new HttpError(400, "Site wording must be a JSON object under 50 KB.");
+  if (!copy || typeof copy !== "object" || Array.isArray(copy) || raw.length > 150_000) {
+    throw new HttpError(400, "Site wording must be a JSON object under 150 KB.");
   }
   return copy;
 }

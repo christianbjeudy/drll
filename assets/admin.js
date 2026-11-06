@@ -14,6 +14,7 @@
   };
 
   const elements = {};
+  let copyCatalogPromise = null;
   const defaultSiteCopy = {
     hero_heading: "Movement.\nRecovery.\nPerformance.",
     hero_intro: "Double board-certified in Physical Medicine & Rehabilitation and Sports Medicine.",
@@ -617,8 +618,56 @@
   function renderSettings() {
     fillForm(elements.settingsForm, state.settings);
     const copyField = elements.settingsForm.elements.namedItem("site_copy");
-    if (copyField) copyField.value = JSON.stringify({ ...defaultSiteCopy, ...(state.settings.site_copy || {}) }, null, 2);
+    if (copyField) {
+      const savedCopy = state.settings.site_copy || {};
+      copyField.value = JSON.stringify(savedCopy.selector_overrides ? savedCopy : { ...defaultSiteCopy, ...savedCopy }, null, 2);
+      if (!savedCopy.selector_overrides && !copyCatalogPromise) {
+        copyCatalogPromise = loadCopyCatalog().then((catalog) => {
+          state.settings.site_copy = { selector_overrides: { ...catalog, ...savedCopy } };
+          copyField.value = JSON.stringify(state.settings.site_copy, null, 2);
+        }).catch(() => {});
+      }
+    }
     renderSlideshowPreview();
+  }
+
+  function selectorFor(element) {
+    if (element.id) return `#${CSS.escape(element.id)}`;
+    const parts = [];
+    let node = element;
+    while (node && node.nodeType === 1 && node.tagName !== "BODY") {
+      let part = node.tagName.toLowerCase();
+      if (node.classList.length) part += `.${[...node.classList].filter((name) => /^[a-z][\w-]*$/iu.test(name)).slice(0, 2).join(".")}`;
+      const siblings = node.parentElement ? [...node.parentElement.children].filter((sibling) => sibling.tagName === node.tagName) : [];
+      if (siblings.length > 1) part += `:nth-of-type(${siblings.indexOf(node) + 1})`;
+      parts.unshift(part);
+      node = node.parentElement;
+      if (node?.id) return `#${CSS.escape(node.id)} > ${parts.join(" > ")}`;
+    }
+    return parts.join(" > ");
+  }
+
+  function editableText(element) {
+    const clone = element.cloneNode(true);
+    clone.querySelectorAll("br").forEach((breakNode) => breakNode.replaceWith("\n"));
+    return clone.textContent.replace(/[ \t]+/gu, " ").replace(/\n[ \t]+/gu, "\n").trim();
+  }
+
+  async function loadCopyCatalog() {
+    const response = await fetch("/", { credentials: "same-origin", cache: "no-store" });
+    if (!response.ok) throw new Error("Unable to load the public site copy.");
+    const html = await response.text();
+    const documentCopy = new DOMParser().parseFromString(html, "text/html");
+    const root = documentCopy.body;
+    const catalog = {};
+    const editableTags = new Set(["A", "BUTTON", "H1", "H2", "H3", "H4", "LABEL", "LI", "P", "SMALL", "SPAN", "STRONG"]);
+    for (const element of root?.querySelectorAll("a,button,h1,h2,h3,h4,label,li,p,small,span,strong") || []) {
+      if (!editableTags.has(element.tagName) || element.closest("script,style,svg") || element.children.length > 0) continue;
+      const text = editableText(element);
+      const selector = selectorFor(element);
+      if (text && selector && !selector.includes("script") && !selector.includes("style")) catalog[selector] = text;
+    }
+    return catalog;
   }
 
   function selectSlideshowFiles() {
