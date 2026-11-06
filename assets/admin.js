@@ -623,7 +623,7 @@
       copyField.value = JSON.stringify(savedCopy.selector_overrides ? savedCopy : { ...defaultSiteCopy, ...savedCopy }, null, 2);
       if (!savedCopy.selector_overrides && !copyCatalogPromise) {
         copyCatalogPromise = loadCopyCatalog().then((catalog) => {
-          state.settings.site_copy = { selector_overrides: { ...catalog, ...savedCopy } };
+          state.settings.site_copy = { ...savedCopy, selector_overrides: { ...catalog, ...(savedCopy.selector_overrides || {}) } };
           copyField.value = JSON.stringify(state.settings.site_copy, null, 2);
         }).catch(() => {});
       }
